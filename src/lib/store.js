@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { cloud } from './cloud.js';
 import { PRODUITS, rayonsType } from '../data/defaults.js';
 import { uid, findProduit, devinerCategorie } from './utils.js';
 
@@ -28,24 +29,52 @@ export function dbInitiale() {
   };
 }
 
-function charger() {
+export const dbVide = () => ({ ...dbInitiale(), produits: [], magasins: [], liste: [], listes: [], achats: [], magasinActif: null });
+
+export const cleCache = foyerId => (foyerId ? 'courses-pro-foyer-' + foyerId : KEY);
+
+export function charger(foyerId) {
   try {
-    const brut = localStorage.getItem(KEY);
+    const brut = localStorage.getItem(cleCache(foyerId));
     if (brut) {
       const d = JSON.parse(brut);
       if (d && d.produits && d.magasins) return { ...dbInitiale(), ...d, reglages: { ...dbInitiale().reglages, ...d.reglages } };
     }
   } catch { /* stockage indisponible */ }
-  return dbInitiale();
+  return foyerId ? dbVide() : dbInitiale();
 }
 
-export function useDb() {
-  const [db, setDb] = useState(charger);
+// foyerId = null : mode local (ce téléphone) ; sinon base partagée Firebase du foyer
+export function useDb(foyerId, onAccesPerdu) {
+  const [db, setDb] = useState(() => charger(foyerId));
+  const ref = useRef(db);
+
   useEffect(() => {
-    try { localStorage.setItem(KEY, JSON.stringify(db)); } catch { /* ignore */ }
-  }, [db]);
-  const maj = useCallback(fn => setDb(prev => { const d = structuredClone(prev); fn(d); return d; }), []);
-  return [db, maj, setDb];
+    try { localStorage.setItem(cleCache(foyerId), JSON.stringify(db)); } catch { /* ignore */ }
+  }, [db, foyerId]);
+
+  // Synchro temps réel
+  useEffect(() => {
+    if (!foyerId) return undefined;
+    return cloud.ecouter(foyerId, (cle, val) => {
+      const n = { ...ref.current };
+      if (cle === '_reglages') n.reglages = { ...n.reglages, budget: val.budget || 0 };
+      else n[cle] = val;
+      ref.current = n;
+      setDb(n);
+    }, e => { console.error(e); if (e?.code === 'permission-denied') onAccesPerdu?.(); });
+  }, [foyerId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const appliquer = useCallback(next => {
+    const prev = ref.current;
+    ref.current = next;
+    setDb(next);
+    if (foyerId) cloud.pousser(foyerId, prev, next).catch(e => console.error('Synchro', e));
+  }, [foyerId]);
+
+  const maj = useCallback(fn => { const d = structuredClone(ref.current); fn(d); appliquer(d); }, [appliquer]);
+  const remplacer = useCallback(d => appliquer({ ...ref.current, ...d, _foyer: ref.current._foyer, _membres: ref.current._membres }), [appliquer]);
+  return [db, maj, remplacer];
 }
 
 // Retrouve un produit par son nom ou le crée (avec catégorie devinée). À appeler dans maj().

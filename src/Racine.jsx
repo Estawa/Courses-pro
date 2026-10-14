@@ -1,0 +1,185 @@
+import { useEffect, useState } from 'react';
+import App from './App.jsx';
+import Icon from './components/icons.jsx';
+import { cloud, messageErreur } from './lib/cloud.js';
+import { charger, cleCache, dbInitiale } from './lib/store.js';
+import { appConfig } from './appConfig.js';
+
+const lireLS = k => { try { return localStorage.getItem(k); } catch { return null; } };
+const ecrireLS = (k, v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch { /* */ } };
+
+// Code d'invitation passé dans le lien (?rejoindre=ABC123), gardé le temps de se connecter
+function codeDuLien() {
+  const u = new URL(window.location.href);
+  const c = u.searchParams.get('rejoindre');
+  if (c) {
+    try { sessionStorage.setItem('cp-rejoindre', c); } catch { /* */ }
+    u.searchParams.delete('rejoindre');
+    window.history.replaceState(null, '', u.pathname + (u.search || ''));
+    return c;
+  }
+  try { return sessionStorage.getItem('cp-rejoindre') || ''; } catch { return ''; }
+}
+
+export default function Racine() {
+  const [code] = useState(codeDuLien);
+  const [mode, setMode] = useState(() => (code ? null : lireLS('courses-pro-mode')));
+  const [user, setUser] = useState(undefined);
+  const [foyerId, setFoyerId] = useState(undefined);
+
+  useEffect(() => {
+    if (!cloud.actif) return undefined;
+    return cloud.onAuth(async u => {
+      setUser(u);
+      if (!u) { setFoyerId(null); return; }
+      setFoyerId(undefined);
+      setFoyerId(await cloud.monFoyer(u).catch(() => null));
+    });
+  }, []);
+
+  if (!cloud.actif) return <App foyerId={null} session={{ local: true }} />;
+
+  const passerLocal = () => { ecrireLS('courses-pro-mode', 'local'); setMode('local'); };
+  const passerCloud = () => { ecrireLS('courses-pro-mode', null); setMode(null); };
+
+  if (mode === 'local') return <App foyerId={null} session={{ local: true, versCloud: passerCloud }} />;
+  if (user === undefined || (user && foyerId === undefined)) return <Splash />;
+  if (!user) return <Connexion onLocal={passerLocal} />;
+  if (!foyerId) return <ChoixFoyer user={user} codeInitial={code} onFoyer={f => { try { sessionStorage.removeItem('cp-rejoindre'); } catch { /* */ } setFoyerId(f); }} />;
+
+  return (
+    <App
+      key={foyerId}
+      foyerId={foyerId}
+      session={{ user, foyerId, sortir: () => setFoyerId(null), deconnexion: () => cloud.deconnexion() }}
+    />
+  );
+}
+
+function Logo() {
+  return (
+    <div className="accueil-logo">
+      <div className="logo logo-xl">🛒</div>
+      <div className="brand-nom accueil-titre">{appConfig.nom}</div>
+      <div className="brand-sub">by {appConfig.auteur} <span className="version">v{appConfig.version}</span></div>
+    </div>
+  );
+}
+
+function Splash() {
+  return (
+    <div className="accueil">
+      <Logo />
+      <div className="spinner" aria-label="Chargement" />
+    </div>
+  );
+}
+
+function Connexion({ onLocal }) {
+  const [creer, setCreer] = useState(false);
+  const [nom, setNom] = useState('');
+  const [mail, setMail] = useState('');
+  const [mdp, setMdp] = useState('');
+  const [err, setErr] = useState('');
+  const [info, setInfo] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  const go = async fn => {
+    setErr(''); setInfo(''); setBusy(true);
+    try { await fn(); } catch (e) { setErr(messageErreur(e)); }
+    setBusy(false);
+  };
+
+  return (
+    <div className="accueil">
+      <Logo />
+      <div className="card accueil-card">
+        <div className="accueil-pitch">
+          <span>🧺</span>
+          <span>Une liste de courses <b>partagée en temps réel</b> avec ta famille, ton stock maison et tes dépenses.</span>
+        </div>
+        <button className="btn btn-big btn-white btn-google" disabled={busy} onClick={() => go(() => cloud.google())}>
+          <span className="g-logo">G</span> Continuer avec Google
+        </button>
+        <div className="sep"><span>ou avec un e-mail</span></div>
+        <form className="stack" onSubmit={e => { e.preventDefault(); go(() => cloud.email(mail, mdp, creer, nom)); }}>
+          {creer && <input className="input" placeholder="Ton prénom" value={nom} onChange={e => setNom(e.target.value)} autoComplete="given-name" />}
+          <input className="input" type="email" placeholder="E-mail" value={mail} onChange={e => setMail(e.target.value)} autoComplete="email" required />
+          <input className="input" type="password" placeholder="Mot de passe (6 caractères min.)" value={mdp} onChange={e => setMdp(e.target.value)} autoComplete={creer ? 'new-password' : 'current-password'} required />
+          <button className="btn btn-big btn-main" disabled={busy}>{creer ? 'Créer mon compte' : 'Se connecter'}</button>
+        </form>
+        {err && <div className="msg msg-err">{err}</div>}
+        {info && <div className="msg msg-ok">{info}</div>}
+        <div className="row-between small">
+          <button className="lien" onClick={() => { setCreer(!creer); setErr(''); }}>{creer ? 'J’ai déjà un compte' : 'Créer un compte'}</button>
+          {!creer && (
+            <button className="lien" onClick={() => mail ? go(async () => { await cloud.reset(mail); setInfo('E-mail de réinitialisation envoyé 📩'); }) : setErr('Saisis ton e-mail d’abord.')}>
+              Mot de passe oublié ?
+            </button>
+          )}
+        </div>
+      </div>
+      <p className="muted small center">🔒 Tes données ne sont visibles que par les membres de ton foyer.</p>
+      <button className="lien small" onClick={onLocal}>Continuer sans compte (données sur ce téléphone uniquement)</button>
+    </div>
+  );
+}
+
+function ChoixFoyer({ user, codeInitial, onFoyer }) {
+  const [code, setCode] = useState(codeInitial || '');
+  const [nom, setNom] = useState('');
+  const local = charger(null);
+  const aDesDonnees = local.achats.length > 0 || local.liste.length > 0 || local.magasins.length > 1 || local.produits.some(p => p.suivi);
+  const [reprendre, setReprendre] = useState(true);
+  const [err, setErr] = useState('');
+  const [busy, setBusy] = useState(false);
+  const prenom = (user.displayName || user.email || '').split(/[ @]/)[0];
+
+  const go = async fn => {
+    setErr(''); setBusy(true);
+    try { onFoyer(await fn()); } catch (e) { setErr(messageErreur(e)); setBusy(false); }
+  };
+  const creer = () => go(async () => {
+    const { _foyer, _membres, ...donnees } = local; // eslint-disable-line no-unused-vars
+    const base = reprendre ? donnees : dbInitiale();
+    const f = await cloud.creerFoyer(user, nom || 'Notre foyer', base);
+    try { localStorage.setItem(cleCache(f), JSON.stringify(base)); } catch { /* */ }
+    return f;
+  });
+
+  return (
+    <div className="accueil">
+      <Logo />
+      <div className="accueil-hello">Bonjour {prenom} 👋</div>
+
+      <div className="card accueil-card hero-pink">
+        <div className="card-title">💌 Rejoindre un foyer</div>
+        <p className="small">Quelqu’un de ta famille t’a envoyé un code ou un lien d’invitation ? Saisis le code à 6 caractères.</p>
+        <input
+          className="input code-input" placeholder="ABC123" maxLength={8} value={code}
+          onChange={e => setCode(e.target.value.toUpperCase())} autoCapitalize="characters"
+        />
+        <button className="btn btn-big btn-main" disabled={busy || code.trim().length < 6} onClick={() => go(() => cloud.rejoindre(user, code))}>
+          Rejoindre
+        </button>
+      </div>
+
+      <div className="card accueil-card hero-mint">
+        <div className="card-title">🏡 Créer notre foyer</div>
+        <p className="small">Tu deviens le premier membre et tu pourras inviter ta famille avec un code.</p>
+        <input className="input" placeholder="Nom du foyer (ex : Famille Martin)" value={nom} onChange={e => setNom(e.target.value)} />
+        {aDesDonnees && (
+          <label className="check-line small">
+            <input type="checkbox" checked={reprendre} onChange={e => setReprendre(e.target.checked)} />
+            Reprendre les magasins, listes, stock et dépenses déjà sur ce téléphone
+          </label>
+        )}
+        <button className="btn btn-big btn-main" disabled={busy} onClick={creer}>Créer le foyer</button>
+      </div>
+
+      {err && <div className="msg msg-err">{err}</div>}
+      {busy && <div className="spinner" />}
+      <button className="lien small" onClick={() => cloud.deconnexion()}><Icon name="left" size={14} /> Changer de compte ({user.email})</button>
+    </div>
+  );
+}

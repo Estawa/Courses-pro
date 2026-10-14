@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Icon from './components/icons.jsx';
 import { Sheet, useToast } from './components/ui.jsx';
 import ImportListe from './components/ImportListe.jsx';
+import FoyerSheet, { partagerAppli } from './components/Foyer.jsx';
 import { useDb, dbInitiale } from './lib/store.js';
 import { appConfig } from './appConfig.js';
 import { CHANGELOG } from './changelog.js';
@@ -19,8 +20,10 @@ const ONGLETS = [
   { id: 'depenses', label: 'Dépenses', icon: 'wallet' },
 ];
 
-export default function App() {
-  const [db, maj, setDb] = useDb();
+export default function App({ foyerId = null, session = { local: true } }) {
+  const [db, maj, remplacer] = useDb(foyerId, session.sortir);
+  const [foyerOuvert, setFoyerOuvert] = useState(false);
+  const cloudOn = !!foyerId;
   const [onglet, setOnglet] = useState(() => { try { return localStorage.getItem('courses-pro-onglet') || 'courses'; } catch { return 'courses'; } });
   const [menu, setMenu] = useState(false);
   const [journal, setJournal] = useState(false);
@@ -49,7 +52,8 @@ export default function App() {
   const nbBas = db.produits.filter(p => p.suivi && p.stock <= p.min).length;
 
   const exporter = () => {
-    const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+    const { _foyer, _membres, ...sauvegarde } = db; // eslint-disable-line no-unused-vars
+    const blob = new Blob([JSON.stringify(sauvegarde, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = `courses-pro-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`;
@@ -66,7 +70,8 @@ export default function App() {
         const d = JSON.parse(r.result);
         if (!d.produits || !d.magasins) throw new Error();
         if (!confirm('Remplacer toutes tes données par cette sauvegarde ?')) return;
-        setDb({ ...dbInitiale(), ...d });
+        const { _foyer, _membres, ...propre } = d; // eslint-disable-line no-unused-vars
+        remplacer({ ...dbInitiale(), ...propre, magasinActif: propre.magasinActif || db.magasinActif });
         toast('Sauvegarde restaurée ✅');
         setMenu(false);
       } catch { toast('Fichier invalide 😕'); }
@@ -85,6 +90,12 @@ export default function App() {
           <div className="brand-nom">{appConfig.nom}</div>
           <div className="brand-sub">by {appConfig.auteur} <span className="version">v{appConfig.version}</span></div>
         </div>
+        {cloudOn && (
+          <button className="foyer-btn" onClick={() => setFoyerOuvert(true)} aria-label="Mon foyer">
+            {(db._membres || []).slice(0, 3).map(m => <span key={m.uid} className="avatar avatar-s">{(m.nom || '?').charAt(0).toUpperCase()}</span>)}
+            {!(db._membres || []).length && <span className="avatar avatar-s">☁</span>}
+          </button>
+        )}
         <button
           className="icon-btn top-btn" aria-label="Mode jour / nuit"
           onClick={() => maj(d => { d.reglages.theme = d.reglages.theme === 'sombre' ? 'clair' : 'sombre'; })}
@@ -124,18 +135,23 @@ export default function App() {
 
       <Sheet open={menu} onClose={() => setMenu(false)} title="⚙️ Menu">
         <div className="stack">
+          {cloudOn && <button className="menu-row menu-foyer" onClick={() => { setMenu(false); setFoyerOuvert(true); }}><span>👨‍👩‍👧</span> <span className="grow">Mon foyer : {db._foyer?.nom || '…'}<span className="muted small block">Membres, invitation, déconnexion</span></span></button>}
+          {session.versCloud && <button className="menu-row menu-foyer" onClick={() => { setMenu(false); session.versCloud(); }}><span>☁️</span> <span className="grow">Partager avec ma famille<span className="muted small block">Créer un compte et une base commune protégée</span></span></button>}
+          <button className="menu-row" onClick={() => partagerAppli(toast)}><Icon name="upload" /> <span className="grow">Partager l’appli</span></button>
           <button className="menu-row" onClick={exporter}><Icon name="download" /> <span className="grow">Sauvegarder mes données</span></button>
           <button className="menu-row" onClick={() => fichier.current.click()}><Icon name="upload" /> <span className="grow">Restaurer une sauvegarde</span></button>
           <input ref={fichier} type="file" accept="application/json,.json" hidden onChange={importer} />
           <button className="menu-row" onClick={() => { setMenu(false); setJournal(true); }}><Icon name="history" /> <span className="grow">Journal des modifications</span></button>
           <button className="menu-row danger" onClick={() => {
-            if (confirm('Tout effacer et repartir de zéro ? (pense à sauvegarder avant)')) { setDb(dbInitiale()); setMenu(false); toast('Appli remise à zéro'); }
+            if (confirm(cloudOn ? 'Tout effacer pour TOUT le foyer et repartir de zéro ? (pense à sauvegarder avant)' : 'Tout effacer et repartir de zéro ? (pense à sauvegarder avant)')) { remplacer(dbInitiale()); setMenu(false); toast('Appli remise à zéro'); }
           }}><Icon name="trash" /> <span className="grow">Tout réinitialiser</span></button>
         </div>
         <p className="muted small center" style={{ marginTop: 16 }}>
-          Tes données restent sur ce téléphone. Pense à faire une sauvegarde de temps en temps 💾
+          {cloudOn ? '☁️ Données partagées et protégées dans le foyer, synchronisées en temps réel.' : 'Tes données restent sur ce téléphone. Pense à faire une sauvegarde de temps en temps 💾'}
         </p>
       </Sheet>
+
+      {cloudOn && <FoyerSheet open={foyerOuvert} onClose={() => setFoyerOuvert(false)} db={db} session={session} toast={toast} />}
 
       <Sheet open={journal} onClose={() => setJournal(false)} title="📜 Journal des modifications">
         {CHANGELOG.map(v => (

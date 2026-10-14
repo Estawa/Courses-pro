@@ -1,5 +1,19 @@
 export const CHANGELOG = [
   {
+    version: '1.1.0',
+    date: '2026-10-14',
+    notes: [
+      'Base de données commune Firebase : un « foyer » partagé, synchronisé en temps réel entre plusieurs téléphones',
+      'Connexion par Google ou par e-mail / mot de passe',
+      'Invitation par code à 6 caractères ou par lien envoyé sur WhatsApp, changement de code possible',
+      'Gestion des membres du foyer (voir, retirer, quitter), déconnexion',
+      'Règles de sécurité : seuls les membres connectés d’un foyer peuvent lire ou écrire ses données',
+      'Bouton « Partager l’appli » pour qu’un autre foyer l’utilise avec ses propres données',
+      'Reprise des données déjà présentes sur le téléphone lors de la création du foyer',
+      'Fonctionne aussi hors connexion (cache local), mode sans compte toujours possible',
+    ],
+  },
+  {
     version: '1.0.0',
     date: '2026-10-14',
     notes: [

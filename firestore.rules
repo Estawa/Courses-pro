@@ -1,0 +1,64 @@
+rules_version = '2';
+
+// ====================================================================
+// Courses Pro — règles de sécurité Firestore
+// Personne ne peut lire ou écrire sans être connecté ET membre du foyer.
+//
+// ⚠️ Si tu utilises un projet Firebase déjà employé par une autre appli,
+// NE REMPLACE PAS ses règles : copie seulement le bloc « COURSES PRO »
+// ci-dessous à l'intérieur de son « match /databases/{database}/documents { … } ».
+// ====================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------------- COURSES PRO : début ----------------
+    function cpConnecte() {
+      return request.auth != null;
+    }
+    function cpMembre(f) {
+      return cpConnecte()
+        && exists(/databases/$(database)/documents/coursesPro_foyers/$(f)/membres/$(request.auth.uid));
+    }
+
+    // Lien utilisateur -> foyer : chacun ne voit que le sien
+    match /coursesPro_users/{uid} {
+      allow read, write: if cpConnecte() && request.auth.uid == uid;
+    }
+
+    // Codes d'invitation : lisibles un par un (il faut connaître le code), jamais listables
+    match /coursesPro_invitations/{code} {
+      allow get: if cpConnecte();
+      allow list: if false;
+      allow create: if cpMembre(request.resource.data.foyerId);
+      allow delete: if cpMembre(resource.data.foyerId);
+      allow update: if false;
+    }
+
+    match /coursesPro_foyers/{f} {
+      allow get: if cpMembre(f);
+      allow list: if false;
+      allow create: if cpConnecte() && request.resource.data.creePar == request.auth.uid;
+      allow update: if cpMembre(f) && request.resource.data.creePar == resource.data.creePar;
+      allow delete: if false;
+
+      // Membres : on ne peut s'ajouter soi-même que si on a créé le foyer
+      // ou si on présente un code d'invitation valide de CE foyer
+      match /membres/{uid} {
+        allow read: if cpMembre(f);
+        allow create: if cpConnecte() && uid == request.auth.uid && (
+          get(/databases/$(database)/documents/coursesPro_foyers/$(f)).data.creePar == request.auth.uid
+          || get(/databases/$(database)/documents/coursesPro_invitations/$(request.resource.data.code)).data.foyerId == f
+        );
+        allow delete: if cpMembre(f);
+        allow update: if false;
+      }
+
+      // Données du foyer (produits, magasins, liste, listes, achats, etat)
+      match /{col}/{docId} {
+        allow read, write: if col != 'membres' && cpMembre(f);
+      }
+    }
+    // ---------------- COURSES PRO : fin ----------------
+
+  }
+}
