@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import Icon from '../components/icons.jsx';
 import { EmojiPicker, Empty, Field, Segmented, Sheet, SortableList, Toggle } from '../components/ui.jsx';
 import { CATEGORIES, PASTELS, rayonsType } from '../data/defaults.js';
-import { categorie, norm, uid } from '../lib/utils.js';
+import { categorie, norm, rayonDe, uid } from '../lib/utils.js';
+import { produitPourNom } from '../lib/store.js';
 
 export default function Magasins({ db, maj, toast }) {
   const [ouvert, setOuvert] = useState(null);
@@ -177,8 +178,9 @@ function DetailMagasin({ mag, db, maj, toast, retour }) {
 
       {edit && (
         <EditRayon
-          mag={mag} rayonId={edit} majMag={majMag} toast={toast}
-          onClose={() => setEdit(null)}
+          key={edit}
+          mag={mag} rayonId={edit} majMag={majMag} toast={toast} db={db}
+          onClose={() => setEdit(null)} onRouvrir={id => setEdit(id)}
         />
       )}
       <InfosMagasin open={infos} onClose={() => setInfos(false)} mag={mag} db={db} maj={maj} majMag={majMag} retour={retour} toast={toast} />
@@ -260,28 +262,31 @@ function ArticlesPlaces({ mag, db, majMag }) {
   );
 }
 
-function EditRayon({ mag, rayonId, majMag, toast, onClose }) {
+function EditRayon({ mag, rayonId, majMag, toast, onClose, onRouvrir, db }) {
   const nouveau = rayonId === 'new';
   const r0 = nouveau ? { nom: '', emoji: '📍', repere: '', cats: [] } : mag.rayons.find(r => r.id === rayonId);
   const [nom, setNom] = useState(r0?.nom || '');
   const [emoji, setEmoji] = useState(r0?.emoji || '📍');
   const [repere, setRepere] = useState(r0?.repere || '');
   const [cats, setCats] = useState(r0?.cats || []);
+  const [toutesCats, setToutesCats] = useState(false);
   const [position, setPosition] = useState(nouveau ? mag.rayons.length : mag.rayons.findIndex(r => r.id === rayonId));
   if (!r0) return null;
   const ailleurs = c => mag.rayons.find(r => r.id !== rayonId && r.cats.includes(c));
 
   const enregistrer = () => {
     if (!nom.trim()) return;
+    const nouvelId = uid();
     majMag(m => {
       m.rayons.forEach(r => { if (r.id !== rayonId) r.cats = r.cats.filter(c => !cats.includes(c)); });
       let r;
-      if (nouveau) { r = { id: uid(), nom: '', emoji: '', repere: '', cats: [] }; }
+      if (nouveau) { r = { id: nouvelId, nom: '', emoji: '', repere: '', cats: [] }; }
       else { const i = m.rayons.findIndex(x => x.id === rayonId); r = m.rayons.splice(i, 1)[0]; }
       Object.assign(r, { nom: nom.trim(), emoji, repere: repere.trim(), cats });
       m.rayons.splice(Math.min(position, m.rayons.length), 0, r);
     });
-    toast(nouveau ? 'Rayon ajouté ✨' : 'Rayon mis à jour ✨');
+    if (nouveau) { toast('Rayon créé ✨ Ajoute-lui des articles'); onRouvrir(nouvelId); return; }
+    toast('Rayon mis à jour ✨');
     onClose();
   };
   const supprimer = () => {
@@ -322,9 +327,10 @@ function EditRayon({ mag, rayonId, majMag, toast, onClose }) {
           </select>
         </Field>
       </div>
-      <Field label="Catégories rangées dans ce rayon">
+      {!nouveau && <ArticlesDuRayon mag={mag} rayonId={rayonId} db={db} majMag={majMag} toast={toast} />}
+      <Field label={`Catégories entières rangées ici (${cats.length})`}>
         <div className="chips-wrap">
-          {CATEGORIES.map(c => {
+          {CATEGORIES.filter(c => toutesCats || cats.includes(c.id)).map(c => {
             const on = cats.includes(c.id);
             const autre = ailleurs(c.id);
             return (
@@ -337,6 +343,9 @@ function EditRayon({ mag, rayonId, majMag, toast, onClose }) {
               </button>
             );
           })}
+          <button className="chip chip-new" onClick={() => setToutesCats(v => !v)}>
+            {toutesCats ? 'Masquer les autres catégories' : cats.length ? '＋ Autres catégories…' : '＋ Ranger une catégorie entière ici…'}
+          </button>
         </div>
       </Field>
       {!nouveau && (
@@ -391,5 +400,60 @@ function InfosMagasin({ open, onClose, mag, db, maj, majMag, retour, toast }) {
         <button className="btn btn-ghost danger" onClick={supprimer}><Icon name="trash" size={18} /> Supprimer</button>
       </div>
     </Sheet>
+  );
+}
+
+// Articles rangés dans un rayon : ceux placés à la main + ceux venant des catégories du rayon
+function ArticlesDuRayon({ mag, rayonId, db, majMag, toast }) {
+  const [q, setQ] = useState('');
+  const r = mag.rayons.find(x => x.id === rayonId);
+  const ici = db.produits.filter(p => rayonDe(mag, p) === rayonId);
+  const places = ici.filter(p => mag.overrides?.[p.id] === rayonId).sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+  const parCat = ici.filter(p => mag.overrides?.[p.id] !== rayonId);
+  const n = norm(q);
+  const sugg = n ? db.produits.filter(p => norm(p.nom).includes(n) && mag.overrides?.[p.id] !== rayonId).slice(0, 6) : [];
+  const ajouter = nom => {
+    if (!nom.trim()) return;
+    majMag((m, d) => {
+      const p = produitPourNom(d, nom, r?.cats?.[0] ? { cat: r.cats[0] } : undefined);
+      m.overrides[p.id] = rayonId;
+    });
+    toast(`${nom.trim()} rangé dans « ${r?.nom} » 📍`);
+    setQ('');
+  };
+  return (
+    <div className="field">
+      <span className="field-label">📍 Articles rangés ici</span>
+      <div className="ajout-row">
+        <input
+          className="input grow" placeholder="Ajouter un article (existant ou nouveau)…" value={q}
+          onChange={e => setQ(e.target.value)} onKeyDown={e => e.key === 'Enter' && ajouter(q)}
+        />
+        <button className="btn btn-round btn-main" onClick={() => ajouter(q)} aria-label="Ranger ici"><Icon name="plus" /></button>
+      </div>
+      {n && (
+        <div className="sugg">
+          {sugg.map(p => (
+            <button key={p.id} className="chip" style={{ background: categorie(p.cat).couleur }} onClick={() => ajouter(p.nom)}>
+              {p.emoji || categorie(p.cat).emoji} {p.nom}
+            </button>
+          ))}
+          {!sugg.some(p => norm(p.nom) === n) && <button className="chip chip-new" onClick={() => ajouter(q)}><Icon name="sparkle" size={14} /> Nouveau : « {q.trim()} »</button>}
+        </div>
+      )}
+      {places.length > 0 && (
+        <div className="chips-wrap">
+          {places.map(p => (
+            <span key={p.id} className="chip chip-toggle on" style={{ '--c': categorie(p.cat).couleur }}>
+              {p.emoji || categorie(p.cat).emoji} {p.nom}
+              <button className="chip-x" aria-label={`Retirer ${p.nom}`} onClick={() => majMag(m => { delete m.overrides[p.id]; })}><Icon name="x" size={13} strokeWidth={3} /></button>
+            </span>
+          ))}
+        </div>
+      )}
+      <span className="field-hint">
+        {places.length === 0 && parCat.length === 0 ? 'Aucun article pour l’instant.' : `${places.length} placé(s) à la main${parCat.length ? ` · ${parCat.length} via les catégories cochées` : ''}`}
+      </span>
+    </div>
   );
 }

@@ -15,6 +15,10 @@ service cloud.firestore {
     function cpConnecte() {
       return request.auth != null;
     }
+    // Seuls ces comptes peuvent créer un foyer (même liste que emailsFoyer dans src/appConfig.js)
+    function cpCreateurAutorise() {
+      return cpConnecte() && request.auth.token.email in ['cguilhem77310@gmail.com'];
+    }
     function cpMembre(f) {
       return cpConnecte()
         && exists(/databases/$(database)/documents/coursesPro_foyers/$(f)/membres/$(request.auth.uid));
@@ -37,7 +41,7 @@ service cloud.firestore {
     match /coursesPro_foyers/{f} {
       allow get: if cpMembre(f);
       allow list: if false;
-      allow create: if cpConnecte() && request.resource.data.creePar == request.auth.uid;
+      allow create: if cpCreateurAutorise() && request.resource.data.creePar == request.auth.uid;
       allow update: if cpMembre(f) && request.resource.data.creePar == resource.data.creePar;
       allow delete: if false;
 

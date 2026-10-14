@@ -425,3 +425,6 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .menu-foyer { background: linear-gradient(135deg, var(--mint), var(--lilac)); color: var(--pastel-ink); }
 .menu-foyer .muted { color: inherit; opacity: .7; }
 .code-input::placeholder { opacity: .3; letter-spacing: 6px; }
+.lien-discret { color: var(--muted); font-weight: 700; opacity: .7; margin: 4px auto 0; display: flex; }
+.chip-x { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,.08); margin-left: 2px; }
+.stock-hero { cursor: pointer; }

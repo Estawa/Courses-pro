@@ -64,7 +64,10 @@ export default function Courses({ db, maj, toast, goto }) {
   const ajouter = (nom, qte) => {
     const p = findProduit(db.produits, nom);
     if (p && p.suivi && p.stock > 0) toast(`🏠 Il t'en reste ${p.stock}${p.unite ? ' ' + p.unite : ''} à la maison`);
-    maj(d => { ajouterALaListe(d, nom, qte); });
+    let pid;
+    maj(d => { pid = ajouterALaListe(d, nom, qte).id; });
+    // Nouvel article : on demande tout de suite dans quel rayon le trouver
+    if (!p && mag?.rayons.length) setFeuille({ rayon: { produitId: pid }, nouveau: true });
   };
   const setItem = (id, fn) => maj(d => { const it = d.liste.find(x => x.id === id); if (it) fn(it, d); });
   const suppr = id => maj(d => { d.liste = d.liste.filter(x => x.id !== id); });
@@ -220,7 +223,7 @@ export default function Courses({ db, maj, toast, goto }) {
       )}
 
       {feuille?.rayon && (
-        <ChangerRayon item={feuille.rayon} mag={mag} prod={prodById[feuille.rayon.produitId]} maj={maj} toast={toast} onClose={() => setFeuille(null)} />
+        <ChangerRayon item={feuille.rayon} nouveauProduit={!!feuille.nouveau} mag={mag} prod={prodById[feuille.rayon.produitId]} maj={maj} toast={toast} onClose={() => setFeuille(null)} />
       )}
       <ImportListe
         open={feuille === 'coller'} onClose={() => { setFeuille(null); setImportTxt({ t: '', titre: '' }); }} db={db} maj={maj} toast={toast}
@@ -248,7 +251,7 @@ function RayonHead({ g, ici }) {
   );
 }
 
-function ChangerRayon({ item, mag, prod, maj, toast, onClose }) {
+function ChangerRayon({ item, nouveauProduit, mag, prod, maj, toast, onClose }) {
   const [toute, setToute] = useState(false);
   const [nouveau, setNouveau] = useState('');
   if (!prod || !mag) return null;
@@ -278,11 +281,13 @@ function ChangerRayon({ item, mag, prod, maj, toast, onClose }) {
     choisir(id);
   };
   return (
-    <Sheet open onClose={onClose} title={`📍 Où est « ${prod.nom} » ?`}>
-      <p className="muted small">Chez <b>{mag.nom}</b>. Le choix est mémorisé pour tes prochaines courses.</p>
-      <div className="toggle-box">
-        <Toggle checked={toute} onChange={setToute} label={<>Déplacer toute la catégorie <b>{cat.emoji} {cat.nom}</b></>} />
-      </div>
+    <Sheet open onClose={onClose} title={nouveauProduit ? `✨ Où trouver « ${prod.nom} » ?` : `📍 Où est « ${prod.nom} » ?`}>
+      <p className="muted small">Chez <b>{mag.nom}</b>. Le choix est mémorisé pour tes prochaines courses.{nouveauProduit && actuel ? ' Suggestion cochée en vert.' : ''}</p>
+      {!nouveauProduit && (
+        <div className="toggle-box">
+          <Toggle checked={toute} onChange={setToute} label={<>Déplacer toute la catégorie <b>{cat.emoji} {cat.nom}</b></>} />
+        </div>
+      )}
       <div className="rayon-choix">
         {mag.rayons.map((r, i) => (
           <button key={r.id} className={'rayon-opt' + (r.id === actuel ? ' on' : '')} onClick={() => choisir(r.id)}>
@@ -295,9 +300,10 @@ function ChangerRayon({ item, mag, prod, maj, toast, onClose }) {
         ))}
       </div>
       <div className="ajout-row" style={{ marginTop: 12 }}>
-        <input className="input grow" placeholder="Nouveau rayon (ex : Bio & vrac)" value={nouveau} onChange={e => setNouveau(e.target.value)} onKeyDown={e => e.key === 'Enter' && creer()} />
+        <input className="input grow" placeholder="Créer un rayon (ex : Bio & vrac)" value={nouveau} onChange={e => setNouveau(e.target.value)} onKeyDown={e => e.key === 'Enter' && creer()} />
         <button className="btn btn-main" onClick={creer}>Créer</button>
       </div>
+      {nouveauProduit && <button className="btn btn-ghost btn-full" style={{ marginTop: 10 }} onClick={onClose}>Je ne sais pas encore</button>}
     </Sheet>
   );
 }

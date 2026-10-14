@@ -7,7 +7,11 @@ Base commune Firebase partagée par foyer (temps réel, protégée).
 
 ## Stack
 React 18 + Vite 5, Firebase (Auth + Firestore), CSS maison (thème pastel jour/nuit).
-Sans configuration Firebase, l'appli tourne en mode local (données sur le téléphone).
+Par défaut l'appli est **100 % locale** (données sur le téléphone, aucun appel à Firebase) :
+c'est ce que reçoit toute personne avec qui on partage le lien.
+Le foyer familial (Firebase) ne s'active que via « Connexion au foyer familial » (en bas du menu ⋯)
+ou un lien d'invitation. Seuls les comptes listés dans `emailsFoyer` (src/appConfig.js) et dans
+`firestore.rules` peuvent créer le foyer ; les autres membres le rejoignent par invitation.
 
 ## Mise en route de la base commune (une seule fois)
 
@@ -30,7 +34,7 @@ Firestore Database > Règles : coller le bloc « COURSES PRO » de `firestore.ru
 Résultat : personne ne peut lire ni écrire sans être connecté **et** membre du foyer.
 
 ### 5. Utilisation
-- Toi : se connecter > « Créer notre foyer » (en reprenant les données du téléphone).
+- Toi : menu ⋯ > « Connexion au foyer familial » > se connecter > « Créer notre foyer » (en reprenant les données du téléphone).
 - Menu 👨‍👩‍👧 > « Envoyer l'invitation » : lien WhatsApp avec le code déjà rempli.
 - Ta chérie : ouvre le lien > se connecte > « Rejoindre ».
 - « Changer le code » rend l'ancien code inutilisable. « Retirer » coupe l'accès d'un membre.

@@ -136,7 +136,6 @@ export default function App({ foyerId = null, session = { local: true } }) {
       <Sheet open={menu} onClose={() => setMenu(false)} title="⚙️ Menu">
         <div className="stack">
           {cloudOn && <button className="menu-row menu-foyer" onClick={() => { setMenu(false); setFoyerOuvert(true); }}><span>👨‍👩‍👧</span> <span className="grow">Mon foyer : {db._foyer?.nom || '…'}<span className="muted small block">Membres, invitation, déconnexion</span></span></button>}
-          {session.versCloud && <button className="menu-row menu-foyer" onClick={() => { setMenu(false); session.versCloud(); }}><span>☁️</span> <span className="grow">Partager avec ma famille<span className="muted small block">Créer un compte et une base commune protégée</span></span></button>}
           <button className="menu-row" onClick={() => partagerAppli(toast)}><Icon name="upload" /> <span className="grow">Partager l’appli</span></button>
           <button className="menu-row" onClick={exporter}><Icon name="download" /> <span className="grow">Sauvegarder mes données</span></button>
           <button className="menu-row" onClick={() => fichier.current.click()}><Icon name="upload" /> <span className="grow">Restaurer une sauvegarde</span></button>
@@ -149,6 +148,9 @@ export default function App({ foyerId = null, session = { local: true } }) {
         <p className="muted small center" style={{ marginTop: 16 }}>
           {cloudOn ? '☁️ Données partagées et protégées dans le foyer, synchronisées en temps réel.' : 'Tes données restent sur ce téléphone. Pense à faire une sauvegarde de temps en temps 💾'}
         </p>
+        {session.versCloud && (
+          <button className="lien small lien-discret" onClick={() => { setMenu(false); session.versCloud(); }}>Connexion au foyer familial</button>
+        )}
       </Sheet>
 
       {cloudOn && <FoyerSheet open={foyerOuvert} onClose={() => setFoyerOuvert(false)} db={db} session={session} toast={toast} />}

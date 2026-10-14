@@ -21,37 +21,44 @@ function codeDuLien() {
   try { return sessionStorage.getItem('cp-rejoindre') || ''; } catch { return ''; }
 }
 
+// Par défaut l'appli est 100 % locale (rien n'est envoyé à Firebase).
+// Le mode « foyer » ne s'active que via la connexion discrète du menu ou un lien d'invitation.
 export default function Racine() {
   const [code] = useState(codeDuLien);
-  const [mode, setMode] = useState(() => (code ? null : lireLS('courses-pro-mode')));
+  const [mode, setMode] = useState(() => (cloud.actif && (code || lireLS('courses-pro-mode') === 'cloud') ? 'cloud' : 'local'));
   const [user, setUser] = useState(undefined);
   const [foyerId, setFoyerId] = useState(undefined);
 
   useEffect(() => {
-    if (!cloud.actif) return undefined;
+    if (mode !== 'cloud') return undefined;
     return cloud.onAuth(async u => {
       setUser(u);
       if (!u) { setFoyerId(null); return; }
       setFoyerId(undefined);
       setFoyerId(await cloud.monFoyer(u).catch(() => null));
     });
-  }, []);
-
-  if (!cloud.actif) return <App foyerId={null} session={{ local: true }} />;
+  }, [mode]);
 
   const passerLocal = () => { ecrireLS('courses-pro-mode', 'local'); setMode('local'); };
-  const passerCloud = () => { ecrireLS('courses-pro-mode', null); setMode(null); };
+  const passerCloud = () => { ecrireLS('courses-pro-mode', 'cloud'); setMode('cloud'); };
 
-  if (mode === 'local') return <App foyerId={null} session={{ local: true, versCloud: passerCloud }} />;
+  if (mode === 'local') return <App foyerId={null} session={{ local: true, versCloud: cloud.actif ? passerCloud : null }} />;
   if (user === undefined || (user && foyerId === undefined)) return <Splash />;
   if (!user) return <Connexion onLocal={passerLocal} />;
-  if (!foyerId) return <ChoixFoyer user={user} codeInitial={code} onFoyer={f => { try { sessionStorage.removeItem('cp-rejoindre'); } catch { /* */ } setFoyerId(f); }} />;
+  if (!foyerId) {
+    return (
+      <ChoixFoyer
+        user={user} codeInitial={code} onLocal={() => { cloud.deconnexion(); passerLocal(); }}
+        onFoyer={f => { try { sessionStorage.removeItem('cp-rejoindre'); } catch { /* */ } setFoyerId(f); }}
+      />
+    );
+  }
 
   return (
     <App
       key={foyerId}
       foyerId={foyerId}
-      session={{ user, foyerId, sortir: () => setFoyerId(null), deconnexion: () => cloud.deconnexion() }}
+      session={{ user, foyerId, sortir: () => setFoyerId(null), deconnexion: async () => { await cloud.deconnexion(); passerLocal(); } }}
     />
   );
 }
@@ -119,13 +126,14 @@ function Connexion({ onLocal }) {
           )}
         </div>
       </div>
-      <p className="muted small center">🔒 Tes données ne sont visibles que par les membres de ton foyer.</p>
-      <button className="lien small" onClick={onLocal}>Continuer sans compte (données sur ce téléphone uniquement)</button>
+      <p className="muted small center">🔒 Réservé au foyer familial : les données ne sont visibles que par ses membres.</p>
+      <button className="lien small" onClick={onLocal}><Icon name="left" size={14} /> Revenir à l’appli sur ce téléphone</button>
     </div>
   );
 }
 
-function ChoixFoyer({ user, codeInitial, onFoyer }) {
+function ChoixFoyer({ user, codeInitial, onFoyer, onLocal }) {
+  const peutCreer = appConfig.emailsFoyer.map(e => e.toLowerCase()).includes((user.email || '').toLowerCase());
   const [code, setCode] = useState(codeInitial || '');
   const [nom, setNom] = useState('');
   const local = charger(null);
@@ -164,7 +172,7 @@ function ChoixFoyer({ user, codeInitial, onFoyer }) {
         </button>
       </div>
 
-      <div className="card accueil-card hero-mint">
+      {peutCreer && <div className="card accueil-card hero-mint">
         <div className="card-title">🏡 Créer notre foyer</div>
         <p className="small">Tu deviens le premier membre et tu pourras inviter ta famille avec un code.</p>
         <input className="input" placeholder="Nom du foyer (ex : Famille Martin)" value={nom} onChange={e => setNom(e.target.value)} />
@@ -175,11 +183,12 @@ function ChoixFoyer({ user, codeInitial, onFoyer }) {
           </label>
         )}
         <button className="btn btn-big btn-main" disabled={busy} onClick={creer}>Créer le foyer</button>
-      </div>
+      </div>}
 
       {err && <div className="msg msg-err">{err}</div>}
       {busy && <div className="spinner" />}
-      <button className="lien small" onClick={() => cloud.deconnexion()}><Icon name="left" size={14} /> Changer de compte ({user.email})</button>
+      <button className="lien small" onClick={() => cloud.deconnexion()}>Changer de compte ({user.email})</button>
+      <button className="lien small" onClick={onLocal}><Icon name="left" size={14} /> Revenir à l’appli sur ce téléphone</button>
     </div>
   );
 }

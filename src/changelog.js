@@ -1,5 +1,17 @@
 export const CHANGELOG = [
   {
+    version: '1.2.0',
+    date: '2026-10-14',
+    notes: [
+      'Appli partagée = 100 % locale : sans connexion au foyer, rien n’est envoyé à Firebase',
+      'Connexion au foyer familial discrète (en bas du menu) ou par lien d’invitation ; seul le compte de Christophe peut créer le foyer (vérifié aussi par les règles Firebase)',
+      'Rayons personnalisés : à la création, la fiche du rayon s’ouvre pour y ranger des articles (existants ou nouveaux)',
+      'Fiche rayon : section « Articles rangés ici » (ajout, création d’article, retrait)',
+      'Fiche article : choix du rayon dans chaque magasin',
+      'Nouvel article ajouté à la liste : l’appli demande tout de suite dans quel rayon le trouver (ou créer un rayon)',
+    ],
+  },
+  {
     version: '1.1.0',
     date: '2026-10-14',
     notes: [

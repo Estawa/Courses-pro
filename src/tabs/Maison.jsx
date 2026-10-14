@@ -64,7 +64,7 @@ export default function Maison({ db, maj, toast }) {
       {q && filtres.length > 0 && filtres.length <= 3 && (
         <div className="stack">
           {filtres.map(p => (
-            <div key={p.id} className={'card stock-hero' + (p.suivi ? (p.stock <= 0 ? ' vide' : p.stock <= p.min ? ' bas' : ' ok') : '')}>
+            <div key={p.id} className={'card stock-hero' + (p.suivi ? (p.stock <= 0 ? ' vide' : p.stock <= p.min ? ' bas' : ' ok') : '')} onClick={e => { if (!e.target.closest('button')) setEdit(p.id); }} role="button">
               <span className="stock-hero-emoji">{p.emoji || categorie(p.cat).emoji}</span>
               <div className="grow">
                 <b>{p.nom}</b>
@@ -137,6 +137,7 @@ function EditProduit({ id, db, maj, toast, onClose }) {
   const nouveau = id === 'new';
   const p0 = nouveau ? { nom: '', emoji: '', cat: 'autre', unite: '', suivi: true, stock: 0, min: 1, cible: '' } : db.produits.find(p => p.id === id);
   const [f, setF] = useState({ cible: '', ...p0 });
+  const [places, setPlaces] = useState(() => Object.fromEntries(db.magasins.map(m => [m.id, nouveau ? '' : (m.overrides?.[id] || '')])));
   const set = (k, v) => setF(x => ({ ...x, [k]: v }));
   if (!p0) return null;
   const num = v => { const n = parseFloat(String(v).replace(',', '.')); return Number.isFinite(n) && n >= 0 ? n : 0; };
@@ -147,8 +148,13 @@ function EditProduit({ id, db, maj, toast, onClose }) {
     if (doublon && doublon.id !== id) { toast(`« ${doublon.nom} » existe déjà`); return; }
     maj(d => {
       const data = { nom, emoji: f.emoji, cat: f.cat, unite: f.unite.trim(), suivi: f.suivi, stock: num(f.stock), min: num(f.min), cible: f.cible === '' ? '' : num(f.cible) };
-      if (nouveau) d.produits.push({ id: uid(), ...data });
+      const pid = nouveau ? uid() : id;
+      if (nouveau) d.produits.push({ id: pid, ...data });
       else Object.assign(d.produits.find(p => p.id === id), data);
+      d.magasins.forEach(m => {
+        if (places[m.id] && m.rayons.some(r => r.id === places[m.id])) m.overrides[pid] = places[m.id];
+        else delete m.overrides[pid];
+      });
     });
     toast(nouveau ? 'Article créé ✨' : 'Article mis à jour');
     onClose();
@@ -179,6 +185,25 @@ function EditProduit({ id, db, maj, toast, onClose }) {
       <Field label="Unité (facultatif)" hint="paquet, L, kg, boîte…">
         <input className="input" value={f.unite} onChange={e => set('unite', e.target.value)} />
       </Field>
+      {db.magasins.length > 0 && (
+        <Field label="📍 Où le trouver" hint="Par défaut, l’article suit le rayon de sa catégorie.">
+          <div className="stack-s">
+            {db.magasins.map(m => {
+              const auto = m.rayons.findIndex(r => r.cats.includes(f.cat));
+              return (
+                <div key={m.id} className="plan-row">
+                  <span className="cat-pastille" style={{ background: m.couleur }}>{m.emoji}</span>
+                  <span className="grow plan-nom">{m.nom}</span>
+                  <select className="input select-mini" value={places[m.id] || ''} onChange={e => setPlaces(x => ({ ...x, [m.id]: e.target.value }))}>
+                    <option value="">{auto >= 0 ? `Auto : ${auto + 1}. ${m.rayons[auto].nom}` : 'À classer'}</option>
+                    {m.rayons.map((r, i) => <option key={r.id} value={r.id}>{i + 1}. {r.nom}</option>)}
+                  </select>
+                </div>
+              );
+            })}
+          </div>
+        </Field>
+      )}
       <div className="toggle-box"><Toggle checked={f.suivi} onChange={v => set('suivi', v)} label="Suivre ce produit dans mon stock maison 📦" /></div>
       {f.suivi && (
         <div className="grid3">
