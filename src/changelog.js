@@ -1,0 +1,19 @@
+export const CHANGELOG = [
+  {
+    version: '1.0.0',
+    date: '2026-10-14',
+    notes: [
+      'Première version de Courses Pro 🎉',
+      'Magasins favoris avec rayons modélisés dans l’ordre de parcours (glisser-déposer, flèches, repères d’allée)',
+      'Plan rapide catégorie → rayon pour suivre les réorganisations des magasins',
+      'Articles placés à la main dans un rayon précis, directement depuis le magasin (bouton 📍)',
+      'Listes reçues sur WhatsApp (partage direct sur Android, coller sur iPhone) : ce qui est déjà en stock à la maison ou déjà sur la liste n’est pas importé',
+      'Recherche « combien il m’en reste » dans l’onglet Maison + stock affiché dans les suggestions',
+      'Liste du jour triée selon le parcours du magasin choisi + mode « au magasin » avec cases à cocher',
+      'Mes listes : créer, coller une liste existante (quantités reconnues), ajouter en un geste',
+      'Stock maison : seuils d’alerte, suggestions de rachat, mise à jour automatique après la caisse',
+      'Dépenses : montant à chaque passage en caisse, budget mensuel, graphiques 12 mois et par magasin',
+      'Sauvegarde / restauration (fichier JSON), mode jour / nuit, installable sur le téléphone',
+    ],
+  },
+];

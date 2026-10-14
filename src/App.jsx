@@ -1,0 +1,150 @@
+import { useEffect, useRef, useState } from 'react';
+import Icon from './components/icons.jsx';
+import { Sheet, useToast } from './components/ui.jsx';
+import ImportListe from './components/ImportListe.jsx';
+import { useDb, dbInitiale } from './lib/store.js';
+import { appConfig } from './appConfig.js';
+import { CHANGELOG } from './changelog.js';
+import Courses from './tabs/Courses.jsx';
+import Maison from './tabs/Maison.jsx';
+import Listes from './tabs/Listes.jsx';
+import Magasins from './tabs/Magasins.jsx';
+import Depenses from './tabs/Depenses.jsx';
+
+const ONGLETS = [
+  { id: 'courses', label: 'Courses', icon: 'cart' },
+  { id: 'maison', label: 'Maison', icon: 'home' },
+  { id: 'listes', label: 'Listes', icon: 'list' },
+  { id: 'magasins', label: 'Magasins', icon: 'store' },
+  { id: 'depenses', label: 'Dépenses', icon: 'wallet' },
+];
+
+export default function App() {
+  const [db, maj, setDb] = useDb();
+  const [onglet, setOnglet] = useState(() => { try { return localStorage.getItem('courses-pro-onglet') || 'courses'; } catch { return 'courses'; } });
+  const [menu, setMenu] = useState(false);
+  const [journal, setJournal] = useState(false);
+  const [toast, toastNode] = useToast();
+  const fichier = useRef();
+  const [partage, setPartage] = useState(null);
+
+  // Liste partagée depuis WhatsApp (Web Share Target) ou lien ?liste=...
+  useEffect(() => {
+    const u = new URLSearchParams(window.location.search);
+    const t = [u.get('title'), u.get('text'), u.get('liste'), u.get('url')].filter(Boolean).join('\n').trim();
+    if (t) {
+      setPartage(t);
+      setOnglet('courses');
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = db.reglages.theme === 'sombre' ? 'dark' : 'light';
+  }, [db.reglages.theme]);
+  useEffect(() => { try { localStorage.setItem('courses-pro-onglet', onglet); } catch { /* */ } }, [onglet]);
+
+  const goto = o => { setOnglet(o); window.scrollTo(0, 0); };
+  const nbListe = db.liste.filter(i => !i.coche).length;
+  const nbBas = db.produits.filter(p => p.suivi && p.stock <= p.min).length;
+
+  const exporter = () => {
+    const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `courses-pro-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast('Sauvegarde téléchargée 💾');
+  };
+  const importer = e => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const d = JSON.parse(r.result);
+        if (!d.produits || !d.magasins) throw new Error();
+        if (!confirm('Remplacer toutes tes données par cette sauvegarde ?')) return;
+        setDb({ ...dbInitiale(), ...d });
+        toast('Sauvegarde restaurée ✅');
+        setMenu(false);
+      } catch { toast('Fichier invalide 😕'); }
+    };
+    r.readAsText(f);
+    e.target.value = '';
+  };
+
+  const props = { db, maj, toast, goto };
+
+  return (
+    <div className="app">
+      <header className="top">
+        <div className="logo" aria-hidden="true">🛒</div>
+        <div className="brand">
+          <div className="brand-nom">{appConfig.nom}</div>
+          <div className="brand-sub">by {appConfig.auteur} <span className="version">v{appConfig.version}</span></div>
+        </div>
+        <button
+          className="icon-btn top-btn" aria-label="Mode jour / nuit"
+          onClick={() => maj(d => { d.reglages.theme = d.reglages.theme === 'sombre' ? 'clair' : 'sombre'; })}
+        >
+          <Icon name={db.reglages.theme === 'sombre' ? 'sun' : 'moon'} />
+        </button>
+        <button className="icon-btn top-btn" aria-label="Menu" onClick={() => setMenu(true)}><Icon name="dots" /></button>
+      </header>
+
+      <main>
+        {onglet === 'courses' && <Courses {...props} />}
+        {onglet === 'maison' && <Maison {...props} />}
+        {onglet === 'listes' && <Listes {...props} />}
+        {onglet === 'magasins' && <Magasins {...props} />}
+        {onglet === 'depenses' && <Depenses {...props} />}
+      </main>
+
+      <nav className="tabs">
+        {ONGLETS.map(o => (
+          <button key={o.id} className={'tab tab-' + o.id + (onglet === o.id ? ' on' : '')} onClick={() => goto(o.id)}>
+            <span className="tab-ico">
+              <Icon name={o.icon} size={22} />
+              {o.id === 'courses' && nbListe > 0 && <span className="badge">{nbListe}</span>}
+              {o.id === 'maison' && nbBas > 0 && <span className="badge badge-orange">{nbBas}</span>}
+            </span>
+            <span className="tab-lbl">{o.label}</span>
+          </button>
+        ))}
+      </nav>
+
+      {toastNode}
+
+      <ImportListe
+        open={partage !== null} onClose={() => setPartage(null)} db={db} maj={maj} toast={toast}
+        texteInitial={partage || ''} titre="💬 Liste reçue"
+      />
+
+      <Sheet open={menu} onClose={() => setMenu(false)} title="⚙️ Menu">
+        <div className="stack">
+          <button className="menu-row" onClick={exporter}><Icon name="download" /> <span className="grow">Sauvegarder mes données</span></button>
+          <button className="menu-row" onClick={() => fichier.current.click()}><Icon name="upload" /> <span className="grow">Restaurer une sauvegarde</span></button>
+          <input ref={fichier} type="file" accept="application/json,.json" hidden onChange={importer} />
+          <button className="menu-row" onClick={() => { setMenu(false); setJournal(true); }}><Icon name="history" /> <span className="grow">Journal des modifications</span></button>
+          <button className="menu-row danger" onClick={() => {
+            if (confirm('Tout effacer et repartir de zéro ? (pense à sauvegarder avant)')) { setDb(dbInitiale()); setMenu(false); toast('Appli remise à zéro'); }
+          }}><Icon name="trash" /> <span className="grow">Tout réinitialiser</span></button>
+        </div>
+        <p className="muted small center" style={{ marginTop: 16 }}>
+          Tes données restent sur ce téléphone. Pense à faire une sauvegarde de temps en temps 💾
+        </p>
+      </Sheet>
+
+      <Sheet open={journal} onClose={() => setJournal(false)} title="📜 Journal des modifications">
+        {CHANGELOG.map(v => (
+          <div key={v.version} className="card">
+            <div className="row-between"><b>Version {v.version}</b><span className="muted small">{v.date.split('-').reverse().join('/')}</span></div>
+            <ul className="journal">{v.notes.map((n, i) => <li key={i}>{n}</li>)}</ul>
+          </div>
+        ))}
+      </Sheet>
+    </div>
+  );
+}
