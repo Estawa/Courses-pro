@@ -1,6 +1,9 @@
 COURSES PRO by C. Guilhem — Journal des modifications
 ======================================================
 
+v1.3.1 — 14/10/2026
+- Base commune branchée sur le projet Firebase vma-pro-seances (connexion Google / e-mail, règles de sécurité publiées)
+
 v1.3.0 — 14/10/2026
 - Nombre de rayons illimité + nouveau modèle « Hypermarché type » (41 rayons, articles déjà placés)
 - Partage de l'organisation d'un magasin par WhatsApp (lien ou message à copier) : rayons, repères, catégories et articles placés
