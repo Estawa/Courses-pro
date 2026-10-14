@@ -1,5 +1,16 @@
 export const CHANGELOG = [
   {
+    version: '1.3.0',
+    date: '2026-10-14',
+    notes: [
+      'Nombre de rayons illimité + nouveau modèle « Hypermarché type » (41 rayons, articles déjà placés)',
+      'Partage de l’organisation d’un magasin par WhatsApp (lien ou message à copier) : rayons, repères, catégories et articles placés',
+      'Import d’une organisation reçue avec aperçu modifiable : garder/écarter des rayons, réordonner, renommer, retirer des articles, repérer les rayons qui existent déjà chez toi',
+      'Import en nouveau magasin ou en remplacement des rayons d’un magasin existant (en gardant tes articles placés dans les rayons de même nom)',
+      'Nouvel onglet « Aperçu » dans chaque magasin : tous les rayons avec tous leurs articles',
+    ],
+  },
+  {
     version: '1.2.0',
     date: '2026-10-14',
     notes: [

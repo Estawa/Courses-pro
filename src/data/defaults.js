@@ -158,3 +158,62 @@ export const EMOJIS = [
   '🫒','🧂','🥫','🌽','🍫','🍪','🍬','🍯','☕','🍵','🧃','💧','🥤','🍺','🍷','🍼','🧴','🪥',
   '🧻','🧽','🧺','🫧','🗑️','🐾','🐱','🐶','🪴','💡','🔋','🎁','🌸','⭐','❤️','🏠','🍰','🥗',
 ];
+
+// Modèle hypermarché : beaucoup plus de rayons (nom | emoji | catégories | articles placés)
+const HYPER = `
+Fruits & légumes|🥕|fruits-legumes|
+Fleurs & plantes|💐||
+Boulangerie|🥖|boulangerie|
+Pâtisserie|🍰||
+Boucherie|🥩|boucherie|Steak haché
+Volaille|🍗||Poulet,Escalopes de dinde
+Poissonnerie|🐟|poissonnerie|
+Traiteur|🥗|traiteur|Pâte feuilletée
+Charcuterie libre-service|🥓||Jambon,Lardons,Saucisson
+Fromagerie|🧀|fromages|
+Crèmerie & œufs|🥛|cremerie|
+Desserts frais|🍮||Compotes
+Bio & sans gluten|🌱||
+Produits du monde|🌍||
+Pâtes, riz & féculents|🍝|epicerie-salee|
+Conserves & plats cuisinés|🥫|conserves|
+Huiles, épices & condiments|🫒||Huile d'olive,Sel,Poivre,Moutarde,Mayonnaise,Ketchup
+Apéritif & chips|🥨||Chips
+Biscuits & confiserie|🍪|epicerie-sucree|
+Petit-déjeuner|☕|petit-dej|
+Aide à la pâtisserie|🧁||Farine,Sucre
+Eaux|💧||Eau,Eau pétillante
+Jus & sodas|🧃|boissons|
+Bières & cidres|🍺||Bière
+Vins & spiritueux|🍷|alcools|
+Surgelés|🧊|surgeles|
+Glaces|🍨||Glaces
+Bébé|🍼|bebe|
+Hygiène & beauté|🧴|hygiene|
+Parapharmacie|💊||
+Papier & mouchoirs|🧻||Papier toilette,Mouchoirs,Essuie-tout
+Entretien & lessive|🧽|entretien|
+Animaux|🐾|animaux|
+Maison & cuisine|🍳|bazar|
+Bricolage & piles|🔋||Piles,Ampoules
+Jardin|🪴||
+Papeterie & livres|📚||
+Textile|👕||
+Électroménager & multimédia|📺||
+Jouets|🧸||
+Autre|🛍️|autre|
+`;
+
+export function rayonsHyper(uid, produits = []) {
+  const overrides = {};
+  const rayons = HYPER.trim().split('\n').map((l, i) => {
+    const [nom, emoji, cats, articles] = l.split('|');
+    const id = uid();
+    (articles || '').split(',').filter(Boolean).forEach(n => {
+      const p = produits.find(x => x.nom === n);
+      if (p) overrides[p.id] = id;
+    });
+    return { id, nom, emoji, repere: nom === 'Autre' ? '' : `Allée ${i + 1}`, cats: cats ? cats.split(',') : [] };
+  });
+  return { rayons, overrides };
+}

@@ -42,6 +42,12 @@ Résultat : personne ne peut lire ni écrire sans être connecté **et** membre 
 ## Déploiement
 GitHub `Estawa/courses-pro` > Vercel (framework Vite détecté) > Deploy.
 
+## Partager l'organisation d'un magasin
+Magasins > un magasin > « Partager » : envoie un message WhatsApp avec le parcours et un lien.
+Le destinataire ouvre le lien (ou colle le message dans Magasins > Importer), consulte et adapte
+les rayons et articles, puis les ajoute comme nouveau magasin ou remplace les rayons d'un des siens.
+Aucun serveur : toute l'organisation est contenue dans le lien.
+
 ## Recevoir une liste depuis WhatsApp
 - Android (appli installée) : appui long sur le message → Partager → Courses Pro.
 - iPhone : Copier, puis « Liste reçue 💬 » → « Coller depuis le presse-papiers ».

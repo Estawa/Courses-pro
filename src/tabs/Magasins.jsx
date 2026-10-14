@@ -1,11 +1,13 @@
 import { useMemo, useState } from 'react';
 import Icon from '../components/icons.jsx';
 import { EmojiPicker, Empty, Field, Segmented, Sheet, SortableList, Toggle } from '../components/ui.jsx';
-import { CATEGORIES, PASTELS, rayonsType } from '../data/defaults.js';
+import { CATEGORIES, PASTELS, rayonsType, rayonsHyper } from '../data/defaults.js';
 import { categorie, norm, rayonDe, uid } from '../lib/utils.js';
 import { produitPourNom } from '../lib/store.js';
+import { encoder, exporterMagasin, messagePartage } from '../lib/partage.js';
+import { partager } from '../components/Foyer.jsx';
 
-export default function Magasins({ db, maj, toast }) {
+export default function Magasins({ db, maj, toast, ouvrirImportMagasin }) {
   const [ouvert, setOuvert] = useState(null);
   const [creation, setCreation] = useState(false);
   const mag = db.magasins.find(m => m.id === ouvert);
@@ -24,7 +26,11 @@ export default function Magasins({ db, maj, toast }) {
           </div>
           <div className="hero-emoji">🏪</div>
         </div>
-        <button className="btn btn-main btn-full" onClick={() => setCreation(true)}><Icon name="plus" /> Ajouter un magasin</button>
+        <div className="quick-row">
+          <button className="btn btn-main" onClick={() => setCreation(true)}><Icon name="plus" /> Ajouter</button>
+          <button className="btn btn-white" onClick={() => ouvrirImportMagasin?.('')}><Icon name="download" size={18} /> Importer</button>
+        </div>
+        <div className="small">Autant de rayons que tu veux, et partage d’organisation par WhatsApp 💬</div>
       </div>
 
       <div className="stack">
@@ -67,6 +73,7 @@ function NouveauMagasin({ open, onClose, db, onCree }) {
     let rayons = [];
     let overrides = {};
     if (base === 'type') rayons = rayonsType(uid);
+    else if (base === 'hyper') ({ rayons, overrides } = rayonsHyper(uid, db.produits));
     else if (base !== 'vide') {
       const src = db.magasins.find(m => m.id === base);
       const map = {};
@@ -87,9 +94,10 @@ function NouveauMagasin({ open, onClose, db, onCree }) {
           {PASTELS.map(c => <button key={c} className={'pastille' + (c === couleur ? ' on' : '')} style={{ background: c }} onClick={() => setCouleur(c)} aria-label={c} />)}
         </div>
       </Field>
-      <Field label="Point de départ des rayons">
+      <Field label="Point de départ des rayons" hint="Ce n’est qu’un départ : ajoute, renomme, déplace ou supprime autant de rayons que tu veux.">
         <select className="input" value={base} onChange={e => setBase(e.target.value)}>
-          <option value="type">Disposition type d'un supermarché (20 rayons)</option>
+          <option value="type">Supermarché type (20 rayons)</option>
+          <option value="hyper">Hypermarché type (41 rayons)</option>
           {db.magasins.map(m => <option key={m.id} value={m.id}>Copier la disposition de « {m.nom} »</option>)}
           <option value="vide">Partir de zéro</option>
         </select>
@@ -104,6 +112,13 @@ function DetailMagasin({ mag, db, maj, toast, retour }) {
   const [infos, setInfos] = useState(false);
   const majMag = fn => maj(d => fn(d.magasins.find(m => m.id === mag.id), d));
   const deplacer = (from, to) => majMag(m => { const [r] = m.rayons.splice(from, 1); m.rayons.splice(to, 0, r); });
+  const partagerMag = async () => {
+    try {
+      const code = await encoder(exporterMagasin(mag, db.produits));
+      const { texte, url } = messagePartage(mag, code);
+      await partager({ titre: `Organisation de ${mag.nom}`, texte, url }, toast);
+    } catch (e) { toast('Partage impossible : ' + e.message); }
+  };
   const catSansRayon = CATEGORIES.filter(c => !mag.rayons.some(r => r.cats.includes(c.id)));
 
   return (
@@ -120,6 +135,7 @@ function DetailMagasin({ mag, db, maj, toast, retour }) {
           <button className="hero-emoji hero-emoji-btn" onClick={() => setInfos(true)} aria-label="Modifier">{mag.emoji}</button>
         </div>
         <div className="quick-row">
+          <button className="btn btn-white" onClick={partagerMag}><Icon name="upload" size={18} /> Partager</button>
           <button className="btn btn-white" onClick={() => setInfos(true)}><Icon name="edit" size={18} /> Modifier</button>
           <button className="btn btn-white" onClick={() => { maj(d => { d.magasinActif = mag.id; }); toast(`${mag.nom} sélectionné 🛒`); }}>
             <Icon name="cart" size={18} /> {db.magasinActif === mag.id ? 'Actif ✓' : 'Utiliser'}
@@ -131,6 +147,7 @@ function DetailMagasin({ mag, db, maj, toast, retour }) {
         { value: 'parcours', label: 'Parcours', emoji: '🧭' },
         { value: 'plan', label: 'Plan', emoji: '⚡' },
         { value: 'articles', label: 'Articles', emoji: '📍' },
+        { value: 'apercu', label: 'Aperçu', emoji: '🗺️' },
       ]} />
 
       {vue === 'parcours' && (
@@ -175,6 +192,7 @@ function DetailMagasin({ mag, db, maj, toast, retour }) {
 
       {vue === 'plan' && <PlanRapide mag={mag} majMag={majMag} />}
       {vue === 'articles' && <ArticlesPlaces mag={mag} db={db} majMag={majMag} />}
+      {vue === 'apercu' && <Apercu mag={mag} db={db} />}
 
       {edit && (
         <EditRayon
@@ -455,5 +473,50 @@ function ArticlesDuRayon({ mag, rayonId, db, majMag, toast }) {
         {places.length === 0 && parCat.length === 0 ? 'Aucun article pour l’instant.' : `${places.length} placé(s) à la main${parCat.length ? ` · ${parCat.length} via les catégories cochées` : ''}`}
       </span>
     </div>
+  );
+}
+
+// Vue d'ensemble : chaque rayon dans l'ordre, avec tous les articles qui s'y trouvent
+function Apercu({ mag, db }) {
+  const parRayon = {};
+  const sans = [];
+  db.produits.forEach(p => {
+    const r = rayonDe(mag, p);
+    if (r) (parRayon[r] = parRayon[r] || []).push(p); else sans.push(p);
+  });
+  const tri = a => a.sort((x, y) => x.nom.localeCompare(y.nom, 'fr'));
+  return (
+    <>
+      <p className="muted small tip">🗺️ Ton parcours complet : chaque rayon et tous les articles qu’on y trouve (📍 = placé à la main).</p>
+      {mag.rayons.map((r, i) => {
+        const arts = tri(parRayon[r.id] || []);
+        return (
+          <div key={r.id} className="rayon-bloc">
+            <div className="rayon-head">
+              <span className="rayon-num">{i + 1}</span><span className="rayon-emoji">{r.emoji}</span>
+              <span className="rayon-nom">{r.nom}</span>{r.repere && <span className="rayon-repere">{r.repere}</span>}
+              <span className="muted small">{arts.length}</span>
+            </div>
+            <div className="card apercu-card">
+              {arts.length === 0 ? <span className="muted small">Aucun article pour l’instant.</span> : (
+                <div className="chips-wrap">
+                  {arts.map(p => (
+                    <span key={p.id} className="chip" style={{ background: categorie(p.cat).couleur }}>
+                      {p.emoji || categorie(p.cat).emoji} {p.nom}{mag.overrides?.[p.id] === r.id ? ' 📍' : ''}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+      {sans.length > 0 && (
+        <div className="card card-yellow">
+          <div className="card-title">❔ Sans rayon dans ce magasin ({sans.length})</div>
+          <div className="chips-wrap">{tri(sans).map(p => <span key={p.id} className="chip chip-white">{p.emoji || categorie(p.cat).emoji} {p.nom}</span>)}</div>
+        </div>
+      )}
+    </>
   );
 }

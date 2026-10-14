@@ -3,6 +3,7 @@ import Icon from './icons.jsx';
 import { Sheet, Toggle } from './ui.jsx';
 import { ajouterALaListe } from '../lib/store.js';
 import { findProduit, norm, parseTexte, uid } from '../lib/utils.js';
+import { trouverCode } from '../lib/partage.js';
 
 // Analyse une liste reçue : ce qui est à ajouter, déjà à la maison, ou déjà sur la liste
 export function analyser(db, lignes) {
@@ -27,7 +28,8 @@ export default function ImportListe({ open, onClose, db, maj, toast, texteInitia
 
   useEffect(() => { if (open) { setTxt(texteInitial); setForces({}); } }, [open, texteInitial]);
 
-  const lignes = useMemo(() => parseTexte(txt), [txt]);
+  const estMagasin = !!trouverCode(txt);
+  const lignes = useMemo(() => (estMagasin ? [] : parseTexte(txt)), [txt, estMagasin]);
   const analyse = useMemo(() => analyser(db, lignes), [db, lignes]);
   const inclus = a => (a.k in forces ? forces[a.k] : a.statut === 'ajout');
   const choisis = analyse.filter(inclus);
@@ -72,6 +74,7 @@ export default function ImportListe({ open, onClose, db, maj, toast, texteInitia
       <button className="btn btn-soft btn-full" onClick={coller}><Icon name="paste" size={18} /> Coller depuis le presse-papiers</button>
       <textarea className="input textarea" rows={6} value={txt} onChange={e => setTxt(e.target.value)} placeholder={'2 lait\npain\nbananes x6\nlessive'} />
 
+      {estMagasin && <div className="msg msg-ok">🏪 Ce message contient l’organisation d’un magasin : importe-la depuis l’onglet Magasins → Importer.</div>}
       {analyse.length > 0 && groupes.map(g => {
         const items = analyse.filter(a => a.statut === g.id);
         if (!items.length) return null;

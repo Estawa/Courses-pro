@@ -428,3 +428,16 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .lien-discret { color: var(--muted); font-weight: 700; opacity: .7; margin: 4px auto 0; display: flex; }
 .chip-x { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,.08); margin-left: 2px; }
 .stock-hero { cursor: pointer; }
+
+/* Import d'organisation */
+.imp-rayon { display: flex; flex-direction: column; gap: 6px; }
+.imp-rayon.off .rayon-row { opacity: .5; }
+.imp-row { padding-right: 8px; }
+.imp-check { width: 26px; height: 26px; border-radius: 8px; border: 2.5px solid var(--accent); display: grid; place-items: center; flex: none; }
+.imp-check.on { background: var(--mint); border-color: #7DD3A8; color: #2E7D57; }
+.imp-detail { background: var(--card); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 8px; margin: 0 4px 4px; box-shadow: var(--shadow); }
+.imp-art { background: var(--bg2) !important; color: var(--ink) !important; }
+.badge-deja { font-size: 11px; font-weight: 800; background: var(--mint); color: #22603F; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.apercu-card { padding: 12px; }
+.seg button { white-space: nowrap; font-size: 13px; padding: 9px 4px; }
+@media (max-width: 380px) { .seg button span { display: none; } }

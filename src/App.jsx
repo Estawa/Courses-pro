@@ -3,6 +3,8 @@ import Icon from './components/icons.jsx';
 import { Sheet, useToast } from './components/ui.jsx';
 import ImportListe from './components/ImportListe.jsx';
 import FoyerSheet, { partagerAppli } from './components/Foyer.jsx';
+import ImportMagasin from './components/ImportMagasin.jsx';
+import { trouverCode } from './lib/partage.js';
 import { useDb, dbInitiale } from './lib/store.js';
 import { appConfig } from './appConfig.js';
 import { CHANGELOG } from './changelog.js';
@@ -30,14 +32,15 @@ export default function App({ foyerId = null, session = { local: true } }) {
   const [toast, toastNode] = useToast();
   const fichier = useRef();
   const [partage, setPartage] = useState(null);
+  const [importMag, setImportMag] = useState(null);
 
-  // Liste partagée depuis WhatsApp (Web Share Target) ou lien ?liste=...
+  // Partage reçu (WhatsApp / lien) : organisation de magasin (?magasin=CP…) ou liste de courses
   useEffect(() => {
     const u = new URLSearchParams(window.location.search);
-    const t = [u.get('title'), u.get('text'), u.get('liste'), u.get('url')].filter(Boolean).join('\n').trim();
+    const t = [u.get('magasin'), u.get('title'), u.get('text'), u.get('liste'), u.get('url')].filter(Boolean).join('\n').trim();
     if (t) {
-      setPartage(t);
-      setOnglet('courses');
+      if (trouverCode(t)) { setImportMag(t); setOnglet('magasins'); }
+      else { setPartage(t); setOnglet('courses'); }
       window.history.replaceState(null, '', window.location.pathname);
     }
   }, []);
@@ -80,7 +83,7 @@ export default function App({ foyerId = null, session = { local: true } }) {
     e.target.value = '';
   };
 
-  const props = { db, maj, toast, goto };
+  const props = { db, maj, toast, goto, ouvrirImportMagasin: t => setImportMag(t || '') };
 
   return (
     <div className="app">
@@ -128,6 +131,10 @@ export default function App({ foyerId = null, session = { local: true } }) {
 
       {toastNode}
 
+      <ImportMagasin
+        open={importMag !== null} texteInitial={importMag || ''} onClose={() => setImportMag(null)}
+        db={db} maj={maj} toast={toast} goto={goto}
+      />
       <ImportListe
         open={partage !== null} onClose={() => setPartage(null)} db={db} maj={maj} toast={toast}
         texteInitial={partage || ''} titre="💬 Liste reçue"

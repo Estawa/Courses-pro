@@ -1,5 +1,5 @@
 // Service worker Courses Pro : fonctionne hors connexion (au magasin, sans réseau)
-const CACHE = 'courses-pro-v1.2.0';
+const CACHE = 'courses-pro-v1.3.0';
 const BASE = ['/', '/index.html', '/manifest.webmanifest', '/favicon.svg', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', e => {
