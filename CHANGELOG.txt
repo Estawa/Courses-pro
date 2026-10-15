@@ -1,6 +1,13 @@
 COURSES PRO by C. Guilhem — Journal des modifications
 ======================================================
 
+v1.5.0 — 15/10/2026
+- Envoi d'une liste par WhatsApp (depuis Mes listes ou la liste du jour) : retouche des articles et quantités avant l'envoi, aperçu du message, modifiable aussi dans WhatsApp
+- Réception d'une liste : choix « Liste du jour » ou « Mes listes », avec mise à jour de la liste du même nom (repérée dans le message) ou création d'une nouvelle
+- Le texte reçu reste modifiable avant l'import (ajouter, retirer, changer une quantité)
+- Nouveau bouton « Recevoir une liste » dans l'onglet Listes
+- Lecture des quantités améliorée : « 500 Gr farine », « Farine : 500 g », « Coca (1,5 L) », « Beurre 250 gr » (unités Kg / Gr / Cl / L)
+
 v1.4.1 — 15/10/2026
 - Choix de l'unité à côté de la quantité : Kg, Gr, Cl ou L (à l'ajout d'un article et dans la liste du jour)
 - Un article ajouté deux fois avec la même unité s'additionne (500 Gr + 250 Gr = 750 Gr)

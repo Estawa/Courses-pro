@@ -69,7 +69,16 @@ export function rayonDe(magasin, produit) {
   return r ? r.id : null;
 }
 
-// "2 lait", "lait x2", "- 3 bananes", "500 g de farine"
+// Unités reconnues dans un texte libre (les plus longues d'abord)
+const U = '(kgs?|grs?|g|cl|ml|l)';
+const N = '(\\d+(?:[.,]\\d+)?)';
+const qteDe = (n, u) => {
+  if (!u) return n;
+  const k = u.toLowerCase();
+  return k === 'ml' ? `${n} ml` : composerQte(n, ALIAS_UNITE[k]);
+};
+
+// "2 lait", "lait x2", "- 3 bananes", "500 g de farine", "Farine : 500 Gr", "Coca (1,5 L)"
 export function parseTexte(texte) {
   return (texte || '')
     .split(/\n|;|•/)
@@ -77,16 +86,41 @@ export function parseTexte(texte) {
     .map(l => l
       .replace(/^\s*\[[^\]]{4,30}\]\s*[^:]{1,40}:\s*/, '')
       .replace(/^\s*\d{1,2}\/\d{1,2}\/\d{2,4},?\s+\d{1,2}:\d{2}\s*-\s*[^:]{1,40}:\s*/, ''))
+    .filter(l => !estLigneDecor(l))
     .flatMap(l => (l.includes(',') && !/\d,\d/.test(l) ? l.split(',') : [l]))
     .map(l => l.replace(/^[\s\-*–•☐☑✓✔□▢>\p{Extended_Pictographic}\uFE0F\u200D]+/u, '').replace(/\[[ xX]?\]/, '').trim())
-    .filter(l => l && !/:\s*$/.test(l) && !/^(liste|courses|liste de courses|merci|bisous?)\b[\s!.]*$/i.test(l))
+    .filter(l => l && !/:\s*$/.test(l) && !/^https?:\/\//i.test(l) && !/^(liste|courses|liste de courses|merci|bisous?)\b[\s!.]*$/i.test(l))
     .map(l => {
-      let m = l.match(/^(\d+(?:[.,]\d+)?\s*(?:kg|g|l|cl|ml|x|×)?)\s+(?:de |d')?(.+)$/i);
-      if (m) return { nom: cap(m[2]), qte: m[1].replace(/\s*[x×]$/i, '').trim() };
-      m = l.match(/^(.+?)\s*[x×:]\s*(\d+(?:[.,]\d+)?)$/i);
-      if (m) return { nom: cap(m[1]), qte: m[2] };
+      let m = l.match(new RegExp(`^${N}\\s*(?:${U}\\.?|x|×)?\\s+(?:de |d')?(.+)$`, 'i'));
+      if (m) return { nom: cap(m[3]), qte: qteDe(m[1], m[2]) };
+      m = l.match(new RegExp(`^(.+?)\\s*[x×:–—]\\s*${N}\\s*${U}?\\.?$`, 'i'))
+        || l.match(new RegExp(`^(.+?)\\s*\\(\\s*${N}\\s*${U}?\\.?\\s*\\)$`, 'i'))
+        || l.match(new RegExp(`^(.+?)\\s+-?\\s*${N}\\s*${U}\\.?$`, 'i'));
+      if (m) return { nom: cap(m[1].replace(/[\s\-–—]+$/, '')), qte: qteDe(m[2], m[3]) };
       return { nom: cap(l), qte: '' };
     });
+}
+
+// Lignes d'habillage d'un message envoyé par Courses Pro (titre, consigne) : jamais des articles
+const estLigneDecor = l => /^\s*🛒\s*liste\b/i.test(l) || /^\s*✏️/u.test(l) || /courses pro/i.test(l);
+
+// --- Envoi / réception d'une liste par message (WhatsApp…) ---
+export const ligneArticle = i => (i.qte ? `${i.qte} ${i.nom}` : i.nom);
+
+export function texteListe(nom, items) {
+  return [
+    `🛒 Liste « ${(nom || 'Courses').trim()} »`,
+    '',
+    ...items.map(i => '• ' + ligneArticle(i)),
+    '',
+    '✏️ Modifie-la si besoin et renvoie-la : elle s’importe dans Courses Pro.',
+  ].join('\n');
+}
+
+// Retrouve le nom de la liste dans un message reçu ("🛒 Liste « Raclette »")
+export function nomDansTexte(texte) {
+  const m = String(texte || '').match(/🛒\s*liste\s*[«"“]\s*([^»"”\n]{1,60}?)\s*[»"”]/iu);
+  return m ? m[1].trim() : '';
 }
 
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);

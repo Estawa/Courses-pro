@@ -2,13 +2,16 @@ import { useState } from 'react';
 import Icon from '../components/icons.jsx';
 import { EmojiPicker, Empty, Sheet } from '../components/ui.jsx';
 import ImportListe from '../components/ImportListe.jsx';
-import { parseTexte, uid } from '../lib/utils.js';
+import EnvoyerListe from '../components/EnvoyerListe.jsx';
+import { ligneArticle, parseTexte, uid } from '../lib/utils.js';
 
-const versTexte = items => items.map(i => (i.qte ? `${i.qte} ${i.nom}` : i.nom)).join('\n');
+const versTexte = items => items.map(ligneArticle).join('\n');
 
 export default function Listes({ db, maj, toast, goto }) {
   const [edit, setEdit] = useState(null); // id | 'new'
   const [ajout, setAjout] = useState(null);
+  const [envoi, setEnvoi] = useState(null);
+  const [recevoir, setRecevoir] = useState(false);
   return (
     <div className="page">
       <div className="card hero hero-pink">
@@ -21,6 +24,7 @@ export default function Listes({ db, maj, toast, goto }) {
           <div className="hero-emoji">📋</div>
         </div>
         <button className="btn btn-main btn-full" onClick={() => setEdit('new')}><Icon name="plus" /> Nouvelle liste (ou coller la mienne)</button>
+        <button className="btn btn-white btn-full" onClick={() => setRecevoir(true)}>💬 Recevoir une liste (WhatsApp)</button>
       </div>
 
       {db.listes.length === 0 && <Empty emoji="📋" titre="Aucune liste" texte="Crée une liste ou colle une liste que tu as déjà (notes du téléphone, SMS…)." />}
@@ -50,6 +54,9 @@ export default function Listes({ db, maj, toast, goto }) {
               }}>
                 <Icon name="copy" size={18} /> Dupliquer
               </button>
+              <button className="btn btn-wa-soft" onClick={() => setEnvoi({ nom: l.nom, emoji: l.emoji, items: l.items, listeId: l.id })}>
+                💬 Envoyer
+              </button>
             </div>
           </div>
         ))}
@@ -58,7 +65,13 @@ export default function Listes({ db, maj, toast, goto }) {
       <ImportListe
         open={!!ajout} onClose={() => setAjout(null)} db={db} maj={maj} toast={toast}
         texteInitial={ajout ? versTexte(ajout.items) : ''} titre={ajout ? `${ajout.emoji} ${ajout.nom}` : ''}
+        choixDestination={false}
       />
+      <ImportListe
+        open={recevoir} onClose={() => setRecevoir(false)} db={db} maj={maj} toast={toast}
+        titre="💬 Recevoir une liste" destinationDefaut="listes"
+      />
+      <EnvoyerListe source={envoi} onClose={() => setEnvoi(null)} maj={maj} toast={toast} />
       {edit && <EditListe id={edit} db={db} maj={maj} toast={toast} onClose={() => setEdit(null)} goto={goto} />}
     </div>
   );

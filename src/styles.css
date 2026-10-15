@@ -148,7 +148,8 @@ main { padding: 4px 16px 16px; }
 }
 .input:focus { border-color: var(--accent); }
 .hero .input { border-color: transparent; background: rgba(255,255,255,.9); color: var(--pastel-ink); }
-.textarea { resize: vertical; line-height: 1.5; }
+.textarea { resize: vertical; line-height: 1.5; min-height: 140px; flex-shrink: 0; }
+.sheet-body > * { flex-shrink: 0; }
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field-label { font-weight: 800; font-size: 13px; color: var(--muted); }
 .field-hint { font-size: 12px; color: var(--muted); }
@@ -343,6 +344,11 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .liste-opt { display: flex; align-items: center; gap: 12px; background: var(--card); border-radius: 18px; padding: 12px; text-align: left; box-shadow: var(--shadow); }
 .wa-tip { display: flex; gap: 10px; align-items: flex-start; background: #DDF8E6; color: var(--pastel-ink); border-radius: 16px; padding: 12px; }
 .wa-ico { font-size: 22px; }
+.btn-wa { background: #25D366; color: #fff; }
+.btn-wa:disabled { opacity: .5; }
+.btn-wa-soft { background: #DDF8E6; color: #136B3A; }
+.wa-apercu { display: flex; flex-direction: column; gap: 6px; }
+.wa-bulle { margin: 0; white-space: pre-wrap; word-break: break-word; font: inherit; font-size: 14px; background: #DCF8C6; color: #1B2A20; border-radius: 14px 14px 4px 14px; padding: 10px 12px; max-height: 220px; overflow: auto; }
 .import-groupe { display: flex; flex-direction: column; gap: 8px; }
 .import-titre { font-weight: 900; font-size: 14px; }
 

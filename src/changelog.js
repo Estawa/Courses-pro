@@ -1,5 +1,16 @@
 export const CHANGELOG = [
   {
+    version: '1.5.0',
+    date: '2026-10-15',
+    notes: [
+      'Envoi d’une liste par WhatsApp (depuis Mes listes ou la liste du jour) : retouche des articles et quantités avant l’envoi, aperçu du message, modifiable aussi dans WhatsApp',
+      'Réception d’une liste : choix « Liste du jour » ou « Mes listes », avec mise à jour de la liste du même nom (repérée dans le message) ou création d’une nouvelle',
+      'Le texte reçu reste modifiable avant l’import (ajouter, retirer, changer une quantité)',
+      'Nouveau bouton « Recevoir une liste » dans l’onglet Listes',
+      'Lecture des quantités améliorée : « 500 Gr farine », « Farine : 500 g », « Coca (1,5 L) », « Beurre 250 gr » (unités Kg / Gr / Cl / L)',
+    ],
+  },
+  {
     version: '1.4.1',
     date: '2026-10-15',
     notes: [

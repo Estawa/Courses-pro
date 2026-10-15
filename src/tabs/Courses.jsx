@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '../components/icons.jsx';
 import ImportListe from '../components/ImportListe.jsx';
+import EnvoyerListe from '../components/EnvoyerListe.jsx';
 import { AjoutArticle, Empty, Field, QteUnite, Sheet, Toggle, EmojiPicker } from '../components/ui.jsx';
 import { ajouterALaListe } from '../lib/store.js';
 import { aujourdhui, categorie, euros, findProduit, qteNum, rayonDe, uid } from '../lib/utils.js';
@@ -138,6 +139,7 @@ export default function Courses({ db, maj, toast, goto }) {
                   </div>
                 </div>
               ))}
+              <button className="btn btn-wa-soft btn-full" onClick={() => setFeuille('envoyer')}>💬 Envoyer la liste (WhatsApp)</button>
               <div className="actions-bas">
                 <button className="btn btn-ghost" onClick={() => setFeuille('enreg')}><Icon name="save" size={18} /> Enregistrer comme liste</button>
                 <button className="btn btn-ghost danger" onClick={() => confirm('Vider toute la liste du jour ?') && maj(d => { d.liste = []; })}>
@@ -225,6 +227,11 @@ export default function Courses({ db, maj, toast, goto }) {
       <ImportListe
         open={feuille === 'coller'} onClose={() => { setFeuille(null); setImportTxt({ t: '', titre: '' }); }} db={db} maj={maj} toast={toast}
         texteInitial={importTxt.t} titre={importTxt.titre || '💬 Coller / recevoir une liste'}
+        choixDestination={!importTxt.titre}
+      />
+      <EnvoyerListe
+        source={feuille === 'envoyer' ? { nom: 'Courses', emoji: '🧺', items: aFaire.filter(i => prodById[i.produitId]).map(i => ({ nom: prodById[i.produitId].nom, qte: i.qte })) } : null}
+        onClose={() => setFeuille(null)} maj={maj} toast={toast}
       />
       <ChoisirListe open={feuille === 'listes'} onClose={() => setFeuille(null)} db={db} goto={goto} onChoix={l => { setImportTxt({ t: l.items.map(i => (i.qte ? `${i.qte} ${i.nom}` : i.nom)).join('\n'), titre: `${l.emoji} ${l.nom}` }); setFeuille('coller'); }} />
       <EnregistrerListe open={feuille === 'enreg'} onClose={() => setFeuille(null)} db={db} maj={maj} toast={toast} prodById={prodById} />
