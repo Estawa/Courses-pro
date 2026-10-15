@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth';
 import {
   initializeFirestore, getFirestore, persistentLocalCache, persistentMultipleTabManager,
-  doc, getDoc, setDoc, deleteDoc, updateDoc, collection, onSnapshot, writeBatch, serverTimestamp,
+  doc, getDoc, setDoc, deleteDoc, updateDoc, collection, onSnapshot, writeBatch, serverTimestamp, deleteField,
 } from 'firebase/firestore';
 import { firebaseConfig, cloudConfigure } from '../firebase.js';
 
@@ -92,18 +92,16 @@ export const cloud = {
   reset(mail) { init(); return sendPasswordResetEmail(auth, mail.trim()); },
   deconnexion() { init(); return signOut(auth); },
 
-  // Foyer de l'utilisateur (vérifie qu'il en est toujours membre)
+  // Foyer de l'utilisateur (vérifie qu'il en est toujours membre).
+  // Renvoie null seulement si le serveur confirme qu'il n'y a pas de foyer ;
+  // en cas d'erreur (pas de réseau…) l'erreur remonte pour garder le foyer connu.
   async monFoyer(user) {
     init();
     const s = await getDoc(refUser(user.uid));
     const f = s.exists() ? s.data().foyerId : null;
     if (!f) return null;
-    try {
-      const m = await getDoc(refMembre(f, user.uid));
-      return m.exists() ? f : null;
-    } catch {
-      return null;
-    }
+    const m = await getDoc(refMembre(f, user.uid));
+    return m.exists() ? f : null;
   },
 
   async creerFoyer(user, nom, donnees) {
@@ -156,28 +154,53 @@ export const cloud = {
       onSnapshot(collection(fs, P + 'foyers', f, 'membres'), s => cb('_membres', s.docs.map(d => ({ uid: d.id, ...d.data() }))), err),
       onSnapshot(refReglages(f), s => cb('_reglages', s.exists() ? s.data() : {}), err),
       ...COLLECTIONS.map(col =>
-        onSnapshot(collection(fs, P + 'foyers', f, col), s => cb(col, tri(s.docs.map(d => ({ ...d.data(), id: d.id })))), err),
+        onSnapshot(collection(fs, P + 'foyers', f, col), { includeMetadataChanges: col === 'magasins' }, s => cb(col, tri(s.docs.map(d => ({ ...d.data(), id: d.id }))), !s.metadata.fromCache), err),
       ),
     ];
     return () => unsubs.forEach(u => u());
   },
 
-  // Envoie seulement ce qui a changé entre prev et next (articles ajoutés, modifiés, supprimés)
+  // Envoie seulement ce qui a changé entre prev et next.
+  // Pour un document déjà existant, seuls les CHAMPS modifiés sont envoyés (et, pour les champs
+  // de type objet comme overrides, seules les clés modifiées) : un téléphone dont l'affichage
+  // n'est pas à jour ne peut plus écraser les rayons ajoutés ailleurs.
   pousser(f, prev, next) {
     init();
     const ops = [];
     const now = Date.now();
+    // Comparaison indépendante de l'ordre des clés (Firestore ne garde pas l'ordre des clés)
+    const stable = v => (Array.isArray(v) ? '[' + v.map(stable).join(',') + ']'
+      : v && typeof v === 'object' ? '{' + Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => JSON.stringify(k) + ':' + stable(v[k])).join(',') + '}'
+        : JSON.stringify(v === undefined ? null : v));
+    const egal = (a, b) => stable(a) === stable(b);
+    const objet = v => v && typeof v === 'object' && !Array.isArray(v);
     COLLECTIONS.forEach(col => {
       const avant = new Map((prev?.[col] || []).map(o => [o.id, o]));
       const apres = next[col] || [];
       apres.forEach((o, i) => {
         if (!o._t) o._t = (avant.get(o.id)?._t) || now + i; // ordre de création
         const a = avant.get(o.id);
-        if (!a || JSON.stringify(a) !== JSON.stringify(o)) {
-          const { id, ...data } = o;
-          ops.push(b => b.set(refDoc(f, col, id), propre(data)));
-        }
         avant.delete(o.id);
+        if (a && egal(a, o)) return;
+        const { id, ...data } = o;
+        if (!a) { ops.push(b => b.set(refDoc(f, col, id), propre(data))); return; }
+        // Fusion profonde (merge) : seuls les champs / clés modifiés sont écrits
+        const champs = {};
+        new Set([...Object.keys(a), ...Object.keys(data)]).forEach(k => {
+          if (k === 'id' || egal(a[k], data[k])) return;
+          if (data[k] === undefined) { champs[k] = deleteField(); return; }
+          if (objet(a[k]) && objet(data[k])) {
+            const sous = {};
+            new Set([...Object.keys(a[k]), ...Object.keys(data[k])]).forEach(sk => {
+              if (egal(a[k][sk], data[k][sk])) return;
+              sous[sk] = data[k][sk] === undefined ? deleteField() : propre(data[k][sk]);
+            });
+            if (Object.keys(sous).length) champs[k] = sous;
+            return;
+          }
+          champs[k] = propre(data[k]);
+        });
+        if (Object.keys(champs).length) ops.push(b => b.set(refDoc(f, col, id), champs, { merge: true }));
       });
       avant.forEach((_, id) => ops.push(b => b.delete(refDoc(f, col, id))));
     });

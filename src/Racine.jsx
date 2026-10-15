@@ -23,42 +23,67 @@ function codeDuLien() {
 
 // Par défaut l'appli est 100 % locale (rien n'est envoyé à Firebase).
 // Le mode « foyer » ne s'active que via la connexion discrète du menu ou un lien d'invitation.
+// Foyer mémorisé sur ce téléphone : l'appli s'ouvre tout de suite, même sans réseau
+const CLE_FOYER = 'courses-pro-foyer-connu';
+function foyerConnu() {
+  try { return JSON.parse(lireLS(CLE_FOYER) || 'null'); } catch { return null; }
+}
+function memoriserFoyer(user, foyerId) {
+  if (!foyerId || !user) { ecrireLS(CLE_FOYER, null); return; }
+  ecrireLS(CLE_FOYER, JSON.stringify({ foyerId, uid: user.uid, email: user.email || '', displayName: user.displayName || '' }));
+}
+
 export default function Racine() {
   const [code] = useState(codeDuLien);
   const [mode, setMode] = useState(() => (cloud.actif && (code || lireLS('courses-pro-mode') === 'cloud') ? 'cloud' : 'local'));
-  const [user, setUser] = useState(undefined);
-  const [foyerId, setFoyerId] = useState(undefined);
+  const [connu] = useState(foyerConnu);
+  const [user, setUser] = useState(() => (connu ? { ...connu, hors: true } : undefined));
+  const [foyerId, setFoyerId] = useState(() => connu?.foyerId);
 
   useEffect(() => {
     if (mode !== 'cloud') return undefined;
-    return cloud.onAuth(async u => {
+    let actif = true;
+    const stop = cloud.onAuth(async u => {
+      if (!actif) return;
+      if (!u) { memoriserFoyer(null); setUser(null); setFoyerId(null); return; }
       setUser(u);
-      if (!u) { setFoyerId(null); return; }
-      setFoyerId(undefined);
-      setFoyerId(await cloud.monFoyer(u).catch(() => null));
+      try {
+        // Vérification en arrière-plan : seul un « non » du serveur fait sortir du foyer
+        const f = await cloud.monFoyer(u);
+        if (!actif) return;
+        memoriserFoyer(u, f);
+        setFoyerId(f);
+      } catch {
+        // Pas de réseau : on garde le foyer mémorisé
+        setFoyerId(prev => (prev === undefined ? (foyerConnu()?.uid === u.uid ? foyerConnu().foyerId : null) : prev));
+      }
     });
+    return () => { actif = false; stop(); };
   }, [mode]);
 
   const passerLocal = () => { ecrireLS('courses-pro-mode', 'local'); setMode('local'); };
   const passerCloud = () => { ecrireLS('courses-pro-mode', 'cloud'); setMode('cloud'); };
 
   if (mode === 'local') return <App foyerId={null} session={{ local: true, versCloud: cloud.actif ? passerCloud : null }} />;
-  if (user === undefined || (user && foyerId === undefined)) return <Splash />;
-  if (!user) return <Connexion onLocal={passerLocal} />;
-  if (!foyerId) {
+  if (foyerId) {
     return (
-      <ChoixFoyer
-        user={user} codeInitial={code} onLocal={() => { cloud.deconnexion(); passerLocal(); }}
-        onFoyer={f => { try { sessionStorage.removeItem('cp-rejoindre'); } catch { /* */ } setFoyerId(f); }}
+      <App
+        key={foyerId}
+        foyerId={foyerId}
+        session={{
+          user, foyerId,
+          sortir: () => { memoriserFoyer(null); setFoyerId(null); },
+          deconnexion: async () => { memoriserFoyer(null); await cloud.deconnexion(); passerLocal(); },
+        }}
       />
     );
   }
-
+  if (user === undefined || (user && foyerId === undefined)) return <Splash />;
+  if (!user) return <Connexion onLocal={passerLocal} />;
   return (
-    <App
-      key={foyerId}
-      foyerId={foyerId}
-      session={{ user, foyerId, sortir: () => setFoyerId(null), deconnexion: async () => { await cloud.deconnexion(); passerLocal(); } }}
+    <ChoixFoyer
+      user={user} codeInitial={code} onLocal={() => { cloud.deconnexion(); passerLocal(); }}
+      onFoyer={f => { try { sessionStorage.removeItem('cp-rejoindre'); } catch { /* */ } memoriserFoyer(user, f); setFoyerId(f); }}
     />
   );
 }

@@ -49,17 +49,21 @@ export function useDb(foyerId, onAccesPerdu) {
   const [db, setDb] = useState(() => charger(foyerId));
   const ref = useRef(db);
 
+  const [magasinsRecus, setMagasinsRecus] = useState(!foyerId);
+
   useEffect(() => {
     try { localStorage.setItem(cleCache(foyerId), JSON.stringify(db)); } catch { /* ignore */ }
+    copieDuJour(foyerId, db);
   }, [db, foyerId]);
 
   // Synchro temps réel
   useEffect(() => {
     if (!foyerId) return undefined;
-    return cloud.ecouter(foyerId, (cle, val) => {
+    return cloud.ecouter(foyerId, (cle, val, depuisServeur) => {
       const n = { ...ref.current };
       if (cle === '_reglages') n.reglages = { ...n.reglages, budget: val.budget || 0 };
-      else n[cle] = val;
+      else n[cle] = VALIDE[cle] ? val.filter(VALIDE[cle]) : val;
+      if (cle === 'magasins' && depuisServeur) setMagasinsRecus(true);
       ref.current = n;
       setDb(n);
     }, e => { console.error(e); if (e?.code === 'permission-denied') onAccesPerdu?.(); });
@@ -74,7 +78,75 @@ export function useDb(foyerId, onAccesPerdu) {
 
   const maj = useCallback(fn => { const d = structuredClone(ref.current); fn(d); appliquer(d); }, [appliquer]);
   const remplacer = useCallback(d => appliquer({ ...ref.current, ...d, _foyer: ref.current._foyer, _membres: ref.current._membres }), [appliquer]);
+  // Ajouts ponctuels demandés (rayons…), faits une seule fois pour tout le foyer
+  useEffect(() => {
+    if (!magasinsRecus) return;
+    const d = structuredClone(ref.current);
+    if (appliquerAjouts(d)) appliquer(d);
+  }, [magasinsRecus, appliquer]);
+
   return [db, maj, remplacer];
+}
+
+// Documents incomplets (supprimés sur un téléphone pendant qu'un autre les modifiait) : ignorés
+const VALIDE = {
+  produits: p => !!p.nom,
+  magasins: m => !!m.nom && Array.isArray(m.rayons),
+  liste: i => !!i.produitId,
+  listes: l => !!l.nom && Array.isArray(l.items),
+  achats: a => !!a.date,
+};
+
+// ---- Sauvegardes automatiques sur ce téléphone (une par jour, 10 derniers jours) ----
+const CLE_COPIES = foyerId => cleCache(foyerId) + '-copies';
+export function copiesAuto(foyerId) {
+  try { return JSON.parse(localStorage.getItem(CLE_COPIES(foyerId)) || '[]'); } catch { return []; }
+}
+function copieDuJour(foyerId, db) {
+  try {
+    if (!db.magasins?.length) return;
+    const jour = new Date().toISOString().slice(0, 10);
+    const copies = copiesAuto(foyerId);
+    if (copies.some(c => c.jour === jour)) return;
+    const { _foyer, _membres, ...donnees } = db; // eslint-disable-line no-unused-vars
+    copies.unshift({ jour, donnees });
+    localStorage.setItem(CLE_COPIES(foyerId), JSON.stringify(copies.slice(0, 10)));
+  } catch { /* stockage plein : tant pis pour la copie */ }
+}
+
+// ---- Ajouts ponctuels ----
+const AJOUTS = [
+  {
+    id: 'rayons-bio-apero-2026-10',
+    rayons: [
+      { nom: 'Bio Legumes - Fruits', emoji: '🥬' },
+      { nom: 'Bio Conserves', emoji: '🥫' },
+      { nom: 'Bio Jus', emoji: '🧃' },
+      { nom: 'Bio Frais', emoji: '🌿' },
+      { nom: 'Bio Crèmerie', emoji: '🥛' },
+      { nom: 'Bio Sauces', emoji: '🫙' },
+      { nom: 'Apero', emoji: '🥨' },
+    ],
+  },
+];
+const normNom = t => (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+// Ajoute les rayons au magasin principal (celui utilisé, sinon le favori), sans toucher
+// aux rayons, articles, liste, stock ou dépenses existants. Renvoie true si modifié.
+export function appliquerAjouts(d) {
+  if (!d.magasins?.length) return false;
+  let modifie = false;
+  AJOUTS.forEach(a => {
+    if (d.magasins.some(m => (m.ajouts || []).includes(a.id))) return;
+    const mag = d.magasins.find(m => m.id === d.magasinActif) || d.magasins.find(m => m.favori) || d.magasins[0];
+    a.rayons.forEach(r => {
+      if (mag.rayons.some(x => normNom(x.nom) === normNom(r.nom))) return;
+      mag.rayons.push({ id: uid(), nom: r.nom, emoji: r.emoji, repere: '', cats: [] });
+    });
+    mag.ajouts = [...(mag.ajouts || []), a.id];
+    modifie = true;
+  });
+  return modifie;
 }
 
 // Retrouve un produit par son nom ou le crée (avec catégorie devinée). À appeler dans maj().

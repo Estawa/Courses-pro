@@ -5,7 +5,7 @@ import ImportListe from './components/ImportListe.jsx';
 import FoyerSheet, { partagerAppli } from './components/Foyer.jsx';
 import ImportMagasin from './components/ImportMagasin.jsx';
 import { trouverCode } from './lib/partage.js';
-import { useDb, dbInitiale } from './lib/store.js';
+import { useDb, dbInitiale, copiesAuto } from './lib/store.js';
 import { appConfig } from './appConfig.js';
 import { CHANGELOG } from './changelog.js';
 import Courses from './tabs/Courses.jsx';
@@ -33,6 +33,7 @@ export default function App({ foyerId = null, session = { local: true } }) {
   const fichier = useRef();
   const [partage, setPartage] = useState(null);
   const [importMag, setImportMag] = useState(null);
+  const [copies, setCopies] = useState(false);
 
   // Partage reçu (WhatsApp / lien) : organisation de magasin (?magasin=CP…) ou liste de courses
   useEffect(() => {
@@ -147,6 +148,7 @@ export default function App({ foyerId = null, session = { local: true } }) {
           <button className="menu-row" onClick={exporter}><Icon name="download" /> <span className="grow">Sauvegarder mes données</span></button>
           <button className="menu-row" onClick={() => fichier.current.click()}><Icon name="upload" /> <span className="grow">Restaurer une sauvegarde</span></button>
           <input ref={fichier} type="file" accept="application/json,.json" hidden onChange={importer} />
+          <button className="menu-row" onClick={() => { setMenu(false); setCopies(true); }}><Icon name="history" /> <span className="grow">Copies automatiques<span className="muted small block">Revenir à l’état d’un jour précédent</span></span></button>
           <button className="menu-row" onClick={() => { setMenu(false); setJournal(true); }}><Icon name="history" /> <span className="grow">Journal des modifications</span></button>
           <button className="menu-row danger" onClick={() => {
             if (confirm(cloudOn ? 'Tout effacer pour TOUT le foyer et repartir de zéro ? (pense à sauvegarder avant)' : 'Tout effacer et repartir de zéro ? (pense à sauvegarder avant)')) { remplacer(dbInitiale()); setMenu(false); toast('Appli remise à zéro'); }
@@ -161,6 +163,25 @@ export default function App({ foyerId = null, session = { local: true } }) {
       </Sheet>
 
       {cloudOn && <FoyerSheet open={foyerOuvert} onClose={() => setFoyerOuvert(false)} db={db} session={session} toast={toast} />}
+
+      <Sheet open={copies} onClose={() => setCopies(false)} title="🗂️ Copies automatiques">
+        <p className="muted small">Une copie est gardée chaque jour sur ce téléphone (10 derniers jours). Restaurer remplace toutes les données actuelles{cloudOn ? ' du foyer' : ''}.</p>
+        {copiesAuto(foyerId).length === 0 && <p className="muted small center">Aucune copie pour l’instant.</p>}
+        <div className="stack">
+          {copiesAuto(foyerId).map(c => (
+            <button key={c.jour} className="menu-row" onClick={() => {
+              if (!confirm(`Revenir à l’état du ${c.jour.split('-').reverse().join('/')} ? Tout ce qui a été fait depuis sera remplacé.`)) return;
+              remplacer({ ...dbInitiale(), ...c.donnees, magasinActif: c.donnees.magasinActif || db.magasinActif });
+              setCopies(false); toast('Copie restaurée ✅');
+            }}>
+              <Icon name="history" />
+              <span className="grow">{c.jour.split('-').reverse().join('/')}
+                <span className="muted small block">{c.donnees.magasins?.length || 0} magasin(s) · {(c.donnees.magasins || []).reduce((n, m) => n + (m.rayons?.length || 0), 0)} rayons · {c.donnees.liste?.length || 0} article(s) sur la liste</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </Sheet>
 
       <Sheet open={journal} onClose={() => setJournal(false)} title="📜 Journal des modifications">
         {CHANGELOG.map(v => (

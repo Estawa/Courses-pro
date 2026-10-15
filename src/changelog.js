@@ -1,5 +1,16 @@
 export const CHANGELOG = [
   {
+    version: '1.4.0',
+    date: '2026-10-15',
+    notes: [
+      'L’appli démarre sans réseau : le foyer est mémorisé sur le téléphone et tous les fichiers de l’appli sont gardés en cache dès l’installation',
+      'Réseau faible au magasin : au bout de 3 secondes sans réponse, l’appli s’ouvre avec la version enregistrée',
+      'Rayons protégés : modifier un magasin n’envoie plus que ce qui a changé, un téléphone pas à jour ne peut plus effacer les rayons créés sur un autre',
+      'Nouveaux rayons dans ton magasin : Bio Legumes - Fruits, Bio Conserves, Bio Jus, Bio Frais, Bio Crèmerie, Bio Sauces et Apero (ajoutés en fin de parcours, à déplacer comme tu veux)',
+      'Copie automatique des données chaque jour sur le téléphone (10 derniers jours), restaurable depuis le menu',
+    ],
+  },
+  {
     version: '1.3.1',
     date: '2026-10-14',
     notes: [
