@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { cloud } from './cloud.js';
 import { PRODUITS, rayonsType } from '../data/defaults.js';
-import { uid, findProduit, devinerCategorie } from './utils.js';
+import { uid, findProduit, devinerCategorie, additionnerQte } from './utils.js';
 
 const KEY = 'courses-pro-v1';
 
@@ -164,9 +164,8 @@ export function ajouterALaListe(d, nom, qte = '', extra) {
   const p = produitPourNom(d, nom, extra);
   const deja = d.liste.find(i => i.produitId === p.id && !i.coche);
   if (deja) {
-    const a = parseFloat(deja.qte) || (deja.qte ? 0 : 1);
-    const b = parseFloat(qte) || 1;
-    if (!/[a-z]/i.test(deja.qte + qte)) deja.qte = String(a + b);
+    const somme = additionnerQte(deja.qte, qte);
+    if (somme) deja.qte = somme;
     return p;
   }
   d.liste.push({ id: uid(), produitId: p.id, qte: qte || '', coche: false });

@@ -1,5 +1,14 @@
 export const CHANGELOG = [
   {
+    version: '1.4.1',
+    date: '2026-10-15',
+    notes: [
+      'Choix de l’unité à côté de la quantité : Kg, Gr, Cl ou L (à l’ajout d’un article et dans la liste du jour)',
+      'Un article ajouté deux fois avec la même unité s’additionne (500 Gr + 250 Gr = 750 Gr)',
+      'Fiche article de la maison : unités Kg / Gr / Cl / L en un geste',
+    ],
+  },
+  {
     version: '1.4.0',
     date: '2026-10-15',
     notes: [

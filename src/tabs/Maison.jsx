@@ -182,8 +182,13 @@ function EditProduit({ id, db, maj, toast, onClose }) {
           {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.emoji} {c.nom}</option>)}
         </select>
       </Field>
-      <Field label="Unité (facultatif)" hint="paquet, L, kg, boîte…">
+      <Field label="Unité (facultatif)" hint="Kg, Gr, Cl, L, paquet, boîte…">
         <input className="input" value={f.unite} onChange={e => set('unite', e.target.value)} />
+        <div className="chips-wrap" style={{ marginTop: 6 }}>
+          {['Kg', 'Gr', 'Cl', 'L'].map(u => (
+            <button key={u} type="button" className={'chip chip-toggle' + (f.unite === u ? ' on' : '')} onClick={() => set('unite', f.unite === u ? '' : u)}>{u}</button>
+          ))}
+        </div>
       </Field>
       {db.magasins.length > 0 && (
         <Field label="📍 Où le trouver" hint="Par défaut, l’article suit le rayon de sa catégorie.">

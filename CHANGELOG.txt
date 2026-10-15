@@ -1,6 +1,11 @@
 COURSES PRO by C. Guilhem — Journal des modifications
 ======================================================
 
+v1.4.1 — 15/10/2026
+- Choix de l'unité à côté de la quantité : Kg, Gr, Cl ou L (à l'ajout d'un article et dans la liste du jour)
+- Un article ajouté deux fois avec la même unité s'additionne (500 Gr + 250 Gr = 750 Gr)
+- Fiche article de la maison : unités Kg / Gr / Cl / L en un geste
+
 v1.4.0 — 15/10/2026
 - L'appli démarre sans réseau : le foyer est mémorisé sur le téléphone et tous les fichiers de l'appli sont gardés en cache dès l'installation
 - Réseau faible au magasin : au bout de 3 secondes sans réponse, l'appli s'ouvre avec la version enregistrée

@@ -93,8 +93,27 @@ const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 
 export const qteNum = q => {
   const n = parseFloat(String(q || '').replace(',', '.'));
-  return Number.isFinite(n) && n > 0 && !/\s*(kg|g|l|cl|ml)$/i.test(String(q).trim()) ? n : 1;
+  return Number.isFinite(n) && n > 0 && !/\s*(kg|g|gr|l|cl|ml)$/i.test(String(q).trim()) ? n : 1;
 };
+
+// Unités proposées à côté de la quantité
+export const UNITES = ['Kg', 'Gr', 'Cl', 'L'];
+const ALIAS_UNITE = { kg: 'Kg', kgs: 'Kg', g: 'Gr', gr: 'Gr', grs: 'Gr', cl: 'Cl', l: 'L' };
+// "500 Gr" -> { n: '500', u: 'Gr' } ; "2" -> { n: '2', u: '' } ; "2 paquets" -> { n: '2 paquets', u: '' }
+export function decouperQte(q) {
+  const t = String(q || '').trim();
+  const m = t.match(/^(\d+(?:[.,]\d*)?)\s*([a-zA-Z]+)$/);
+  if (m && ALIAS_UNITE[m[2].toLowerCase()]) return { n: m[1], u: ALIAS_UNITE[m[2].toLowerCase()] };
+  return { n: t, u: '' };
+}
+export const composerQte = (n, u) => { const x = String(n || '').trim(); return x ? (u ? `${x} ${u}` : x) : (u ? `1 ${u}` : ''); };
+// Additionne deux quantités de même unité ("500 Gr" + "250 Gr" = "750 Gr") ; null si impossible
+export function additionnerQte(a, b) {
+  const x = decouperQte(a || '1'); const y = decouperQte(b || '1');
+  const nx = Number(String(x.n).replace(',', '.')); const ny = Number(String(y.n).replace(',', '.'));
+  if (x.u !== y.u || !Number.isFinite(nx) || !Number.isFinite(ny)) return null;
+  return composerQte(String(Math.round((nx + ny) * 1000) / 1000).replace('.', ','), x.u);
+}
 
 export const euros = n =>
   new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(n || 0);

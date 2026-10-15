@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '../components/icons.jsx';
 import ImportListe from '../components/ImportListe.jsx';
-import { AjoutArticle, Empty, Field, Sheet, Toggle, EmojiPicker } from '../components/ui.jsx';
+import { AjoutArticle, Empty, Field, QteUnite, Sheet, Toggle, EmojiPicker } from '../components/ui.jsx';
 import { ajouterALaListe } from '../lib/store.js';
 import { aujourdhui, categorie, euros, findProduit, qteNum, rayonDe, uid } from '../lib/utils.js';
 
@@ -129,10 +129,7 @@ export default function Courses({ db, maj, toast, goto }) {
                         <div key={it.id} className={'item' + (it.coche ? ' item-done' : '')}>
                           <span className="item-emoji">{p.emoji || categorie(p.cat).emoji}</span>
                           <span className="item-nom">{p.nom}</span>
-                          <input
-                            className="input qte-mini" value={it.qte} placeholder="1" inputMode="decimal"
-                            onChange={e => setItem(it.id, x => { x.qte = e.target.value; })} aria-label="Quantité"
-                          />
+                          <QteUnite mini value={it.qte} placeholder="1" onChange={v => setItem(it.id, x => { x.qte = v; })} />
                           <button className="icon-btn" onClick={() => setFeuille({ rayon: it })} aria-label="Changer de rayon"><Icon name="pin" size={18} /></button>
                           <button className="icon-btn danger" onClick={() => suppr(it.id)} aria-label="Retirer"><Icon name="trash" size={18} /></button>
                         </div>

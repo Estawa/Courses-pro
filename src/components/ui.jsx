@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './icons.jsx';
 import { EMOJIS } from '../data/defaults.js';
-import { norm, categorie } from '../lib/utils.js';
+import { norm, categorie, UNITES, decouperQte, composerQte } from '../lib/utils.js';
 
 export function Sheet({ open, onClose, title, children, footer }) {
   useEffect(() => {
@@ -92,6 +92,23 @@ export function Toggle({ checked, onChange, label }) {
   );
 }
 
+// Quantité + unité (Kg / Gr / Cl / L) ; la valeur reste un simple texte, ex : "500 Gr"
+export function QteUnite({ value, onChange, mini = false, placeholder = 'Qté' }) {
+  const { n, u } = decouperQte(value);
+  return (
+    <span className={'qte-unite' + (mini ? ' qte-unite-mini' : '')}>
+      <input
+        className={'input ' + (mini ? 'qte-mini' : 'qte-input')} inputMode="decimal" placeholder={placeholder} value={n}
+        onChange={e => onChange(e.target.value.trim() ? composerQte(e.target.value, u) : '')} aria-label="Quantité"
+      />
+      <select className="input unite-select" value={u} onChange={e => onChange(composerQte(n, e.target.value))} aria-label="Unité">
+        <option value="">—</option>
+        {UNITES.map(x => <option key={x} value={x}>{x}</option>)}
+      </select>
+    </span>
+  );
+}
+
 // Champ d'ajout avec suggestions du catalogue
 export function AjoutArticle({ produits, onAjout, placeholder = 'Ajouter un article…', exclure = [] }) {
   const [txt, setTxt] = useState('');
@@ -113,10 +130,7 @@ export function AjoutArticle({ produits, onAjout, placeholder = 'Ajouter un arti
   return (
     <div className="ajout">
       <div className="ajout-row">
-        <input
-          className="input qte-input" inputMode="decimal" placeholder="Qté" value={qte}
-          onChange={e => setQte(e.target.value)} aria-label="Quantité"
-        />
+        <QteUnite value={qte} onChange={setQte} />
         <input
           className="input grow" placeholder={placeholder} value={txt}
           onChange={e => setTxt(e.target.value)}
