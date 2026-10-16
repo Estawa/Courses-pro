@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.5',
+    date: '2026-10-16',
+    notes: [
+      'Lot 6 de recettes : 81 nouvelles recettes (471 au total) — soupes-repas (garbure, bortsch, phở, chowder), apéritifs (tartare saumon-avocat, satay, nachos, chips de légumes, cervelle de canut), grillades d\'été (wings, poulet à la bière, échine marinée, bavette), classiques familiaux (tomates et courgettes farcies, coquillettes jambon, gâteau au chocolat de mamie), plats végétariens (burritos, galettes de quinoa, cannellonis, tofu sauté) et desserts (pain d\'épices, omelette norvégienne, bugnes, barres de céréales)',
+    ],
+  },
+  {
     version: '1.6.4',
     date: '2026-10-16',
     notes: [
