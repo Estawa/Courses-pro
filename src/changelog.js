@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.7',
+    date: '2026-10-16',
+    notes: [
+      'Lot 8 de recettes : 72 nouvelles recettes (620 au total) — printemps et marché (asperges mousseline, velouté de radis et fanes, romanesco, petit épeautre), poissons du quotidien (merlan moutarde, lieu citron-câpres, poisson créole, calamars à la romaine, tacos de poisson), plats uniques et one pot (poulet-chorizo, riz crevettes-chorizo, poisson et pommes de terre en un plat), végétarien italien (alla norma, puttanesca, lasagnes courgettes-pesto), pâtisseries de fête (fraisier, tropézienne, bœuf Wellington côté plats) et douceurs maison (yaourts, granola, sablés bretons, banoffee)',
+    ],
+  },
+  {
     version: '1.6.6',
     date: '2026-10-16',
     notes: [
