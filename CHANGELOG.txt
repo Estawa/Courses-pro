@@ -1,6 +1,9 @@
 COURSES PRO by C. Guilhem — Journal des modifications
 ======================================================
 
+v1.6.4 — 16/10/2026
+- Lot 5 de recettes : 76 nouvelles recettes (390 au total) — menus de fête (chapon, dinde aux marrons, pintade aux choux, canard à l'orange, filet mignon en croûte, bouchées à la reine, pavlova, sablés et truffes de Noël), apéritif et brunch (blinis, arancini, empanadas, muffins salés, œufs brouillés au saumon), cuisine d'ailleurs (mafé, Stroganoff, boulettes suédoises, tajine d'agneau aux pruneaux, cacio e pepe) et recettes anti-gaspi
+
 v1.6.3 — 16/10/2026
 - Lot 4 de recettes : 82 nouvelles recettes (314 au total) — cuisine régionale (choucroute, coq au vin, daube, endives au jambon, joues de porc au cidre, pissaladière), cuisine d'Asie (ramen, gyozas, bibimbap, katsu curry, yakitori, biryani), poissons de fête (lotte armoricaine, Saint-Jacques), nouveaux desserts (profiteroles, galette des rois, cannelés, pastéis de nata, sorbet minute au Companion)
 

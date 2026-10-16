@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.4',
+    date: '2026-10-16',
+    notes: [
+      'Lot 5 de recettes : 76 nouvelles recettes (390 au total) — menus de fête (chapon, dinde aux marrons, pintade aux choux, canard à l\'orange, filet mignon en croûte, bouchées à la reine, pavlova, sablés et truffes de Noël), apéritif et brunch (blinis, arancini, empanadas, muffins salés, œufs brouillés au saumon), cuisine d\'ailleurs (mafé, Stroganoff, boulettes suédoises, tajine d\'agneau aux pruneaux, cacio e pepe) et recettes anti-gaspi',
+    ],
+  },
+  {
     version: '1.6.3',
     date: '2026-10-16',
     notes: [
