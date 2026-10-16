@@ -13,10 +13,12 @@ import Maison from './tabs/Maison.jsx';
 import Listes from './tabs/Listes.jsx';
 import Magasins from './tabs/Magasins.jsx';
 import Depenses from './tabs/Depenses.jsx';
+import Recettes from './tabs/Recettes.jsx';
 
 const ONGLETS = [
   { id: 'courses', label: 'Courses', icon: 'cart' },
   { id: 'maison', label: 'Maison', icon: 'home' },
+  { id: 'recettes', label: 'Recettes', icon: 'chef' },
   { id: 'listes', label: 'Listes', icon: 'list' },
   { id: 'magasins', label: 'Magasins', icon: 'store' },
   { id: 'depenses', label: 'Dépenses', icon: 'wallet' },
@@ -112,6 +114,7 @@ export default function App({ foyerId = null, session = { local: true } }) {
       <main>
         {onglet === 'courses' && <Courses {...props} />}
         {onglet === 'maison' && <Maison {...props} />}
+        {onglet === 'recettes' && <Recettes {...props} />}
         {onglet === 'listes' && <Listes {...props} />}
         {onglet === 'magasins' && <Magasins {...props} />}
         {onglet === 'depenses' && <Depenses {...props} />}
@@ -124,6 +127,7 @@ export default function App({ foyerId = null, session = { local: true } }) {
               <Icon name={o.icon} size={22} />
               {o.id === 'courses' && nbListe > 0 && <span className="badge">{nbListe}</span>}
               {o.id === 'maison' && nbBas > 0 && <span className="badge badge-orange">{nbBas}</span>}
+              {o.id === 'recettes' && (db.repas || []).length > 0 && <span className="badge badge-rose">{db.repas.length}</span>}
             </span>
             <span className="tab-lbl">{o.label}</span>
           </button>

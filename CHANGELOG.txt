@@ -1,6 +1,22 @@
 COURSES PRO by C. Guilhem — Journal des modifications
 ======================================================
 
+v1.6.0 — 16/10/2026
+- Nouvel onglet « Recettes » : 67 recettes de départ (entrées, salades, soupes, plats, accompagnements, desserts), du quotidien, du festif et des recettes du monde, sans pois chiches, petits pois ni lentilles
+- Chaque recette existe en plusieurs versions selon l’appareil : Companion, Cookeo, four, micro-ondes combiné, Actifry, plaque, barbecue gaz, barbecue à braises, plancha
+- Ma cuisine : les recettes s’adaptent aux appareils cochés ; le Cookeo est prêt (« bientôt »), ses versions apparaissent dès que tu coches « Je l’ai acheté ! »
+- Le stock maison est vérifié pour chaque ingrédient (en stock, pas assez, épuisé, à acheter) et les manquants s’ajoutent à la liste en un geste
+- Remplacer un ingrédient : par un autre que tu as en stock, par ton choix, ou l’ajouter aux courses ; ingrédients refusés par un membre de la famille signalés
+- Mon repas : plusieurs recettes à la fois, avec un bilan du stock pour TOUT le repas (un ingrédient utilisé dans deux recettes est additionné : le paquet de pâtes n’est plus compté deux fois)
+- « Propose-moi » : idée de repas complet (entrée, plat, dessert…) choisie d’après le stock, chaque plat retenu « consommant » le stock avant de choisir le suivant
+- Planning du repas : heure de chaque étape pour que tout soit prêt à l’heure du repas, avec alertes si un appareil est pris deux fois ou si deux tâches sont à surveiller en même temps
+- Après la cuisson, « On a mangé ! » retire du stock ce qui a été utilisé (modifiable) et propose de racheter ce qui passe sous le seuil
+- Ajouter une recette avec une IA : l’appli prépare la consigne (photo d’une recette papier, capture, fichier ou idée), avec conseils de prise de vue, puis importe la réponse de l’IA (texte collé ou fichier .json)
+- Saisie manuelle d’une recette, modification de ses recettes, « Ma version » d’une recette du catalogue
+- Note sur 5 étoiles, commentaire et photo pour chaque recette (photos partagées dans le foyer), nombre de fois cuisinée
+- Envoi d’une recette par WhatsApp ou en fichier, recettes masquables
+- Onglet Maison : contenance d’une unité (ex : 500 Gr pour un paquet de pâtes) pour des calculs de stock précis
+
 v1.5.0 — 15/10/2026
 - Envoi d'une liste par WhatsApp (depuis Mes listes ou la liste du jour) : retouche des articles et quantités avant l'envoi, aperçu du message, modifiable aussi dans WhatsApp
 - Réception d'une liste : choix « Liste du jour » ou « Mes listes », avec mise à jour de la liste du même nom (repérée dans le message) ou création d'une nouvelle

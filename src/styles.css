@@ -450,3 +450,81 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .apercu-card { padding: 12px; }
 .seg button { white-space: nowrap; font-size: 13px; padding: 9px 4px; }
 @media (max-width: 380px) { .seg button span { display: none; } }
+
+/* ---------- Recettes ---------- */
+.tab-recettes.on { background: var(--lilac); }
+.badge-rose { background: #FF8FB8; }
+.recette-carte { display: flex; align-items: center; gap: 12px; text-align: left; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px 14px 12px 12px; border-left: 8px solid var(--c); width: 100%; }
+.recette-carte:active { transform: scale(.99); }
+.recette-emoji { font-size: 28px; width: 50px; height: 50px; border-radius: 16px; background: var(--c); display: grid; place-items: center; flex: none; }
+.recette-titre { font-size: 15.5px; line-height: 1.25; display: block; }
+.recette-apps { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 5px; }
+.app-pastille { font-size: 14px; background: var(--bg2); border-radius: 8px; padding: 1px 4px; }
+.app-pastille.off { opacity: .35; filter: grayscale(1); }
+.etat { display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: var(--bg2); color: var(--ink); white-space: nowrap; }
+.etat-ok { background: var(--mint); color: #22684A; }
+.etat-court { background: #FFE0C2; color: #9A4B12; }
+.etat-manque { background: var(--pink); color: #A3264F; }
+.etat-absent { background: #FFF1B8; color: #7A5A00; }
+.etat-verifier { background: #FFF6CC; color: #7A5A00; }
+.etat-nonsuivi { background: var(--bg2); color: var(--muted); }
+.etat-basique { background: var(--bg2); color: var(--muted); }
+:root[data-theme="dark"] .etat-ok, :root[data-theme="dark"] .etat-court, :root[data-theme="dark"] .etat-manque, :root[data-theme="dark"] .etat-absent, :root[data-theme="dark"] .etat-verifier { color: var(--pastel-ink); }
+.etoiles { display: inline-flex; gap: 2px; }
+.etoile { color: var(--line); line-height: 1; }
+.etoile.on { color: #F5B83D; }
+button.etoile { padding: 2px; }
+.chip-off { opacity: .6; }
+.chip-sel { outline: 3px solid var(--accent); }
+.fiche-reglages { display: flex; flex-direction: column; gap: 12px; }
+.fiche-h3 { margin: 4px 2px -4px; font-size: 16px; font-weight: 900; }
+.ing { border-bottom: 1px solid var(--line); padding: 6px 4px; }
+.ing:last-child { border-bottom: 0; }
+.ing-row { display: flex; align-items: center; gap: 10px; }
+.ing-qte { min-width: 64px; font-weight: 900; font-size: 14px; color: var(--accent); text-align: right; flex: none; }
+.ing-opt { opacity: .75; }
+.ing-refus { background: color-mix(in srgb, var(--pink) 35%, transparent); border-radius: 12px; }
+.ing .block .etat { margin-top: 3px; }
+.swap-btn { background: var(--bg2); }
+.swap-btn.alerte { background: var(--pink); color: var(--pastel-ink); }
+.remp-panel { display: flex; flex-direction: column; gap: 8px; padding: 10px 4px 6px 74px; }
+.etapes { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; }
+.etapes li { padding-left: 4px; line-height: 1.45; }
+.etapes li::marker { font-weight: 900; color: var(--accent); }
+.photo-recette { position: relative; border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+.photo-recette img { width: 100%; max-height: 260px; object-fit: cover; display: block; }
+.photo-x { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,.85); color: var(--pastel-ink); }
+.textarea-s { min-height: 80px; }
+.emoji-mini { width: 56px; flex: none; text-align: center; font-size: 20px; padding: 10px 6px; }
+.etape-titre { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 16px; margin-top: 4px; }
+.etape-num { width: 28px; height: 28px; border-radius: 50%; background: var(--lilac); color: var(--pastel-ink); display: grid; place-items: center; font-size: 14px; flex: none; }
+.opt-on { outline: 3px solid var(--accent); }
+.consigne-voir summary { cursor: pointer; font-weight: 800; color: var(--muted); font-size: 13px; }
+.consigne-pre { max-height: 260px; font-size: 12px; margin-top: 8px; background: var(--bg2); color: var(--ink); }
+.apercu-recette.off, .stock-row.off { opacity: .5; }
+.idee-row { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.idee-row:last-of-type { border-bottom: 0; }
+.idee-main { text-align: left; display: block; padding: 2px 0; }
+.repas-item { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; }
+.repas-actions { display: flex; align-items: center; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.repas-actions .select-mini { width: auto; max-width: 60%; flex: 1; }
+.bilan { background: rgba(255,255,255,.6); border-radius: 16px; margin: 4px 0 10px; }
+:root[data-theme="dark"] .bilan { background: var(--card); }
+.bilan-row { display: flex; align-items: center; gap: 8px; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+.bilan-row:last-child { border-bottom: 0; }
+.stepper-blanc { background: rgba(255,255,255,.8); color: var(--pastel-ink); }
+.stepper-blanc button { color: var(--pastel-ink); }
+.input-heure { width: 110px; padding: 8px 10px; }
+.alerte-plan { background: #FFF1B8; color: var(--pastel-ink); border-radius: 12px; padding: 8px 10px; }
+.timeline { display: flex; flex-direction: column; border-left: 3px solid var(--lilac); margin-left: 52px; }
+.tl-row { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0 6px 0; position: relative; }
+.tl-heure { position: absolute; left: -58px; width: 48px; text-align: right; font-weight: 900; font-size: 13px; padding-top: 2px; }
+.tl-point { width: 28px; height: 28px; border-radius: 50%; background: var(--card); box-shadow: var(--shadow); display: grid; place-items: center; margin-left: -15px; flex: none; font-size: 15px; }
+.tl-forte .tl-point { background: var(--pink); }
+.tl-aucune .tl-point { background: var(--mint); }
+.tl-service .tl-point { background: var(--yellow); }
+.chip-badge.bientot { background: var(--yellow); color: var(--pastel-ink); margin-left: 6px; font-weight: 800; }
+.suivi-btn.on { background: var(--mint); color: var(--pastel-ink); }
+a.btn { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.tabs .tab-lbl { font-size: 10.5px; }
+.btn-ajout { padding: 7px 10px; }

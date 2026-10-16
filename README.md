@@ -48,6 +48,19 @@ Le destinataire ouvre le lien (ou colle le message dans Magasins > Importer), co
 les rayons et articles, puis les ajoute comme nouveau magasin ou remplace les rayons d'un des siens.
 Aucun serveur : toute l'organisation est contenue dans le lien.
 
+## Recettes
+Onglet « Recettes » : catalogue intégré (`src/data/recettes/lot*.js`, format compact décrit dans
+`src/lib/recettes.js` > `lireCatalogue`), recettes perso / importées, notes, commentaires et photos.
+- **Ma cuisine** : appareils possédés (le Cookeo est prévu : à cocher le jour de l’achat), qui mange quoi.
+- **Stock** : chaque ingrédient est relié à un article de l’onglet Maison (automatiquement, ou à la main
+  dans la fiche recette). Pour les articles comptés en paquets / pièces, renseigner la « contenance ».
+- **Mon repas** : besoins cumulés de toutes les recettes du repas, planning, mise à jour du stock après cuisson.
+- **Import IA** : l’appli génère une consigne à coller dans n’importe quelle IA (Claude, ChatGPT…) ; la réponse
+  JSON (collée ou en fichier .json) est importée. Le format est le même que l’export d’une recette.
+- Données synchronisées dans le foyer : collections `recettes`, `avis`, `appareils`, `mangeurs`, `repas`, `liens`
+  et `photos` (rien à changer dans firestore.rules : couvert par la règle des données du foyer).
+- Ajouter un lot de recettes : créer `src/data/recettes/lotNN.js` et l’ajouter dans `src/data/recettes/index.js`.
+
 ## Recevoir une liste depuis WhatsApp
 - Android (appli installée) : appui long sur le message → Partager → Courses Pro.
 - iPhone : Copier, puis « Liste reçue 💬 » → « Coller depuis le presse-papiers ».

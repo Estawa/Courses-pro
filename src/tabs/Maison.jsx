@@ -147,7 +147,7 @@ function EditProduit({ id, db, maj, toast, onClose }) {
     const doublon = findProduit(db.produits, nom);
     if (doublon && doublon.id !== id) { toast(`« ${doublon.nom} » existe déjà`); return; }
     maj(d => {
-      const data = { nom, emoji: f.emoji, cat: f.cat, unite: f.unite.trim(), suivi: f.suivi, stock: num(f.stock), min: num(f.min), cible: f.cible === '' ? '' : num(f.cible) };
+      const data = { nom, emoji: f.emoji, cat: f.cat, unite: f.unite.trim(), suivi: f.suivi, stock: num(f.stock), min: num(f.min), cible: f.cible === '' ? '' : num(f.cible), contenance: (f.contenance || '').trim() };
       const pid = nouveau ? uid() : id;
       if (nouveau) d.produits.push({ id: pid, ...data });
       else Object.assign(d.produits.find(p => p.id === id), data);
@@ -190,6 +190,11 @@ function EditProduit({ id, db, maj, toast, onClose }) {
           ))}
         </div>
       </Field>
+      {!['kg', 'gr', 'g', 'l', 'cl', 'ml'].includes(String(f.unite).trim().toLowerCase()) && (
+        <Field label="🍳 Contenance d'une unité (pour les recettes)" hint="Ex : « 500 Gr » pour un paquet de pâtes, « 1 L » pour une bouteille de lait, « 6 pièce » pour une boîte d'œufs. Laisse vide si tu ne sais pas.">
+          <input className="input" value={f.contenance || ''} onChange={e => set('contenance', e.target.value)} placeholder="500 Gr" />
+        </Field>
+      )}
       {db.magasins.length > 0 && (
         <Field label="📍 Où le trouver" hint="Par défaut, l’article suit le rayon de sa catégorie.">
           <div className="stack-s">

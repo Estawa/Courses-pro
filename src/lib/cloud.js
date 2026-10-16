@@ -13,7 +13,9 @@ import {
 import { firebaseConfig, cloudConfigure } from '../firebase.js';
 
 const P = 'coursesPro_';
-export const COLLECTIONS = ['produits', 'magasins', 'liste', 'listes', 'achats'];
+// recettes : recettes perso / importées ; avis : note, commentaire, photo, nombre de fois cuisinée ;
+// appareils, mangeurs : ma cuisine ; repas : le repas en préparation ; liens : ingrédient -> article du stock
+export const COLLECTIONS = ['produits', 'magasins', 'liste', 'listes', 'achats', 'recettes', 'avis', 'appareils', 'mangeurs', 'repas', 'liens'];
 
 let app, auth, fs;
 function init() {
@@ -142,6 +144,18 @@ export const cloud = {
     init();
     await deleteDoc(refMembre(f, user.uid));
     await deleteDoc(refUser(user.uid)).catch(() => {});
+  },
+
+  // Photos des recettes (une par document, hors de la synchro générale pour rester légère)
+  async lirePhoto(f, id) {
+    init();
+    const s = await getDoc(doc(fs, P + 'foyers', f, 'photos', id));
+    return s.exists() ? s.data().image || null : null;
+  },
+  ecrirePhoto(f, id, image) {
+    init();
+    const r = doc(fs, P + 'foyers', f, 'photos', id);
+    return image ? setDoc(r, { image, maj: serverTimestamp() }) : deleteDoc(r);
   },
 
   // Écoute en temps réel : cb(cle, valeur) pour chaque morceau, onErreur(e) si l'accès est perdu

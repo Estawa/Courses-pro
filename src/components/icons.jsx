@@ -29,6 +29,12 @@ const P = {
   paste: <><rect x="5" y="4" width="14" height="17" rx="2.5" /><path d="M9 4.5V3h6v1.5M9 10h6M9 14h6M9 18h3" /></>,
   history: <><path d="M4 12a8 8 0 102.4-5.7L4 8.5" /><path d="M4 4v4.5h4.5M12 8v4.5l3 2" /></>,
   save: <><path d="M5 4h11l3 3v13H5z" /><path d="M8 4v5h7V4M8 20v-6h8v6" /></>,
+  chef: <><path d="M7 13.5V20h10v-6.5" /><path d="M7 13.5a4 4 0 01-.8-7.9A4.5 4.5 0 0112 3a4.5 4.5 0 015.8 2.6 4 4 0 01-.8 7.9" /><path d="M7 17h10" /></>,
+  clock: <><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></>,
+  camera: <><path d="M4 8h3l1.5-2.5h7L17 8h3v11H4z" /><circle cx="12" cy="13.5" r="3.5" /></>,
+  users: <><circle cx="9" cy="8.5" r="3.2" /><path d="M3 19.5c.6-3.3 3-5 6-5s5.4 1.7 6 5" /><path d="M16 5.5a3 3 0 010 6M18 14.5c1.6.6 2.7 2.2 3 5" /></>,
+  share: <><circle cx="6" cy="12" r="2.4" /><circle cx="17.5" cy="6" r="2.4" /><circle cx="17.5" cy="18" r="2.4" /><path d="M8.2 10.9l7.1-3.7M8.2 13.1l7.1 3.7" /></>,
+  swap: <path d="M7 7h12l-3-3M17 17H5l3 3" />,
   route: <><circle cx="6" cy="19" r="2" /><circle cx="18" cy="5" r="2" /><path d="M8 19h8.5a3.5 3.5 0 000-7h-9a3.5 3.5 0 010-7H16" /></>,
 };
 

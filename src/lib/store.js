@@ -25,6 +25,8 @@ export function dbInitiale() {
       },
     ],
     achats: [],
+    // Onglet Recettes
+    recettes: [], avis: [], appareils: [], mangeurs: [], repas: [], liens: [],
     reglages: { theme: 'clair', budget: 0, majStock: true },
   };
 }
@@ -95,6 +97,12 @@ const VALIDE = {
   liste: i => !!i.produitId,
   listes: l => !!l.nom && Array.isArray(l.items),
   achats: a => !!a.date,
+  recettes: r => !!r.titre && Array.isArray(r.ingredients),
+  avis: a => !!a.id,
+  appareils: a => !!a.id,
+  mangeurs: m => !!m.nom,
+  repas: r => !!r.recetteId,
+  liens: l => !!l.produitId,
 };
 
 // ---- Sauvegardes automatiques sur ce téléphone (une par jour, 10 derniers jours) ----
