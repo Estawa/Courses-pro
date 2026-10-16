@@ -1,5 +1,15 @@
 export const CHANGELOG = [
   {
+    version: '1.7.3',
+    date: '2026-10-16',
+    notes: [
+      'Recettes synonymes : une recette peut avoir d\'autres noms (ex. Tarte bourdaloue = Amandine aux poires) ; la recherche les trouve sous tous leurs noms',
+      '163 recettes du catalogue ont reçu leurs autres noms connus (Flammekueche, Pulled pork, Œufs à la neige, Parmentier, Gazpacho, Vol-au-vent…)',
+      'Fiche recette : « Aussi appelée : … » sous le titre, aussi dans le texte envoyé par WhatsApp',
+      'Ajout / modification d\'une recette : champ « Autres noms » ; l\'import IA remplit aussi les autres noms et repère les doublons sous n\'importe quel nom',
+    ],
+  },
+  {
     version: '1.7.2',
     date: '2026-10-16',
     notes: [

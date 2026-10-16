@@ -186,6 +186,7 @@ export default `
 > Frire 2 à 3 min dans un bain d'huile très chaude. Sauce soja. | 20 | 2 | plaque
 
 # Samoussas au bœuf | entree | monde:Réunion | viande | 6 | 25 | 2 | 🥟
+~ Samosas au bœuf
 - 12 | feuille | feuilles de brick
 - 400 | g | bœuf haché
 - 1 | pièce | oignon
@@ -432,6 +433,7 @@ export default `
 > Bolognaise, pâtes cuites, gratiner 20 min. | 45 | 1 | four
 
 # Bœuf Wellington | plat | festif:Royaume-Uni | viande | 6 | 40 | 3 | 🥩
+~ Filet de bœuf en croûte
 - 1 | kg | filet de bœuf (morceau central)
 - 2 | rouleau | pâte feuilletée
 - 500 | g | champignons
@@ -706,6 +708,7 @@ export default `
 > Faire revenir, ajouter le reste, mijoter 25 min, épinards en fin. | 35 | 1 | plaque
 
 # Galettes de sarrasin champignons, œuf et fromage | plat | quotidien:Bretagne | vegetarien,rapide | 5 | 10 | 1 | 🍄
+~ Galettes de blé noir
 - 10 | pièce | galettes de sarrasin
 - 400 | g | champignons
 - 10 | pièce | œufs
@@ -807,6 +810,7 @@ export default `
 > Faire revenir, riz, bouillon, couvrir 15 min. | 25 | 0 | plaque
 
 # Tarte tropézienne | dessert | festif:Saint-Tropez | vegetarien | 10 | 40 | 3 | 🍰
+~ Tropézienne
 - 500 | g | farine
 - 1 | sachet | levure de boulanger
 - 80 | g | sucre (brioche)

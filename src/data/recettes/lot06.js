@@ -18,6 +18,7 @@ export default `
 ! Une soupe-repas : on la sert avec du pain de campagne.
 
 # Bortsch à la betterave | soupe | monde:Ukraine | vegetarien,economique | 6 | 20 | 1 | 🫐
+~ Borscht
 - 3 | pièce | betteraves crues | betteraves cuites
 - 0.25 | pièce | chou blanc
 - 2 | pièce | carottes
@@ -37,6 +38,7 @@ export default `
 ! Une cuillère de crème fraîche et beaucoup d'aneth dans chaque bol.
 
 # Phở au bœuf | soupe | monde:Vietnam | viande | 5 | 25 | 2 | 🍜
+~ Pho; Soupe vietnamienne au bœuf
 - 400 | g | bœuf (rumsteck très fin) | bœuf à fondue
 - 400 | g | nouilles de riz plates
 - 1.8 | l | bouillon de bœuf
@@ -96,6 +98,7 @@ export default `
 > Mélangeur : graisse, ail 110 °C 5 min. Farine, bouillon : 100 °C 15 min. Liaison œufs vitesse 2 sans chauffer. | 22 | 1 | companion
 
 # Soupe de boulettes aux légumes (albóndigas) | soupe | monde:Mexique | viande,enfants | 5 | 25 | 1 | 🍲
+~ Sopa de albóndigas
 - 400 | g | bœuf haché | porc haché
 - 50 | g | riz
 - 1 | pièce | œuf
@@ -158,6 +161,7 @@ export default `
 > Chaleur tournante 200 °C 25 min. | 35 | 0 | microondes
 
 # Cervelle de canut | entree | quotidien:Lyon | vegetarien,rapide,economique | 6 | 10 | 1 | 🧀
+~ Claqueret
 - 500 | g | fromage blanc en faisselle bien égoutté
 - 1 | pièce | échalote
 - 1 | gousse | ail
@@ -258,6 +262,7 @@ export default `
 > Œufs durs 10 min, mayonnaise. | 25 | 1 | plaque
 
 # Pain à l'ail gratiné | entree | quotidien | vegetarien,rapide,enfants | 6 | 10 | 1 | 🧄
+~ Garlic bread
 - 1 | pièce | baguette | ciabatta
 - 100 | g | beurre mou
 - 3 | gousse | ail
@@ -437,6 +442,7 @@ export default `
 > Combiné micro-ondes + chaleur tournante 200 °C, 30 min. | 38 | 0 | microondes
 
 # Ailes de poulet barbecue (wings) | plat | monde:États-Unis | viande,enfants,grand-groupe | 6 | 10 | 1 | 🍗
+~ Chicken wings
 - 1.5 | kg | ailes de poulet
 - 15 | cl | sauce barbecue
 - 2 | c. à soupe | miel
@@ -536,6 +542,7 @@ export default `
 > Dorer le jambon, échalotes, champignons, madère, bouillon : sous pression 25 min. Crème. | 40 | 0 | cookeo
 
 # Steak au poivre | plat | festif:France | viande,rapide | 4 | 5 | 2 | 🥩
+~ Pavé au poivre
 - 4 | pièce | pavés de bœuf (faux-filet ou rumsteck) | entrecôtes
 - 2 | c. à soupe | poivre concassé
 - 20 | cl | crème fraîche
@@ -596,6 +603,7 @@ export default `
 > Combiné micro-ondes + chaleur tournante 190 °C, 25 min. | 45 | 0 | microondes
 
 # Curry d'agneau korma | plat | monde:Inde | viande | 5 | 20 | 1 | 🍛
+~ Korma d'agneau
 - 1 | kg | épaule d'agneau en cubes | poulet
 - 2 | pièce | oignons
 - 150 | g | yaourt
@@ -862,6 +870,7 @@ export default `
 > Dorer le tofu fariné 6 min, réserver, sauter les légumes, sauce, remettre le tofu. | 15 | 2 | plaque
 
 # Welsh rarebit | plat | quotidien:Nord | vegetarien,rapide | 4 | 10 | 1 | 🧀
+~ Welsh
 - 400 | g | cheddar | maroilles; comté
 - 25 | cl | bière brune ou ambrée
 - 1 | c. à soupe | moutarde
@@ -925,6 +934,7 @@ export default `
 > Bâtonnets sur plaque huilée, 220 °C 25 min. | 95 | 0 | four
 
 # Pommes de terre Hasselback | accompagnement | monde:Suède | vegetarien | 5 | 15 | 1 | 🥔
+~ Pommes de terre à la suédoise
 - 10 | pièce | pommes de terre moyennes
 - 50 | g | beurre fondu
 - 3 | gousse | ail
@@ -949,6 +959,7 @@ export default `
 ! L'accompagnement classique du gigot d'agneau.
 
 # Mousseline de carottes | accompagnement | quotidien | vegetarien,enfants,economique | 5 | 10 | 1 | 🥕
+~ Purée de carottes
 - 1 | kg | carottes
 - 1 | pièce | pomme de terre
 - 30 | g | beurre
@@ -1042,6 +1053,7 @@ export default `
 > Chaleur tournante 200 °C 35 min. | 50 | 0 | microondes
 
 # Crème catalane | dessert | monde:Espagne | vegetarien | 6 | 15 | 1 | 🍮
+~ Crema catalana
 - 50 | cl | lait
 - 4 | pièce | jaunes d'œufs
 - 100 | g | sucre
@@ -1056,6 +1068,7 @@ export default `
 > Lait infusé, crème épaissie au fouet, ramequins, frais, caraméliser. | 20 | 2 | plaque
 
 # Omelette norvégienne | dessert | festif | vegetarien,grand-groupe | 8 | 30 | 3 | 🍨
+~ Baked Alaska
 - 1 | pièce | génoise ou biscuit roulé (du commerce) | quatre-quarts
 - 1 | l | glace vanille | glace et sorbet
 - 4 | pièce | blancs d'œufs
@@ -1070,6 +1083,7 @@ export default `
 ! On peut la flamber au Grand Marnier devant les invités.
 
 # Rochers coco | dessert | quotidien | vegetarien,rapide,enfants | 20 | 10 | 1 | 🥥
+~ Congolais
 - 200 | g | noix de coco râpée
 - 3 | pièce | blancs d'œufs
 - 120 | g | sucre
@@ -1106,6 +1120,7 @@ export default `
 > Fondre le chocolat avec un peu de crème 1 min 30 à 500 W, incorporer la crème fouettée. | 15 | 2 | microondes
 
 # Bugnes lyonnaises | dessert | festif:Lyon | vegetarien,grand-groupe | 8 | 30 | 2 | 🥨
+~ Merveilles; Oreillettes; Beignets de carnaval
 - 250 | g | farine
 - 2 | pièce | œufs
 - 50 | g | beurre mou
@@ -1124,6 +1139,7 @@ export default `
 ! Les beignets du Mardi gras.
 
 # Gâteau renversé à l'ananas | dessert | quotidien | vegetarien,enfants | 8 | 15 | 1 | 🍍
+~ Upside-down cake à l'ananas
 - 1 | boîte | ananas en tranches
 - 100 | g | sucre (caramel)
 - 3 | pièce | œufs

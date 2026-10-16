@@ -91,7 +91,7 @@ function Catalogue({ db, recettes, avis, ouvrir, nouvelle }) {
       if (favoris && !((noteMoyenne(a)?.moy || 0) >= 7)) return false;
       if (tags.length && !tags.every(t => (t === 'tout-seul' ? r.tags.includes(t) || r.variantes.some(v => tourneSeule(v)) : r.tags.includes(t)))) return false;
       if (app ? !r.variantes.some(v => v.appareils.includes(app)) : !recetteFaisable(r, possedes)) return false;
-      if (nq && !norm(r.titre + ' ' + r.origine + ' ' + r.ingredients.map(i => i.nom).join(' ')).includes(nq)) return false;
+      if (nq && !norm(r.titre + ' ' + (r.alias || []).join(' ') + ' ' + r.origine + ' ' + r.ingredients.map(i => i.nom).join(' ')).includes(nq)) return false;
       return true;
     });
   }, [recettes, avis, q, cat, style, app, tags, favoris, voirMasquees, possedes]);

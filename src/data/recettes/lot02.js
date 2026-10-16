@@ -19,6 +19,7 @@ export default `
 ! Les enfants qui « n'aiment pas les courgettes » la boivent sans broncher.
 
 # Soupe poireaux-pommes de terre | soupe | quotidien:France | vegetarien,economique,tout-seul | 5 | 15 | 1 | 🥔
+~ Potage poireaux-pommes de terre
 - 3 | pièce | poireaux
 - 4 | pièce | pommes de terre
 - 1.2 | l | eau
@@ -148,6 +149,7 @@ export default `
 ! Avec des mouillettes de pain grillé, les enfants adorent.
 
 # Feuilletés à la saucisse | entree | festif | viande,enfants,grand-groupe | 8 | 15 | 1 | 🥐
+~ Friands à la saucisse; Saucisses feuilletées
 - 2 | rouleau | pâte feuilletée
 - 6 | pièce | saucisses de Strasbourg | chipolatas cuites; knackis
 - 1 | pièce | jaune d'œuf
@@ -182,6 +184,7 @@ export default `
 ! Avec des bâtonnets de légumes ou du pain pita grillé.
 
 # Tzatziki | entree | monde:Grèce | vegetarien,rapide,economique | 6 | 10 | 1 | 🥒
+~ Tsatsiki; Concombre au yaourt
 - 1 | pièce | concombre
 - 400 | g | yaourt grec | fromage blanc
 - 1 | gousse | ail
@@ -256,6 +259,7 @@ export default `
 > Dorer le pain huilé 2 min par face, frotter d'ail, garnir. | 4 | 2 | plancha
 
 # Samoussas aux légumes et curry | entree | monde:Inde | vegetarien | 6 | 25 | 2 | 🥟
+~ Samosas aux légumes
 - 12 | feuille | feuilles de brick | pâte filo
 - 2 | pièce | pommes de terre
 - 2 | pièce | carottes
@@ -588,6 +592,7 @@ export default `
 ! Une salade verte bien vinaigrée à côté.
 
 # Croque-monsieur | plat | quotidien:France | viande,rapide,enfants,economique | 5 | 10 | 1 | 🥪
+~ Croque monsieur
 - 10 | tranche | pain de mie
 - 5 | tranche | jambon
 - 100 | g | emmental râpé | comté; gruyère
@@ -641,6 +646,7 @@ export default `
 ! Avec du riz basmati et un raïta (yaourt, concombre, menthe).
 
 # Keftas d'agneau et de bœuf au barbecue | plat | monde:Maroc | viande | 5 | 20 | 1 | 🍢
+~ Kefta; Kofta
 - 800 | g | viande hachée (bœuf et agneau) | bœuf haché
 - 1 | pièce | oignon
 - 1 | botte | persil
@@ -710,6 +716,7 @@ export default `
 ! Le plat de Pâques par excellence.
 
 # Osso buco | plat | monde:Italie | viande | 5 | 20 | 2 | 🍖
+~ Jarret de veau à la milanaise
 - 5 | pièce | tranches de jarret de veau | jarret de bœuf; cuisses de dinde
 - 2 | pièce | carottes
 - 2 | pièce | oignons
@@ -747,6 +754,7 @@ export default `
 > Après avoir doré à la cocotte, couvrir et cuire 3 h à 150 °C. | 195 | 0 | four
 
 # Escalopes milanaises | plat | monde:Italie | viande,rapide,enfants | 5 | 15 | 1 | 🍋
+~ Escalopes panées
 - 5 | pièce | escalopes de veau | escalopes de dinde; blancs de poulet aplatis
 - 2 | pièce | œufs
 - 50 | g | farine
@@ -814,6 +822,7 @@ export default `
 ! Sans pois chiches ni lentilles : ajoute des haricots blancs ou du tofu pour plus de protéines.
 
 # Chili sin carne | plat | monde:Mexique | vegetarien,economique,grand-groupe | 6 | 15 | 1 | 🌶️
+~ Chili végétarien
 - 2 | boîte | haricots rouges | haricots blancs
 - 1 | boîte | maïs
 - 2 | pièce | poivrons
@@ -831,6 +840,7 @@ export default `
 > Faire revenir, ajouter le reste, mijoter 30 min. | 40 | 1 | plaque
 
 # Tortilla espagnole aux pommes de terre | plat | monde:Espagne | vegetarien,economique | 5 | 15 | 2 | 🍳
+~ Tortilla de patatas; Omelette espagnole
 - 800 | g | pommes de terre
 - 1 | pièce | oignon
 - 8 | pièce | œufs
@@ -918,6 +928,7 @@ export default `
 ! En hiver, la même recette avec des endives est un grand classique.
 
 # Riz cantonais | plat | monde:Chine | viande,rapide,economique,enfants | 5 | 10 | 1 | 🍚
+~ Riz frit cantonais; Riz sauté cantonais
 - 400 | g | riz cuit la veille | riz
 - 3 | pièce | œufs
 - 200 | g | dés de jambon | crevettes; poulet
@@ -1002,6 +1013,7 @@ export default `
 ! Encore meilleure le lendemain. Se congèle très bien.
 
 # Purée maison onctueuse | accompagnement | quotidien | vegetarien,economique,enfants | 5 | 10 | 1 | 🥔
+~ Purée de pommes de terre
 - 1.5 | kg | pommes de terre (bintje)
 - 30 | cl | lait
 - 60 | g | beurre
@@ -1075,6 +1087,7 @@ export default `
 > Sur la plaque, 220 °C 30 min. | 45 | 0 | four
 
 # Crème caramel | dessert | quotidien:France | vegetarien,economique | 6 | 20 | 2 | 🍮
+~ Flan au caramel; Crème renversée
 - 50 | cl | lait
 - 4 | pièce | œufs
 - 80 | g | sucre (crème)
@@ -1158,6 +1171,7 @@ export default `
 > Plat en fonte couvert sur la grille, braises douces, 30 min. | 45 | 1 | braises
 
 # Île flottante | dessert | festif:France | vegetarien | 6 | 20 | 2 | 🍮
+~ Œufs à la neige
 - 75 | cl | lait
 - 6 | pièce | œufs
 - 120 | g | sucre (crème)
@@ -1188,6 +1202,7 @@ export default `
 > Crème et sucre 2 à 3 min à 800 W, gélatine, verrines au frais 4 h. | 8 | 1 | microondes
 
 # Cheesecake new-yorkais | dessert | monde:États-Unis | vegetarien | 10 | 25 | 2 | 🍰
+~ New York cheesecake
 - 250 | g | biscuits (spéculoos ou petits-beurre)
 - 80 | g | beurre fondu
 - 600 | g | fromage frais (type Philadelphia) | ricotta; mascarpone
@@ -1205,6 +1220,7 @@ export default `
 ! Le secret : cuisson douce et repos d'une nuit au frais.
 
 # Banana bread | dessert | monde:États-Unis | vegetarien,economique,enfants | 8 | 10 | 1 | 🍌
+~ Cake à la banane
 - 3 | pièce | bananes très mûres
 - 80 | g | beurre fondu | huile
 - 100 | g | sucre roux
@@ -1269,6 +1285,7 @@ export default `
 > Cuire à couvert 20 min à feu doux en remuant. | 30 | 1 | plaque
 
 # Pain perdu à la brioche | dessert | quotidien:France | vegetarien,economique,rapide,enfants | 5 | 5 | 1 | 🍞
+~ Pain perdu; French toast
 - 10 | tranche | brioche ou pain rassis | pain de mie
 - 3 | pièce | œufs
 - 30 | cl | lait

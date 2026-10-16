@@ -112,6 +112,7 @@ export default `
 > Mélangeur : lardons 130 °C 3 min, légumes émincés, eau, cube : Soupe moulinée ou 100 °C vitesse 1, 40 min. | 45 | 0 | companion
 
 # Velouté de cresson | soupe | quotidien:France | vegetarien,rapide | 5 | 10 | 1 | 🌿
+~ Potage au cresson
 - 2 | botte | cresson | épinards; roquette
 - 3 | pièce | pommes de terre
 - 1 | pièce | oignon
@@ -125,6 +126,7 @@ export default `
 > Cuire pommes de terre et oignon 20 min, ajouter le cresson 5 min, mixer avec la crème. | 30 | 1 | plaque
 
 # Nems au poulet à l'Actifry | entree | monde:Vietnam | viande,enfants | 6 | 30 | 2 | 🌯
+~ Pâtés impériaux; Rouleaux impériaux
 - 20 | feuille | galettes de riz | feuilles de brick
 - 400 | g | poulet haché | porc haché; crevettes
 - 2 | pièce | carottes
@@ -143,6 +145,7 @@ export default `
 ! Servir dans une feuille de salade avec menthe et sauce nuoc-mâm sucrée.
 
 # Accras de morue à l'Actifry | entree | monde:Antilles | poisson,festif | 6 | 25 | 2 | 🐠
+~ Acras de morue; Beignets de morue
 - 300 | g | morue dessalée | cabillaud
 - 150 | g | farine
 - 1 | sachet | levure chimique
@@ -274,6 +277,7 @@ export default `
 > Rouler serré, filmer, 1 h au frais. Couper en tronçons. | 7 | 1 | aucun
 
 # Fattouch | salade | monde:Liban | vegetarien,rapide | 5 | 15 | 1 | 🥙
+~ Fattoush
 - 2 | pièce | pains pita | pain de mie
 - 1 | pièce | salade romaine
 - 4 | pièce | tomates
@@ -330,6 +334,7 @@ export default `
 > Ajouter roquefort émietté, noix, vinaigrette. | 4 | 1 | aucun
 
 # Taboulé de semoule à la menthe | salade | quotidien | vegetarien,economique,grand-groupe,enfants | 6 | 15 | 1 | 🌾
+~ Taboulé
 - 250 | g | semoule fine | boulgour; quinoa
 - 4 | pièce | tomates
 - 1 | pièce | concombre
@@ -419,6 +424,7 @@ export default `
 > Dorer les gnocchis à la poêle 5 min, ajouter sauce et mozzarella, couvrir 3 min. | 10 | 2 | plaque
 
 # Goulash hongrois | plat | monde:Hongrie | viande,grand-groupe,tout-seul | 6 | 20 | 1 | 🌶️
+~ Goulasch
 - 1.2 | kg | bœuf à braiser | porc dans l'échine
 - 3 | pièce | oignons
 - 2 | pièce | poivrons
@@ -437,6 +443,7 @@ export default `
 ! Une cuillère de crème fraîche au service.
 
 # Carbonade flamande | plat | monde:Belgique | viande,tout-seul | 6 | 20 | 1 | 🍺
+~ Carbonnade; Bœuf à la flamande
 - 1.2 | kg | bœuf à braiser | joue de bœuf
 - 3 | pièce | oignons
 - 50 | cl | bière brune | bouillon de bœuf
@@ -472,6 +479,7 @@ export default `
 > Dorer poulet et oignons, ajouter légumes et eau, mijoter 45 min. | 55 | 1 | plaque
 
 # Rougail saucisse | plat | monde:La Réunion | viande,economique | 5 | 15 | 1 | 🌭
+~ Rougail saucisses
 - 8 | pièce | saucisses fumées | saucisses de Toulouse; saucisses de Morteau
 - 4 | pièce | tomates | tomates concassées
 - 3 | pièce | oignons
@@ -508,6 +516,7 @@ export default `
 > Saisir le porc fariné au wok, réserver. Sauter les légumes, ajouter la sauce, remettre le porc. | 25 | 2 | plaque
 
 # Butter chicken | plat | monde:Inde | viande | 5 | 20 | 1 | 🍛
+~ Poulet au beurre; Murgh makhani
 - 900 | g | blancs de poulet | cuisses désossées
 - 200 | g | yaourt nature
 - 2 | c. à soupe | garam masala | curry
@@ -530,6 +539,7 @@ export default `
 ! Avec du riz basmati et des naans.
 
 # Tajine de kefta aux œufs | plat | monde:Maroc | viande,economique | 5 | 20 | 1 | 🍳
+~ Tajine de boulettes
 - 600 | g | bœuf haché | agneau haché
 - 1 | pièce | oignon
 - 1 | botte | persil
@@ -549,6 +559,7 @@ export default `
 > Poser le tajine sur des braises douces, sauce et boulettes 25 min, œufs à la fin. | 45 | 1 | braises
 
 # Bo bun au bœuf | plat | monde:Vietnam | viande,rapide | 5 | 25 | 1 | 🍜
+~ Bún bò
 - 500 | g | bœuf émincé | poulet; crevettes
 - 300 | g | vermicelles de riz
 - 1 | pièce | salade
@@ -590,6 +601,7 @@ export default `
 > Cubes marinés, Actifry avec pale 15 min. | 140 | 0 | actifry
 
 # Travers de porc caramélisés (ribs) | plat | monde:États-Unis | viande,grand-groupe,enfants | 6 | 15 | 1 | 🍖
+~ Ribs; Spare ribs
 - 2 | kg | travers de porc
 - 6 | c. à soupe | sauce barbecue | ketchup + miel
 - 3 | c. à soupe | miel
@@ -608,6 +620,7 @@ export default `
 > Panier vapeur : travers coupés, 1 l d'eau : Vapeur 45 min. Laquer et dorer 10 min sur la plancha. | 55 | 1 | plancha
 
 # Effiloché de porc (pulled pork) | plat | monde:États-Unis | viande,grand-groupe,tout-seul | 8 | 15 | 1 | 🥪
+~ Pulled pork; Porc effiloché
 - 1.5 | kg | échine de porc désossée | épaule de porc
 - 2 | c. à soupe | paprika fumé
 - 2 | c. à soupe | sucre roux
@@ -626,6 +639,7 @@ export default `
 ! Dans des buns avec du coleslaw : succès garanti pour un grand groupe.
 
 # Mac and cheese gratiné | plat | monde:États-Unis | vegetarien,enfants,economique | 5 | 10 | 1 | 🧀
+~ Macaroni au fromage
 - 500 | g | macaronis | coquillettes; penne
 - 50 | cl | lait
 - 30 | g | beurre
@@ -693,6 +707,7 @@ export default `
 > Truites dans une grille à poisson, 5 à 6 min par face, amandes dorées à la poêle. | 20 | 2 | braises
 
 # Brandade de morue | plat | quotidien:Provence | poisson,economique | 5 | 20 | 2 | 🥔
+~ Brandade
 - 600 | g | morue dessalée | cabillaud; colin
 - 800 | g | pommes de terre
 - 25 | cl | lait
@@ -883,6 +898,7 @@ export default `
 ! La veille, c'est encore meilleur. Une salade verte suffit à côté.
 
 # Galettes bretonnes complètes à la plancha | plat | quotidien:Bretagne | viande,enfants,rapide | 5 | 10 | 1 | 🥞
+~ Galette complète; Crêpes de sarrasin complètes
 - 10 | pièce | galettes de sarrasin
 - 10 | tranche | jambon
 - 200 | g | emmental râpé | comté râpé
@@ -911,6 +927,7 @@ export default `
 > Mélangeur : pâtes, 1 l d'eau, échalote : 100 °C vitesse 1, 11 min. Saumon, crème : 4 min. | 18 | 0 | companion
 
 # Spaghettis bolognaise one pot | plat | quotidien:Italie | viande,rapide,enfants,economique | 5 | 10 | 1 | 🍝
+~ Spaghetti bolognaise
 - 500 | g | spaghettis | pâtes
 - 500 | g | bœuf haché | porc haché
 - 1 | pièce | oignon
@@ -970,6 +987,7 @@ export default `
 > Chaleur tournante 190 °C 30 min. | 50 | 0 | microondes
 
 # Tarte flambée alsacienne | plat | quotidien:Alsace | viande,rapide | 5 | 10 | 1 | 🔥
+~ Flammekueche
 - 2 | rouleau | pâte à pizza fine | pâte brisée
 - 25 | cl | crème épaisse | fromage blanc + crème
 - 200 | g | lardons
@@ -982,6 +1000,7 @@ export default `
 > Pierre préchauffée, couvercle fermé, 6 à 8 min. | 25 | 1 | bbqgaz
 
 # Shakshuka (œufs à la tomate) | plat | monde:Tunisie | vegetarien,economique,rapide | 4 | 10 | 1 | 🍳
+~ Chakchouka
 - 6 | pièce | œufs
 - 800 | g | tomates concassées
 - 2 | pièce | poivrons
@@ -1076,6 +1095,7 @@ export default `
 ! Laissée refroidir en plaque, elle se découpe et se grille à la plancha le lendemain.
 
 # Pommes de terre sarladaises | accompagnement | festif:Périgord | vegetarien | 6 | 15 | 1 | 🥔
+~ Pommes sarladaises
 - 1.5 | kg | pommes de terre
 - 4 | c. à soupe | graisse de canard | huile d'olive
 - 3 | gousse | ail
@@ -1100,6 +1120,7 @@ export default `
 > Plat couvert avec 3 c. à soupe d'eau, 900 W 7 à 8 min. | 15 | 0 | microondes
 
 # Far breton aux pruneaux | dessert | quotidien:Bretagne | vegetarien,economique | 8 | 10 | 1 | 🍮
+~ Far aux pruneaux; Far breton
 - 200 | g | farine
 - 150 | g | sucre
 - 4 | pièce | œufs
@@ -1114,6 +1135,7 @@ export default `
 > Batteur : tous les ingrédients sauf pruneaux, vitesse 6, 1 min. Four comme ci-dessus. | 52 | 0 | four
 
 # Flan pâtissier | dessert | quotidien:France | vegetarien | 8 | 15 | 2 | 🥧
+~ Flan parisien
 - 1 | rouleau | pâte brisée | sans pâte
 - 75 | cl | lait
 - 25 | cl | crème liquide
@@ -1128,6 +1150,7 @@ export default `
 > Chauffer lait et crème vanillés, verser sur œufs-sucre-maïzena, remettre sur le feu en fouettant jusqu'à épaississement. Four 45 min. | 60 | 2 | four
 
 # Quatre-quarts | dessert | quotidien:Bretagne | vegetarien,economique,enfants | 8 | 10 | 1 | 🍰
+~ Pound cake
 - 4 | pièce | œufs (environ 240 g)
 - 240 | g | farine
 - 240 | g | sucre
@@ -1143,6 +1166,7 @@ export default `
 > Combiné micro-ondes + chaleur tournante 170 °C, 30 à 35 min. | 45 | 0 | microondes
 
 # Tarte tatin | dessert | festif:France | vegetarien | 8 | 20 | 2 | 🍎
+~ Tarte renversée aux pommes
 - 8 | pièce | pommes (golden ou reinettes) | poires
 - 120 | g | sucre
 - 80 | g | beurre
@@ -1156,6 +1180,7 @@ export default `
 ! Avec une cuillère de crème fraîche épaisse ou une boule de glace vanille.
 
 # Bûche roulée au chocolat | dessert | festif:France | vegetarien,grand-groupe | 10 | 40 | 3 | 🎄
+~ Bûche de Noël
 - 4 | pièce | œufs
 - 100 | g | sucre
 - 80 | g | farine
@@ -1257,6 +1282,7 @@ export default `
 > Boudins sur plaque, four 200 °C 18 à 20 min. | 40 | 1 | four
 
 # Gâteau marbré | dessert | quotidien | vegetarien,enfants,economique | 8 | 15 | 1 | 🍫
+~ Marbré
 - 200 | g | farine
 - 1 | sachet | levure chimique
 - 180 | g | sucre

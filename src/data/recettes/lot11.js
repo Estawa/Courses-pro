@@ -154,6 +154,7 @@ export default `
 > Servir glacé avec les grains de raisin. | 2 | 0 | aucun
 
 # Baba ganoush (caviar d'aubergine au tahini) | entree | monde:Liban | vegetarien | 6 | 10 | 1 | 🍆
+~ Moutabal
 - 3 | pièce | aubergines
 - 3 | c. à soupe | tahini (purée de sésame)
 - 1 | pièce | citron
@@ -171,6 +172,7 @@ export default `
 ! Le goût fumé vient de la peau brûlée : ne pas hésiter à la noircir.
 
 # Gambas al ajillo | entree | monde:Espagne | poisson,rapide | 4 | 10 | 1 | 🦐
+~ Crevettes à l'ail à l'espagnole
 - 400 | g | gambas ou crevettes crues décortiquées
 - 6 | gousse | ail
 - 1 | pièce | piment sec | piment d'Espelette
@@ -223,6 +225,7 @@ export default `
 = microondes | 18 | Au micro-ondes combiné
 > Chaleur tournante 200 °C + micro-ondes faible, 18 min. | 33 | 0 | microondes
 # Pan con tomate | entree | monde:Catalogne | vegetarien,rapide,economique | 4 | 5 | 1 | 🍞
+~ Pa amb tomàquet
 - 8 | tranche | pain de campagne
 - 3 | pièce | tomates bien mûres
 - 2 | gousse | ail
@@ -406,6 +409,7 @@ export default `
 > Pilons marinés, Actifry sans pale 25 min. | 725 | 0 | actifry
 
 # Escalopes de veau piccata (citron et câpres) | plat | monde:Italie | viande,rapide | 4 | 10 | 1 | 🍋
+~ Piccata
 - 4 | pièce | escalopes de veau fines | escalopes de poulet
 - 30 | g | farine
 - 40 | g | beurre
@@ -498,6 +502,7 @@ export default `
 > Garniture : dorer, tomates : sous pression 10 min, réduire 5 min. Pâte à la main, four. | 120 | 1 | four
 
 # Grand aïoli provençal | plat | festif:Provence | poisson,grand-groupe | 6 | 30 | 2 | 🧄
+~ Aïoli
 - 1 | kg | cabillaud ou morue dessalée
 - 800 | g | pommes de terre
 - 500 | g | carottes
@@ -634,6 +639,7 @@ export default `
 > Cubes huilés 220 °C 40 min en remuant. | 45 | 1 | four
 
 # Panisses frites | accompagnement | quotidien:Marseille | vegetarien,economique | 4 | 15 | 1 | 🍟
+~ Panisses
 - 250 | g | polenta fine | farine de maïs
 - 1 | l | eau
 - 3 | c. à soupe | huile d'olive
@@ -647,6 +653,7 @@ export default `
 ! Les panisses marseillaises se font à la farine de pois chiches : cette version à la polenta les évite.
 
 # Pak choï sautés à l'ail et sauce huître | accompagnement | monde:Chine | vegetarien,rapide | 4 | 5 | 1 | 🥬
+~ Bok choy
 - 6 | pièce | pak choï | blettes
 - 3 | gousse | ail
 - 2 | c. à soupe | sauce huître | sauce soja
@@ -734,6 +741,7 @@ export default `
 > Miel chauffé 3 min, versé sur les blancs montés au batteur électrique. | 25 | 2 | plaque
 
 # Flognarde aux pommes | dessert | quotidien:Limousin | vegetarien,economique | 6 | 10 | 1 | 🍏
+~ Flaugnarde; Clafoutis aux pommes
 - 4 | pièce | pommes
 - 3 | pièce | œufs
 - 100 | g | farine
@@ -790,6 +798,7 @@ export default `
 > Par séquences d'1 min à puissance max en remuant, 5 à 6 min. | 25 | 2 | microondes
 
 # Gâteau tres leches | dessert | monde:Mexique | vegetarien,grand-groupe | 10 | 20 | 1 | 🥛
+~ Tres leches
 - 5 | pièce | œufs
 - 150 | g | sucre
 - 150 | g | farine
@@ -835,6 +844,7 @@ export default `
 ! On la casse à la main à table, sans couteau.
 
 # Tarte amandine | dessert | quotidien:France | vegetarien,economique | 8 | 20 | 1 | 🥧
+~ Tarte frangipane; Tarte à la crème d'amande
 - 1 | rouleau | pâte sablée | pâte brisée
 - 125 | g | poudre d'amande
 - 100 | g | beurre mou

@@ -54,6 +54,7 @@ export default `
 > Mélangeur : curry 120 °C 1 min, coco, bouillon, nuoc-mâm : 100 °C 8 min. Crevettes : 4 min. Montage des bols. | 20 | 0 | companion
 
 # Soupe aigre-piquante | soupe | monde:Chine | viande,rapide | 5 | 15 | 1 | 🌶️
+~ Soupe pékinoise; Hot and sour soup
 - 200 | g | porc ou poulet en lanières | tofu
 - 150 | g | champignons noirs ou shiitakés | champignons de Paris
 - 1 | pièce | carotte
@@ -180,6 +181,7 @@ export default `
 ! À préparer 2 à 3 jours avant le réveillon.
 
 # Saumon gravlax | entree | monde:Suède | poisson | 8 | 15 | 1 | 🐟
+~ Gravlax; Saumon mariné à l'aneth
 - 800 | g | filet de saumon très frais avec la peau
 - 60 | g | gros sel
 - 60 | g | sucre
@@ -192,6 +194,7 @@ export default `
 > Rincer, sécher, trancher finement. Sauce moutarde-miel-aneth. | 10 | 2 | aucun
 
 # Ceviche de poisson blanc | entree | monde:Pérou | poisson,rapide | 5 | 20 | 1 | 🍋
+~ Cebiche
 - 600 | g | poisson blanc très frais (dorade, bar, cabillaud)
 - 5 | pièce | citrons verts
 - 1 | pièce | oignon rouge
@@ -282,6 +285,7 @@ export default `
 > Mélanger avec vinaigre, soja, sucre, sésame. | 3 | 1 | aucun
 
 # Salade de pommes de terre à l'allemande | salade | monde:Allemagne | viande,economique,grand-groupe | 6 | 15 | 1 | 🥔
+~ Kartoffelsalat
 - 1.2 | kg | pommes de terre (charlotte)
 - 150 | g | lardons | saucisses de Francfort
 - 1 | pièce | oignon rouge
@@ -383,6 +387,7 @@ export default `
 > Mélangeur : curry, un peu de coco 120 °C 2 min, poulet, reste de coco, légumes : 100 °C vitesse mijotage, 15 min. | 18 | 0 | companion
 
 # Poulet chasseur à l'italienne (cacciatore) | plat | monde:Italie | viande,tout-seul | 5 | 15 | 1 | 🍅
+~ Poulet chasseur; Pollo alla cacciatora
 - 5 | pièce | cuisses de poulet
 - 1 | pièce | oignon
 - 2 | pièce | poivrons
@@ -432,6 +437,7 @@ export default `
 ! Malgré le nom, l'ail confit est très doux.
 
 # Tartare de bœuf et frites | plat | quotidien:France | viande,rapide | 4 | 20 | 1 | 🥩
+~ Steak tartare
 - 600 | g | bœuf très frais (rumsteck ou filet) haché au couteau
 - 2 | pièce | jaunes d'œufs
 - 2 | pièce | échalotes
@@ -461,6 +467,7 @@ export default `
 > Saisir sur toutes les faces, puis cuisson indirecte couvercle fermé 30 min. | 45 | 1 | bbqgaz
 
 # Bœuf miroton | plat | quotidien:France | viande,economique | 5 | 15 | 1 | 🧅
+~ Miroton
 - 600 | g | bœuf cuit (reste de pot-au-feu ou de rôti)
 - 4 | pièce | oignons
 - 30 | cl | bouillon
@@ -539,6 +546,7 @@ export default `
 ! Avec une salade et une sauce crème-comté, c'est un vrai plat du Jura.
 
 # Potée lorraine | plat | quotidien:Lorraine | viande,grand-groupe,tout-seul | 6 | 20 | 1 | 🥬
+~ Potée
 - 1 | pièce | chou vert
 - 500 | g | palette ou échine demi-sel | lard fumé
 - 2 | pièce | saucisses fumées
@@ -600,6 +608,7 @@ export default `
 > Souris dorées à la poêle. Mélangeur : oignons, vin, souris : Cuisson lente ou 95 °C 2 h 30. | 160 | 0 | companion
 
 # Épaule d'agneau de 7 heures | plat | festif:France | viande,grand-groupe,tout-seul | 8 | 20 | 1 | 🐑
+~ Agneau de sept heures
 - 1.8 | kg | épaule d'agneau avec l'os
 - 1 | pièce | tête d'ail
 - 3 | pièce | carottes
@@ -792,6 +801,7 @@ export default `
 ! Parfaite pour finir les restes de légumes.
 
 # Pizza quatre fromages | plat | monde:Italie | vegetarien,enfants | 4 | 15 | 1 | 🧀
+~ Quattro formaggi
 - 1 | rouleau | pâte à pizza
 - 15 | cl | crème fraîche ou sauce tomate
 - 1 | pièce | mozzarella
@@ -804,6 +814,7 @@ export default `
 > Pierre préchauffée, couvercle fermé, 6 à 8 min. | 25 | 1 | bbqgaz
 
 # Flamiche picarde aux poireaux | plat | quotidien:Picardie | vegetarien | 6 | 20 | 1 | 🥧
+~ Flamique
 - 2 | rouleau | pâte brisée ou feuilletée
 - 1 | kg | poireaux
 - 50 | g | beurre
@@ -831,6 +842,7 @@ export default `
 ! Économique et réconfortant, avec du riz ou des pommes vapeur.
 
 # Pommes de terre boulangères | accompagnement | quotidien:France | vegetarien,economique,tout-seul | 6 | 15 | 1 | 🥔
+~ Pommes boulangère
 - 1.5 | kg | pommes de terre
 - 3 | pièce | oignons
 - 50 | cl | bouillon de volaille
@@ -866,6 +878,7 @@ export default `
 > Bâtonnets avec 1 cuillère d'huile, Actifry avec pale 25 min, miel les 5 dernières minutes. | 45 | 0 | actifry
 
 # Naans maison à la plancha | accompagnement | monde:Inde | vegetarien,enfants | 8 | 20 | 1 | 🫓
+~ Naan; Pain indien
 - 400 | g | farine
 - 1 | sachet | levure chimique
 - 150 | g | yaourt nature
@@ -909,6 +922,7 @@ export default `
 > Mélangeur : légumes, huile 120 °C 3 min. Riz, curcuma, bouillon : 100 °C vitesse 1 intermittente, 16 min. | 20 | 0 | companion
 
 # Mille-feuille express | dessert | festif:France | vegetarien | 6 | 25 | 2 | 🍰
+~ Millefeuille
 - 1 | rouleau | pâte feuilletée
 - 50 | cl | lait
 - 4 | pièce | jaunes d'œufs
@@ -961,6 +975,7 @@ export default `
 > Couteau hachoir : noix vitesse 9, 10 s. Pétrin : le reste vitesse 4, 1 min. Four 30 min. | 35 | 0 | four
 
 # Kouglof alsacien | dessert | festif:Alsace | vegetarien | 10 | 30 | 2 | 🍞
+~ Kugelhopf; Kougelhopf
 - 500 | g | farine
 - 1 | sachet | levure de boulanger
 - 25 | cl | lait tiède
@@ -1047,6 +1062,7 @@ export default `
 ! Le dessert léger parfait après un couscous ou un tajine.
 
 # Œufs au lait | dessert | quotidien:France | vegetarien,economique,enfants | 6 | 10 | 1 | 🍮
+~ Flan aux œufs
 - 75 | cl | lait
 - 4 | pièce | œufs
 - 100 | g | sucre

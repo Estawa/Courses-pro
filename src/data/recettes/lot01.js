@@ -44,6 +44,7 @@ export default `
 > Cuire 35 min à frémissement, puis passer au moulin à légumes. | 40 | 0 | plaque
 
 # Soupe à l'oignon gratinée | soupe | festif:France | vegetarien,economique | 5 | 20 | 2 | 🧅
+~ Gratinée à l'oignon
 - 6 | pièce | oignons | oignons jaunes
 - 40 | g | beurre
 - 1 | c. à soupe | farine
@@ -63,6 +64,7 @@ export default `
 ! La vraie astuce : ne pas presser la cuisson des oignons, c'est elle qui donne tout le goût.
 
 # Gaspacho andalou express | soupe | monde:Espagne | vegetarien,rapide | 5 | 15 | 1 | 🍅
+~ Gazpacho
 - 1 | kg | tomates bien mûres | tomates cerises
 - 1 | pièce | concombre | courgette
 - 1 | pièce | poivron rouge | poivron jaune
@@ -117,6 +119,7 @@ export default `
 > Assaisonner citron vert, nuoc-mâm, coriandre. | 2 | 1 | aucun
 
 # Soupe minestrone | soupe | monde:Italie | vegetarien,economique,grand-groupe | 6 | 20 | 1 | 🍲
+~ Minestrone
 - 2 | pièce | carottes
 - 2 | pièce | courgettes
 - 1 | pièce | branche de céleri | fenouil | opt
@@ -287,6 +290,7 @@ export default `
 > Tout mélanger avec le pesto. | 5 | 1 | aucun
 
 # Taboulé libanais aux herbes | salade | monde:Liban | vegetarien,economique | 5 | 25 | 1 | 🌿
+~ Tabbouleh
 - 100 | g | boulgour fin | semoule
 - 3 | botte | persil plat | coriandre
 - 1 | botte | menthe
@@ -317,6 +321,7 @@ export default `
 > Ajouter olives et feta en gros cubes. Arroser d'huile, parsemer d'origan. | 3 | 0 | aucun
 
 # Salade César au poulet croustillant | salade | festif | viande | 5 | 20 | 2 | 🥗
+~ Caesar salad
 - 3 | pièce | blancs de poulet | escalopes de dinde
 - 2 | pièce | salade romaine | laitue
 - 60 | g | parmesan | grana padano
@@ -359,6 +364,7 @@ export default `
 > Refroidir, couper, mélanger. | 20 | 2 | aucun
 
 # Coleslaw crémeux | salade | monde:États-Unis | vegetarien,economique,grand-groupe | 6 | 15 | 1 | 🥬
+~ Salade de chou cru
 - 0.5 | pièce | chou blanc | chou rouge; chou pointu
 - 3 | pièce | carottes
 - 4 | c. à soupe | mayonnaise | yaourt grec
@@ -412,6 +418,7 @@ export default `
 > Couper, assaisonner tiède. | 8 | 1 | aucun
 
 # Poulet basquaise | plat | quotidien:France | viande,economique | 5 | 20 | 1 | 🍗
+~ Poulet à la basquaise
 - 5 | pièce | cuisses de poulet | hauts de cuisse; pilons
 - 3 | pièce | poivrons | courgettes
 - 2 | pièce | oignons
@@ -437,6 +444,7 @@ export default `
 ! Servir avec du riz : il absorbe la sauce à merveille.
 
 # Bœuf bourguignon | plat | festif:France | viande,grand-groupe | 6 | 30 | 2 | 🍷
+~ Bourguignon
 - 1.5 | kg | bœuf à bourguignon | paleron; joue de bœuf
 - 200 | g | lardons | poitrine fumée
 - 4 | pièce | carottes
@@ -462,6 +470,7 @@ export default `
 ! Encore meilleur réchauffé le lendemain. Pommes vapeur ou pâtes fraîches pour accompagner.
 
 # Blanquette de veau à l'ancienne | plat | festif:France | viande | 6 | 25 | 2 | 🥘
+~ Blanquette
 - 1.2 | kg | veau à blanquette | sauté de dinde; épaule de porc
 - 3 | pièce | carottes
 - 1 | pièce | oignon piqué de clous de girofle | oignon
@@ -485,6 +494,7 @@ export default `
 ! Riz blanc obligatoire !
 
 # Lasagnes à la bolognaise | plat | quotidien:Italie | viande,grand-groupe,enfants | 6 | 30 | 2 | 🍝
+~ Lasagnes bolognaise
 - 600 | g | bœuf haché | porc haché; mélange bœuf-porc
 - 12 | feuille | feuilles de lasagnes
 - 800 | g | sauce tomate | tomates concassées; coulis de tomate
@@ -509,6 +519,7 @@ export default `
 ! Se congèle très bien en portions.
 
 # Hachis parmentier | plat | quotidien:France | viande,economique,enfants,grand-groupe | 6 | 25 | 1 | 🥔
+~ Parmentier
 - 1.5 | kg | pommes de terre
 - 600 | g | bœuf haché | restes de pot-au-feu; porc haché
 - 2 | pièce | oignons
@@ -532,6 +543,7 @@ export default `
 > Monter dans un plat compatible : mode combiné micro-ondes + gril, 12 à 15 min. | 15 | 0 | microondes
 
 # Gratin dauphinois | accompagnement | quotidien:France | vegetarien,grand-groupe | 6 | 20 | 1 | 🥔
+~ Dauphinois
 - 1.5 | kg | pommes de terre
 - 50 | cl | lait
 - 30 | cl | crème liquide | crème fraîche
@@ -655,6 +667,7 @@ export default `
 > Poulet en cubes enrobé de curry et d'une cuillère d'huile, Actifry avec pale 15 min. Ajouter oignons émincés et 10 cl de lait de coco les 5 dernières minutes. | 20 | 0 | actifry
 
 # Burgers maison à la plancha | plat | quotidien:États-Unis | viande,enfants,grand-groupe | 5 | 15 | 1 | 🍔
+~ Hamburgers; Cheeseburgers
 - 5 | pièce | pains à burger | pains briochés
 - 5 | pièce | steaks hachés | galettes de bœuf maison
 - 5 | tranche | cheddar | emmental; raclette
@@ -744,6 +757,7 @@ export default `
 > Légumes en lamelles sur la plancha 10 min, saucisses 10 à 12 min. | 30 | 2 | plancha
 
 # Spaghettis carbonara (la vraie) | plat | monde:Italie | viande,rapide | 5 | 10 | 1 | 🍝
+~ Carbonara; Pâtes carbonara
 - 500 | g | spaghettis | pâtes
 - 200 | g | lardons | guanciale; pancetta
 - 4 | pièce | jaunes d'œufs
@@ -776,6 +790,7 @@ export default `
 > Ajouter le bouillon chaud louche par louche en remuant, 18 à 20 min. Finir parmesan et beurre. | 20 | 2 | plaque
 
 # Gratin de pâtes jambon-fromage | plat | quotidien | viande,economique,enfants | 5 | 10 | 1 | 🧀
+~ Gratin de macaronis
 - 400 | g | pâtes | coquillettes; penne
 - 4 | tranche | jambon | lardons; dés de poulet
 - 40 | cl | lait
@@ -837,6 +852,7 @@ export default `
 ! Servir avec de la semoule ou du pain. Les citrons confits se trouvent au rayon produits du monde.
 
 # Paëlla au poulet et chorizo | plat | festif:Espagne | viande,poisson,grand-groupe | 6 | 25 | 2 | 🥘
+~ Paella
 - 400 | g | riz rond | riz à paëlla; riz
 - 4 | pièce | cuisses de poulet | blancs de poulet
 - 150 | g | chorizo | lardons
@@ -954,6 +970,7 @@ export default `
 ! Pour 5 personnes, prends 2 pâtes : la recette est donnée pour une pizza familiale.
 
 # Moules marinières et frites | plat | quotidien:Belgique | poisson,rapide | 5 | 15 | 1 | 🦪
+~ Moules-frites
 - 3.5 | kg | moules de bouchot | moules
 - 2 | pièce | échalotes | oignons
 - 25 | cl | vin blanc | cidre
@@ -1049,6 +1066,7 @@ export default `
 > Ramequins couverts d'alu dans le panier, 1 verre d'eau : vapeur sous pression 7 min, refroidir puis frais 3 h. | 15 | 0 | cookeo
 
 # Tarte aux pommes fine | dessert | quotidien:France | vegetarien,economique | 6 | 20 | 1 | 🍎
+~ Tarte fine aux pommes
 - 1 | rouleau | pâte feuilletée | pâte brisée
 - 5 | pièce | pommes | poires
 - 30 | g | beurre
@@ -1081,6 +1099,7 @@ export default `
 ! La recette que tout le monde connaît : idéale à faire avec les enfants.
 
 # Fondant au chocolat express | dessert | quotidien | vegetarien,rapide | 6 | 10 | 1 | 🍫
+~ Moelleux au chocolat
 - 200 | g | chocolat noir | chocolat au lait
 - 150 | g | beurre
 - 120 | g | sucre

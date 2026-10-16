@@ -145,6 +145,7 @@ export default `
 > Chaleur tournante 200 °C 25 min. | 37 | 0 | microondes
 
 # Mousse de foies de volaille | entree | festif | viande | 8 | 15 | 1 | 🥖
+~ Pâté de foies de volaille
 - 400 | g | foies de volaille
 - 2 | pièce | échalotes
 - 150 | g | beurre mou
@@ -211,6 +212,7 @@ export default `
 > Poivrons entiers sur la grille 20 min en les tournant, pelés, marinés. | 35 | 1 | bbqgaz
 
 # Taramasalata maison | entree | monde:Grèce | poisson,rapide | 6 | 10 | 1 | 🐟
+~ Tarama
 - 150 | g | œufs de cabillaud fumés | œufs de truite
 - 3 | tranche | pain de mie sans croûte
 - 10 | cl | lait
@@ -393,6 +395,7 @@ export default `
 > Mélangeur : échalotes, poulet, champignons 120 °C 12 min, farine, crème 3 min. Montage et four. | 55 | 0 | four
 
 # Poulet croustillant façon Kentucky | plat | monde:États-Unis | viande,enfants | 5 | 20 | 1 | 🍗
+~ Poulet frit; Fried chicken
 - 1.2 | kg | pilons et hauts de cuisse
 - 30 | cl | lait ribot ou yaourt dilué
 - 150 | g | farine
@@ -458,6 +461,7 @@ export default `
 > Faire revenir, mouiller, mijoter 1 h 30, carottes 30 min. | 135 | 1 | plaque
 
 # Cevapcici (petites saucisses grillées des Balkans) | plat | monde:Balkans | viande,enfants | 5 | 20 | 1 | 🌭
+~ Ćevapi
 - 800 | g | mélange bœuf-agneau haché | bœuf haché
 - 1 | pièce | oignon
 - 3 | gousse | ail
@@ -487,6 +491,7 @@ export default `
 > Dorer, oignons, liquides : sous pression 25 min. Pruneaux : Mijoter 5 min. | 45 | 0 | cookeo
 
 # Porc au gingembre japonais (shogayaki) | plat | monde:Japon | viande,rapide | 5 | 10 | 1 | 🫚
+~ Shogayaki
 - 600 | g | échine de porc en fines tranches
 - 2 | c. à soupe | gingembre frais râpé
 - 4 | c. à soupe | sauce soja
@@ -597,6 +602,7 @@ export default `
 > Crevettes marinées grillées 3 min, sauce créole à part. | 20 | 2 | plancha
 
 # Fish pie | plat | monde:Royaume-Uni | poisson,grand-groupe | 6 | 25 | 1 | 🥧
+~ Parmentier de poisson
 - 800 | g | mélange de poissons (cabillaud, saumon, poisson fumé)
 - 1.2 | kg | pommes de terre
 - 50 | cl | lait
@@ -822,6 +828,7 @@ export default `
 > Cuire 8 min à l'eau, sauter au beurre et aux amandes. | 15 | 1 | plaque
 
 # Pommes dauphine à l'Actifry | accompagnement | festif:France | vegetarien | 6 | 30 | 2 | 🥔
+~ Pommes dauphines
 - 500 | g | pommes de terre
 - 25 | cl | eau
 - 60 | g | beurre
@@ -939,6 +946,7 @@ export default `
 ! Colorants et décors : un super atelier d'anniversaire.
 
 # Donuts au four | dessert | monde:États-Unis | vegetarien,enfants | 12 | 20 | 1 | 🍩
+~ Beignets au four
 - 250 | g | farine
 - 1 | sachet | levure chimique
 - 80 | g | sucre
@@ -989,6 +997,7 @@ export default `
 > Remplir, couvrir de biscuits, une nuit au frais avec un poids. | 5 | 0 | aucun
 
 # Forêt-noire | dessert | festif:Allemagne | vegetarien | 10 | 45 | 3 | 🍒
+~ Gâteau Forêt-Noire; Schwarzwälder Kirschtorte
 - 4 | pièce | œufs
 - 120 | g | sucre
 - 80 | g | farine
@@ -1018,6 +1027,7 @@ export default `
 > Pétrin : beurre, sucre vitesse 5, 1 min, œufs, amande, farine, rhum : 30 s. Four 40 min. | 45 | 0 | four
 
 # Glace minute à la banane | dessert | quotidien | vegetarien,rapide,enfants,economique | 4 | 5 | 1 | 🍌
+~ Nice cream
 - 4 | pièce | bananes très mûres (coupées et congelées)
 - 2 | c. à soupe | cacao | beurre de cacahuète
 - 5 | cl | lait | opt

@@ -94,6 +94,7 @@ export default `
 > Gril seul 5 à 6 min. | 16 | 2 | microondes
 
 # Feuilles de vigne farcies au riz | entree | monde:Grèce | vegetarien | 6 | 40 | 2 | 🍃
+~ Dolmas; Dolmades
 - 30 | pièce | feuilles de vigne (en bocal)
 - 200 | g | riz rond
 - 2 | pièce | oignons
@@ -132,6 +133,7 @@ export default `
 ! Un fromage frais maison qui se prépare la veille.
 
 # Œufs bénédicte | entree | monde:États-Unis | viande | 4 | 20 | 3 | 🍳
+~ Eggs Benedict
 - 4 | pièce | muffins anglais | tranches de pain de mie toastées
 - 4 | tranche | bacon ou jambon | saumon fumé
 - 4 | pièce | œufs (pochés)
@@ -252,6 +254,7 @@ export default `
 > Légumes rôtis 30 min à 220 °C, assemblage. | 35 | 0 | four
 
 # Salade méchouia | salade | monde:Tunisie | vegetarien | 5 | 15 | 1 | 🌶️
+~ Mechouia
 - 4 | pièce | poivrons
 - 4 | pièce | tomates
 - 1 | pièce | oignon
@@ -297,6 +300,7 @@ export default `
 ! Toute la convivialité de la raclette sans appareil à raclette.
 
 # Fondue savoyarde | plat | festif:Savoie | vegetarien,grand-groupe | 6 | 15 | 2 | 🫕
+~ Fondue
 - 1.2 | kg | fromages (beaufort, comté, emmental de Savoie) | comté et emmental
 - 40 | cl | vin blanc sec de Savoie | bouillon de légumes
 - 1 | gousse | ail
@@ -323,6 +327,7 @@ export default `
 > Lardons et oignon dorés, crozets, eau à hauteur : sous pression 8 min. Crème, reblochon, gratiner 15 min. | 30 | 1 | four
 
 # Aligot et saucisses | plat | quotidien:Aveyron | viande | 5 | 20 | 2 | 🧀
+~ Aligot
 - 1 | kg | pommes de terre (bintje)
 - 400 | g | tomme fraîche de l'Aubrac | mozzarella + cantal jeune
 - 20 | cl | crème fraîche
@@ -436,6 +441,7 @@ export default `
 > Grille très chaude, 1 min 30 par face. | 20 | 2 | bbqgaz
 
 # Paëlla végétarienne | plat | monde:Espagne | vegetarien,grand-groupe | 6 | 20 | 1 | 🥘
+~ Paella végétarienne
 - 400 | g | riz rond
 - 2 | pièce | poivrons
 - 1 | pièce | courgette
@@ -494,6 +500,7 @@ export default `
 > Escalopes panées dorées 4 min par face, montage. | 30 | 2 | plaque
 
 # Galettes kebab de poulet maison | plat | monde:Turquie | viande,enfants,grand-groupe | 6 | 20 | 1 | 🥙
+~ Kebab maison; Döner
 - 1 | kg | hauts de cuisse désossés
 - 200 | g | yaourt
 - 2 | c. à café | paprika
@@ -593,6 +600,7 @@ export default `
 > Coulis, gélatine, crème fouettée, moule, frais une nuit. | 25 | 2 | aucun
 
 # Croquants aux amandes | dessert | quotidien:Nîmes | vegetarien,enfants | 25 | 15 | 1 | 🥖
+~ Croquets aux amandes; Cantuccini
 - 250 | g | farine
 - 200 | g | sucre
 - 2 | pièce | œufs
@@ -605,6 +613,7 @@ export default `
 > Pétrin : farine, sucre, œufs vitesse 4, 30 s, amandes vitesse 1, 10 s. Cuisson. | 35 | 1 | four
 
 # Bredele aux épices | dessert | festif:Alsace | vegetarien,enfants,grand-groupe | 40 | 30 | 1 | ⭐
+~ Bredala; Petits gâteaux de Noël alsaciens
 - 300 | g | farine
 - 150 | g | beurre mou
 - 120 | g | sucre
@@ -663,6 +672,7 @@ export default `
 > Combiné micro-ondes + chaleur tournante 180 °C, 20 min. | 25 | 0 | microondes
 
 # Gâteau des rois brioché provençal | dessert | festif:Provence | vegetarien,grand-groupe | 10 | 30 | 2 | 👑
+~ Couronne des rois; Brioche des rois
 - 500 | g | farine
 - 1 | sachet | levure de boulanger
 - 80 | g | sucre

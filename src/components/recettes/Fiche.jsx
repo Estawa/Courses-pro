@@ -119,6 +119,8 @@ export default function Fiche({ recette: r, db, maj, toast, onClose, onModifier,
         </div>
       )}
 
+      {r.alias?.length > 0 && <p className="muted small">Aussi appelée : {r.alias.join(', ')}</p>}
+
       <div className="chips-wrap">
         <span className="chip" style={{ background: cat.couleur }}>{cat.emoji} {cat.un}</span>
         {style && <span className="chip chip-white">{style.emoji} {style.nom}{r.origine ? ' · ' + r.origine : ''}</span>}

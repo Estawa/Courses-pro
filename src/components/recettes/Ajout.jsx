@@ -3,9 +3,10 @@ import Icon from '../icons.jsx';
 import { Field, Segmented, Sheet } from '../ui.jsx';
 import { APPAREILS, CATS_RECETTE, STYLES, TAGS, appareil } from '../../data/cuisine.js';
 import {
-  SOURCES_IMPORT, consigneIA, lireReponseIA, normaliserRecette, lireLigneIngredient, lireLigneEtape, ligneIngredient,
+  SOURCES_IMPORT, consigneIA, nomsRecette, listeAlias, lireReponseIA, normaliserRecette, lireLigneIngredient, lireLigneEtape, ligneIngredient,
 } from '../../lib/recettes.js';
 import { norm } from '../../lib/utils.js';
+import { catalogue } from '../../data/recettes/index.js';
 import { copierTexte, partagerTexte, telechargerFichier } from './commun.jsx';
 
 // Ajouter une recette : avec une IA (consigne prête + import de la réponse) ou à la main.
@@ -34,13 +35,13 @@ function AvecIA({ db, maj, toast, onClose, onOuvrir }) {
   const fichier = useRef();
   const src = SOURCES_IMPORT.find(s => s.id === source);
   const consigne = () => consigneIA(db, source, precision);
-  const existants = new Set([...(db.recettes || []).map(r => norm(r.titre))]);
+  const existants = new Set([...catalogue(), ...(db.recettes || [])].flatMap(nomsRecette).map(norm));
 
   const analyser = texte => {
     setErreur('');
     try {
       const res = lireReponseIA(texte);
-      setResultat(res.map(x => ({ ...x, garder: true, doublon: existants.has(norm(x.recette.titre)) })));
+      setResultat(res.map(x => ({ ...x, garder: true, doublon: nomsRecette(x.recette).some(n => existants.has(norm(n))) })));
     } catch (e) { setResultat(null); setErreur(e.message); }
   };
   const lireFichier = e => {
@@ -128,7 +129,7 @@ function AvecIA({ db, maj, toast, onClose, onOuvrir }) {
 function ALaMain({ maj, toast, onClose, recette, onOuvrir }) {
   const v0 = recette?.variantes?.[0];
   const [f, setF] = useState(() => ({
-    titre: recette?.titre || '', emoji: recette?.emoji || '', categorie: recette?.categorie || 'plat', style: recette?.style || 'quotidien',
+    titre: recette?.titre || '', alias: (recette?.alias || []).join(' ; '), emoji: recette?.emoji || '', categorie: recette?.categorie || 'plat', style: recette?.style || 'quotidien',
     origine: recette?.origine || '', personnes: recette?.personnes || 5, preparation_min: recette?.preparation_min ?? '',
     difficulte: recette?.difficulte || 1, tags: recette?.tags || [], astuce: recette?.astuce || '',
     ingredients: (recette?.ingredients || []).map(ligneIngredient).join('\n'),
@@ -145,7 +146,7 @@ function ALaMain({ maj, toast, onClose, recette, onOuvrir }) {
       const etapes = f.etapes.split('\n').map(l => lireLigneEtape(l, f.appareils[0] || 'plaque')).filter(Boolean)
         .map((e, i) => { const a = etapesAnciennes[i]; return a && a.texte === e.texte ? { ...e, surveillance: a.surveillance, appareil: a.appareil } : e; });
       const brut = {
-        ...(recette || {}), titre: f.titre, emoji: f.emoji, categorie: f.categorie, style: f.style, origine: f.origine,
+        ...(recette || {}), titre: f.titre, alias: listeAlias(f.alias, f.titre), emoji: f.emoji, categorie: f.categorie, style: f.style, origine: f.origine,
         personnes: f.personnes, preparation_min: f.preparation_min, difficulte: f.difficulte, tags: f.tags, astuce: f.astuce,
         ingredients: ings,
         variantes: [{ ...(v0 || {}), appareils: f.appareils.length ? f.appareils : ['plaque'], etapes }, ...(recette?.variantes || []).slice(1)],
@@ -164,6 +165,9 @@ function ALaMain({ maj, toast, onClose, recette, onOuvrir }) {
         <input className="input emoji-mini" value={f.emoji} onChange={e => set('emoji', e.target.value.slice(0, 4))} placeholder="🍽️" aria-label="Emoji" />
         <input className="input grow" value={f.titre} onChange={e => set('titre', e.target.value)} placeholder="Nom de la recette" />
       </div>
+      <Field label="Autres noms (facultatif)" hint="Même recette, nom différent — séparés par « ; ». Ex : Amandine aux poires ; Bourdaloue">
+        <input className="input" value={f.alias} onChange={e => set('alias', e.target.value)} placeholder="Autre nom ; autre nom" />
+      </Field>
       <div className="grid2">
         <Field label="Catégorie"><select className="input" value={f.categorie} onChange={e => set('categorie', e.target.value)}>{CATS_RECETTE.map(c => <option key={c.id} value={c.id}>{c.emoji} {c.un}</option>)}</select></Field>
         <Field label="Style"><select className="input" value={f.style} onChange={e => set('style', e.target.value)}>{STYLES.map(s => <option key={s.id} value={s.id}>{s.emoji} {s.nom}</option>)}</select></Field>

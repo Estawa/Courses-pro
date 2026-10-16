@@ -103,6 +103,7 @@ export default `
 > Poivrons épépinés, oignon, pommes de terre, bouillon : sous pression 8 min. Mixer avec la crème et le paprika. | 22 | 0 | cookeo
 
 # Tom yum aux crevettes | soupe | monde:Thaïlande | poisson,rapide | 5 | 10 | 1 | 🦐
+~ Tom yam
 - 400 | g | crevettes crues | poisson blanc
 - 1.2 | l | bouillon de volaille
 - 2 | pièce | bâtons de citronnelle | zeste de citron
@@ -154,6 +155,7 @@ export default `
 > Compoter les oignons émincés 30 min à feu doux à couvert. Garnir, four 220 °C 20 min. | 55 | 1 | four
 
 # Gyozas grillés-vapeur | entree | monde:Japon | viande | 6 | 30 | 2 | 🥟
+~ Raviolis japonais; Jiaozi
 - 30 | feuille | feuilles à gyozas | feuilles à raviolis
 - 300 | g | porc haché | poulet haché; crevettes
 - 150 | g | chou chinois | chou blanc
@@ -229,6 +231,7 @@ export default `
 > Sur la grille, couvercle fermé, 4 à 5 min. | 15 | 1 | bbqgaz
 
 # Terrine de campagne maison | entree | festif:France | viande,grand-groupe | 10 | 30 | 2 | 🥖
+~ Pâté de campagne
 - 500 | g | échine de porc hachée | chair à saucisse
 - 300 | g | foies de volaille
 - 200 | g | lardons | poitrine de porc
@@ -275,6 +278,7 @@ export default `
 > Pâtes + eau à hauteur : sous pression 4 min, rincer à l'eau froide, assembler. | 15 | 1 | cookeo
 
 # Poke bowl au saumon | salade | monde:Hawaï | poisson,rapide | 4 | 20 | 1 | 🍣
+~ Poké
 - 300 | g | riz à sushi | riz rond
 - 400 | g | saumon très frais | thon; crevettes cuites
 - 2 | pièce | avocats
@@ -379,6 +383,7 @@ export default `
 ! Fondantes à la cuillère, parfaites avec une purée.
 
 # Sauté de veau Marengo | plat | quotidien:France | viande | 6 | 20 | 1 | 🍅
+~ Veau Marengo
 - 1.2 | kg | sauté de veau | sauté de dinde; épaule de porc
 - 2 | pièce | oignons
 - 400 | g | tomates concassées
@@ -410,6 +415,7 @@ export default `
 > Poulet doré, cidre, champignons au four 180 °C 45 min, crème en fin. | 60 | 0 | four
 
 # Daube provençale | plat | festif:Provence | viande,tout-seul,grand-groupe | 6 | 25 | 1 | 🍷
+~ Daube
 - 1.5 | kg | bœuf (macreuse, paleron, joue) | joue de bœuf
 - 75 | cl | vin rouge | bouillon de bœuf
 - 200 | g | lardons
@@ -444,6 +450,7 @@ export default `
 > Cocotte fermée, four 160 °C 2 h. | 145 | 0 | four
 
 # Choucroute garnie | plat | festif:Alsace | viande,grand-groupe,tout-seul | 6 | 20 | 1 | 🥬
+~ Choucroute
 - 1.5 | kg | choucroute crue | choucroute cuite
 - 6 | pièce | saucisses de Strasbourg
 - 6 | pièce | saucisses de Montbéliard | saucisses fumées
@@ -462,6 +469,7 @@ export default `
 > Choucroute rincée, viandes, vin, genièvre : 1 h 30 à feu doux. Pommes de terre et saucisses les 30 dernières minutes. | 130 | 0 | plaque
 
 # Endives au jambon gratinées | plat | quotidien:Nord | viande,economique | 5 | 15 | 1 | 🥬
+~ Chicons au gratin
 - 10 | pièce | endives
 - 10 | tranche | jambon
 - 50 | cl | lait
@@ -522,6 +530,7 @@ export default `
 > Plat, 200 °C 25 min en remuant une fois. | 43 | 0 | four
 
 # Nuggets de poulet maison | plat | quotidien | viande,enfants | 5 | 20 | 1 | 🍗
+~ Croquettes de poulet
 - 700 | g | blancs de poulet
 - 2 | pièce | œufs
 - 50 | g | farine
@@ -571,6 +580,7 @@ export default `
 > Sauter chaque légume puis le bœuf, œufs au plat, assembler. | 40 | 2 | plaque
 
 # Poulet frit coréen à l'Actifry | plat | monde:Corée | viande,enfants | 5 | 15 | 1 | 🍗
+~ Poulet coréen; Yangnyeom chicken
 - 1 | kg | hauts de cuisse désossés | ailes de poulet
 - 4 | c. à soupe | maïzena
 - 3 | c. à soupe | ketchup
@@ -586,6 +596,7 @@ export default `
 > Poulet fariné sur grille, 220 °C 35 min, puis enrober de sauce. | 45 | 1 | four
 
 # Poulet katsu curry | plat | monde:Japon | viande | 5 | 25 | 2 | 🍛
+~ Katsu curry
 - 5 | pièce | escalopes de poulet
 - 2 | pièce | œufs
 - 50 | g | farine
@@ -619,6 +630,7 @@ export default `
 > Grille chaude, 8 à 10 min en laquant. | 25 | 2 | bbqgaz
 
 # Biryani de poulet | plat | monde:Inde | viande,grand-groupe | 6 | 20 | 2 | 🍚
+~ Biriani
 - 800 | g | cuisses de poulet désossées | agneau
 - 400 | g | riz basmati
 - 200 | g | yaourt
@@ -638,6 +650,7 @@ export default `
 > Couches de poulet mariné et de riz précuit, bouillon, safran : 180 °C 40 min. | 80 | 0 | four
 
 # Shawarma de poulet | plat | monde:Liban | viande,grand-groupe | 6 | 20 | 1 | 🥙
+~ Chawarma
 - 1.2 | kg | hauts de cuisse désossés
 - 200 | g | yaourt
 - 2 | pièce | citrons
@@ -707,6 +720,7 @@ export default `
 > Chaleur tournante 180 °C 35 min. | 60 | 0 | microondes
 
 # Calzone jambon-mozzarella | plat | monde:Italie | viande,enfants | 4 | 20 | 1 | 🥟
+~ Pizza chausson
 - 2 | rouleau | pâte à pizza
 - 200 | g | sauce tomate
 - 150 | g | jambon
@@ -721,6 +735,7 @@ export default `
 > Sur pierre préchauffée, couvercle fermé, 12 à 15 min. | 30 | 1 | bbqgaz
 
 # Penne all'arrabbiata | plat | monde:Italie | vegetarien,rapide,economique | 5 | 5 | 1 | 🌶️
+~ Pâtes à l'arrabbiata
 - 500 | g | penne
 - 800 | g | tomates concassées
 - 3 | gousse | ail
@@ -749,6 +764,7 @@ export default `
 > Cuire 3 min par face sur la plancha beurrée. | 14 | 2 | plancha
 
 # Lotte à l'armoricaine | plat | festif:Bretagne | poisson | 6 | 25 | 2 | 🐟
+~ Lotte à l'américaine
 - 1.2 | kg | lotte (en médaillons) | cabillaud; lieu
 - 2 | pièce | échalotes
 - 2 | c. à soupe | concentré de tomate
@@ -889,6 +905,7 @@ export default `
 > Pommes de terre farcies emballées dans l'alu, sur la grille au-dessus des braises 40 min. | 70 | 1 | braises
 
 # Tian de légumes provençal | plat | quotidien:Provence | vegetarien,economique,tout-seul | 5 | 20 | 1 | 🍆
+~ Tian provençal
 - 3 | pièce | courgettes
 - 2 | pièce | aubergines
 - 5 | pièce | tomates
@@ -1057,6 +1074,7 @@ export default `
 > Pâte à choux à la casserole, cuisson au four, montage. | 50 | 2 | four
 
 # Moelleux à la crème de marrons | dessert | festif:Ardèche | vegetarien,rapide | 8 | 10 | 1 | 🌰
+~ Ardéchois
 - 500 | g | crème de marrons
 - 3 | pièce | œufs
 - 100 | g | beurre fondu
@@ -1071,6 +1089,7 @@ export default `
 ! 4 ingrédients seulement : le dessert de dernière minute.
 
 # Cannelés bordelais | dessert | festif:Bordeaux | vegetarien | 12 | 15 | 2 | 🍮
+~ Canelés
 - 50 | cl | lait
 - 50 | g | beurre
 - 1 | pièce | gousse de vanille
@@ -1098,6 +1117,7 @@ export default `
 > Sauce à la casserole, crêpes chauffées sur la plancha et nappées. | 10 | 2 | plancha
 
 # Pudding au pain | dessert | quotidien:Royaume-Uni | vegetarien,economique,enfants | 8 | 10 | 1 | 🍞
+~ Bread pudding
 - 300 | g | pain rassis | brioche rassise
 - 75 | cl | lait
 - 3 | pièce | œufs
@@ -1126,6 +1146,7 @@ export default `
 > Mixer fruits surgelés, sucre et citron par à-coups. | 5 | 2 | aucun
 
 # Tarte bourdaloue poires-amandes | dessert | festif:France | vegetarien | 8 | 25 | 2 | 🍐
+~ Amandine aux poires; Tarte amandine aux poires; Bourdaloue
 - 1 | rouleau | pâte sablée | pâte brisée
 - 6 | pièce | demi-poires au sirop | poires fraîches pochées
 - 100 | g | poudre d'amande
@@ -1140,6 +1161,7 @@ export default `
 > Pétrin : beurre, sucre, œufs, poudre d'amande vitesse 5, 1 min. Montage, four 40 min. | 45 | 0 | four
 
 # Galette des rois frangipane | dessert | festif:France | vegetarien,grand-groupe | 8 | 25 | 2 | 👑
+~ Galette des rois; Pithiviers
 - 2 | rouleau | pâte feuilletée
 - 125 | g | poudre d'amande
 - 100 | g | beurre mou
@@ -1185,6 +1207,7 @@ export default `
 > Combiné micro-ondes + chaleur tournante 170 °C, 30 à 35 min. | 45 | 0 | microondes
 
 # Pastéis de nata | dessert | monde:Portugal | vegetarien | 12 | 25 | 2 | 🥧
+~ Pastéis de Belém; Flan portugais
 - 1 | rouleau | pâte feuilletée
 - 50 | cl | lait
 - 4 | pièce | jaunes d'œufs

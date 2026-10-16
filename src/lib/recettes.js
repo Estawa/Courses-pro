@@ -169,6 +169,16 @@ const choix = (v, liste, def) => {
   return trouve ? trouve.id : def;
 };
 
+// Autres noms d'une même recette (« Bourdaloue » = « Amandine aux poires ») : tableau ou texte séparé par ; ou ,
+export function listeAlias(v, titre = '') {
+  const brut = Array.isArray(v) ? v : String(v || '').split(/[;\n]/);
+  const vus = new Set([norm(titre)]);
+  return brut.map(x => String(x).trim()).filter(x => x && !vus.has(norm(x)) && vus.add(norm(x))).slice(0, 8);
+}
+
+// Tous les noms d'une recette (titre + synonymes), pour la recherche et les doublons
+export const nomsRecette = r => [r.titre, ...(r.alias || [])];
+
 // Remet n'importe quel objet « recette » (venant d'une IA, d'un fichier…) au format de l'appli.
 // Renvoie { recette, alertes[] } ou lance une erreur si c'est inutilisable.
 export function normaliserRecette(r, source = 'import') {
@@ -213,6 +223,7 @@ export function normaliserRecette(r, source = 'import') {
   const recette = {
     id: String(r.id || '').trim() || (source === 'catalogue' ? slug(titre) : 'perso-' + slug(titre) + '-' + Date.now().toString(36).slice(-4)),
     titre,
+    alias: listeAlias(r.alias ?? r.aliases ?? r.synonymes, titre),
     categorie: choix(r.categorie || r.category, CATS_RECETTE, 'plat'),
     style: choix(r.style, STYLES, 'quotidien'),
     origine: String(r.origine || '').trim(),
@@ -262,6 +273,7 @@ export function exporterRecette(r) {
 // - quantité | unité | ingrédient | remplacement 1; remplacement 2 | opt
 // = appareil1,appareil2 | cuisson min | nom de la version
 // > étape | durée min | surveillance 0/1/2 | appareil
+// ~ autre nom; autre nom (synonymes : même recette, nom différent)
 // ! astuce
 // ---------------------------------------------------------------------------
 export function lireCatalogue(texte) {
@@ -292,6 +304,8 @@ export function lireCatalogue(texte) {
       if (!cur.variantes.length) cur.variantes.push({ appareils: [app || 'plaque'], etapes: [] });
       const v = cur.variantes[cur.variantes.length - 1];
       v.etapes.push({ texte: texteEt, duree_min: duree, surveillance: Number(surv), appareil: app || v.appareils[0] });
+    } else if (c === '~') {
+      cur.alias = [...(cur.alias || []), ...l.slice(1).split(';').map(s => s.trim()).filter(Boolean)];
     } else if (c === '!') {
       cur.astuce = (cur.astuce ? cur.astuce + ' ' : '') + l.slice(1).trim();
     }
@@ -656,6 +670,7 @@ export function consigneIA(db, sourceId = 'photo', precision = '') {
   const exclus = [...new Set(mangeurs.flatMap(m => m.exclus || []))];
   const exemple = {
     titre: 'Poulet basquaise',
+    alias: ['Poulet à la basquaise'],
     categorie: 'plat',
     style: 'quotidien',
     origine: 'France',
@@ -704,7 +719,8 @@ export function consigneIA(db, sourceId = 'photo', precision = '') {
     '9. "variantes" : la version d’origine, PUIS une variante par appareil de ma cuisine qui convient bien (ex. Companion, Cookeo, Actifry, plancha, barbecue), avec des temps adaptés à cet appareil.',
     `10. "categorie" parmi : ${CATS_RECETTE.map(c => `"${c.id}"`).join(', ')}. "style" parmi : "quotidien", "festif", "monde" (avec "origine" : pays ou région).`,
     `11. "tags" parmi : ${TAGS.map(t => `"${t.id}"`).join(', ')}. "difficulte" : 1 (facile) à 3 (difficile).`,
-    exclus.length ? `12. Chez nous on ne mange pas : ${exclus.join(', ')}. S’ils sont dans la recette, garde-les mais propose de bons remplacements.` : '',
+    '12. "alias" : les autres noms sous lesquels on connaît la même recette (ex. « Bourdaloue » = « Amandine aux poires »), sinon [].',
+    exclus.length ? `13. Chez nous on ne mange pas : ${exclus.join(', ')}. S’ils sont dans la recette, garde-les mais propose de bons remplacements.` : '',
     '',
     'EXEMPLE DU FORMAT ATTENDU',
     '```json',
@@ -751,6 +767,7 @@ export function texteRecette(r, personnes, varianteIdx = 0) {
   const v = r.variantes[varianteIdx] || r.variantes[0];
   return [
     `${r.emoji || '🍽️'} *${r.titre}* (${personnes || r.personnes} pers.)`,
+    ...(r.alias?.length ? ['_Aussi appelée : ' + r.alias.join(', ') + '_'] : []),
     '',
     '*Ingrédients*',
     ...r.ingredients.map(i => '• ' + [afficherQte(num(i.qte) === null ? null : num(i.qte) * k, i.unite), i.nom].filter(Boolean).join(' ') + (i.optionnel ? ' (facultatif)' : '')),

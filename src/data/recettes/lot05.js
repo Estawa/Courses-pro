@@ -48,6 +48,7 @@ export default `
 > Dorer les légumes, eau, safran, pommes de terre : sous pression 8 min. Ajouter les poissons : sous pression 4 min. | 30 | 0 | cookeo
 
 # Chorba frik algérienne | soupe | monde:Algérie | viande | 6 | 20 | 1 | 🍲
+~ Chorba
 - 500 | g | agneau (épaule) | poulet
 - 100 | g | frik (blé vert concassé) | boulgour; vermicelles
 - 1 | pièce | oignon
@@ -198,6 +199,7 @@ export default `
 > Plaque, 220 °C 8 min. | 58 | 2 | four
 
 # Bouchées à la reine | entree | festif:France | viande | 6 | 25 | 2 | 🥐
+~ Vol-au-vent
 - 6 | pièce | croûtes de bouchées feuilletées
 - 300 | g | blancs de poulet | ris de veau
 - 200 | g | champignons de Paris
@@ -402,6 +404,7 @@ export default `
 > Poulet, légumes, soja, Actifry avec pale 15 min, noix de cajou les 3 dernières minutes. | 18 | 0 | actifry
 
 # Mafé de poulet à l'arachide | plat | monde:Sénégal | viande | 5 | 15 | 1 | 🥜
+~ Maffé
 - 5 | pièce | cuisses de poulet | bœuf en cubes
 - 150 | g | beurre de cacahuète | pâte d'arachide
 - 2 | pièce | oignons
@@ -419,6 +422,7 @@ export default `
 > Dorer, ajouter le reste, mijoter 45 min en remuant (l'arachide attache). | 60 | 1 | plaque
 
 # Bœuf Stroganoff | plat | monde:Russie | viande,rapide | 5 | 15 | 1 | 🥩
+~ Stroganov
 - 700 | g | bœuf (rumsteck) en lanières | poulet
 - 300 | g | champignons
 - 2 | pièce | oignons
@@ -602,6 +606,7 @@ export default `
 > Cuisses au four 180 °C 1 h 30, arrosées de jus d'orange. Sauce à la casserole. | 100 | 0 | four
 
 # Filets de sole meunière | plat | festif:France | poisson,rapide | 4 | 5 | 1 | 🐟
+~ Sole meunière
 - 8 | pièce | filets de sole | filets de limande; plie
 - 60 | g | beurre
 - 3 | c. à soupe | farine
@@ -716,6 +721,7 @@ export default `
 > Pommes de terre : vapeur sous pression 10 min, puis même préparation. | 50 | 2 | plaque
 
 # Rösti de pommes de terre | plat | monde:Suisse | vegetarien,economique | 4 | 15 | 1 | 🥔
+~ Röstis; Galettes de pommes de terre
 - 1 | kg | pommes de terre
 - 1 | pièce | oignon
 - 40 | g | beurre
@@ -746,6 +752,7 @@ export default `
 > Quesadillas sur plaque, 200 °C 10 min. | 20 | 0 | four
 
 # Pizza margherita | plat | monde:Italie | vegetarien,enfants | 4 | 15 | 1 | 🍕
+~ Margherita
 - 300 | g | farine
 - 1 | sachet | levure de boulanger
 - 17 | cl | eau tiède
@@ -845,6 +852,7 @@ export default `
 ! Anti-gaspi : rien ne se perd du repas de la veille.
 
 # Pommes de terre en robe des champs, crème ciboulette | accompagnement | quotidien | vegetarien,economique,tout-seul | 5 | 5 | 1 | 🥔
+~ Pommes de terre en chemise
 - 10 | pièce | pommes de terre moyennes
 - 20 | cl | crème fraîche épaisse | fromage blanc
 - 1 | botte | ciboulette
@@ -896,6 +904,7 @@ export default `
 > Cuire à l'eau 20 min, écraser. | 28 | 1 | plaque
 
 # Endives braisées | accompagnement | quotidien:Nord | vegetarien,economique | 5 | 5 | 1 | 🥬
+~ Chicons braisés
 - 10 | pièce | endives
 - 30 | g | beurre
 - 1 | c. à café | sucre
@@ -922,6 +931,7 @@ export default `
 ! Idéal avec un rôti de porc, une pintade ou le gibier.
 
 # Carrot cake | dessert | monde:États-Unis | vegetarien | 10 | 20 | 1 | 🥕
+~ Gâteau aux carottes
 - 300 | g | carottes râpées
 - 3 | pièce | œufs
 - 180 | g | sucre roux
@@ -965,6 +975,7 @@ export default `
 > Mixer les fruits, crème fouettée, mélanger, frais 3 h. | 15 | 2 | aucun
 
 # Gâteau basque à la crème | dessert | festif:Pays basque | vegetarien | 8 | 30 | 2 | 🍰
+~ Etxeko biskotxa
 - 250 | g | farine
 - 150 | g | sucre (pâte)
 - 125 | g | beurre mou
@@ -1037,6 +1048,7 @@ export default `
 > Chocolat, crème, beurre 1 min 30 à 500 W, lisser. Frais 2 h, former, rouler dans le cacao. | 140 | 1 | microondes
 
 # Tarte au sucre du Nord | dessert | quotidien:Nord | vegetarien,economique | 8 | 20 | 1 | 🥧
+~ Tarte au sucre
 - 250 | g | pâte à brioche (ou pâte levée) | pâte brisée
 - 100 | g | cassonade (vergeoise)
 - 50 | g | beurre
