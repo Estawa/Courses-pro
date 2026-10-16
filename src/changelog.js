@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.6',
+    date: '2026-10-16',
+    notes: [
+      'Lot 7 de recettes : 77 nouvelles recettes (548 au total) — réveillon (foie gras mi-cuit, gravlax, huîtres et moules gratinées, coquilles Saint-Jacques, porchetta, épaule d\'agneau de 7 heures), recettes de grand-mère et anti-gaspi (bœuf miroton, salade de bœuf, œufs à la tripe, potée lorraine), saveurs du monde (laksa, curry vert, piri-piri, bulgogi, carnitas, picadillo, ceviche), desserts (éclairs, mille-feuille, kouglof, gâteau magique, käsekuchen, fondue au chocolat)',
+    ],
+  },
+  {
     version: '1.6.5',
     date: '2026-10-16',
     notes: [

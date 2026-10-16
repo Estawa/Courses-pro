@@ -6,8 +6,9 @@ import lot03 from './lot03.js';
 import lot04 from './lot04.js';
 import lot05 from './lot05.js';
 import lot06 from './lot06.js';
+import lot07 from './lot07.js';
 
-const LOTS = [lot01, lot02, lot03, lot04, lot05, lot06];
+const LOTS = [lot01, lot02, lot03, lot04, lot05, lot06, lot07];
 
 let cache;
 export function catalogue() {
