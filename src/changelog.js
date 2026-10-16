@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.2',
+    date: '2026-10-16',
+    notes: [
+      'Lot 3 de recettes : 86 nouvelles recettes (232 au total) — plus de poisson (dorade, truite, brandade, fish and chips, thon mi-cuit, sardines), de plats du monde (moussaka, goulash, carbonade, colombo, rougail, butter chicken, bo bun, enchiladas, ribs, pulled pork), de recettes de fête (cassoulet, navarin, bûche roulée, tarte tatin) et de desserts',
+    ],
+  },
+  {
     version: '1.6.1',
     date: '2026-10-16',
     notes: [

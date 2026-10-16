@@ -2,8 +2,9 @@
 import { lireCatalogue } from '../../lib/recettes.js';
 import lot01 from './lot01.js';
 import lot02 from './lot02.js';
+import lot03 from './lot03.js';
 
-const LOTS = [lot01, lot02];
+const LOTS = [lot01, lot02, lot03];
 
 let cache;
 export function catalogue() {
