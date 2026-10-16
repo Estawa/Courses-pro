@@ -91,7 +91,7 @@ function Catalogue({ db, recettes, avis, ouvrir, nouvelle }) {
     });
     const filtre = stock ? liste.filter(x => x.c.manquants.length === 0) : liste;
     const note = x => avis.get(x.r.id)?.note || 0;
-    return filtre.sort((a, b) => (tri === 'stock' ? a.c.manquants.length - b.c.manquants.length || b.c.score - a.c.score
+    return filtre.sort((a, b) => (tri === 'stock' ? a.c.manquants.length - b.c.manquants.length || a.c.nonSuivis - b.c.nonSuivis || b.c.score - a.c.score
       : tri === 'note' ? note(b) - note(a) : tri === 'rapide' ? (dureeTotale(a.r) || 999) - (dureeTotale(b.r) || 999) : a.r.titre.localeCompare(b.r.titre, 'fr')));
   }, [base, db.produits, db.liens, stock, tri, avis]); // eslint-disable-line react-hooks/exhaustive-deps
 

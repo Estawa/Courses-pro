@@ -1,6 +1,9 @@
 COURSES PRO by C. Guilhem — Journal des modifications
 ======================================================
 
+v1.6.1 — 16/10/2026
+- Lot 2 de recettes : 79 nouvelles recettes (146 au total) — soupes, entrées, salades, plats du quotidien, festifs et du monde, accompagnements et desserts, avec leurs versions Companion, Cookeo, four, micro-ondes, Actifry, plaque, barbecues et plancha
+
 v1.6.0 — 16/10/2026
 - Nouvel onglet « Recettes » : 67 recettes de départ (entrées, salades, soupes, plats, accompagnements, desserts), du quotidien, du festif et des recettes du monde, sans pois chiches, petits pois ni lentilles
 - Chaque recette existe en plusieurs versions selon l’appareil : Companion, Cookeo, four, micro-ondes combiné, Actifry, plaque, barbecue gaz, barbecue à braises, plancha

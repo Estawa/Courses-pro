@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.1',
+    date: '2026-10-16',
+    notes: [
+      'Lot 2 de recettes : 79 nouvelles recettes (146 au total) — soupes, entrées, salades, plats du quotidien, festifs et du monde, accompagnements et desserts, avec leurs versions Companion, Cookeo, four, micro-ondes, Actifry, plaque, barbecues et plancha',
+    ],
+  },
+  {
     version: '1.6.0',
     date: '2026-10-16',
     notes: [
