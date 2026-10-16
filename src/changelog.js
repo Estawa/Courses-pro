@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.9',
+    date: '2026-10-16',
+    notes: [
+      'Lots 10 et 11 de recettes : 107 nouvelles recettes, objectif atteint avec 802 recettes au total — soupes du monde (tom kha, zuppa toscana, mulligatawny, wonton, bisque, salmorejo, ajoblanco), tapas et apéritifs (gambas al ajillo, pimientos de Padrón, pan con tomate, baba ganoush, focaccia, halloumi grillé), terroirs (fondue savoyarde, aligot, truffade, croziflette, diots, tielle sétoise, grand aïoli, bourride), plats du monde (jambalaya, poulet jerk, kleftiko, piccata, kebab maison), accompagnements (caponata, patatas bravas, pommes duchesse, pommes Anna, panisses à la polenta) et desserts (paris-brest, baklava, baba au rhum, tres leches, key lime pie, nougat glacé, lamingtons)',
+    ],
+  },
+  {
     version: '1.6.8',
     date: '2026-10-16',
     notes: [
