@@ -834,4 +834,22 @@ export default `
 > Pétrin : tout sauf amandes, vitesse 4, 15 s. Amandes vitesse 1 sens inverse, 10 s. Four. | 45 | 0 | four
 ! On la casse à la main à table, sans couteau.
 
+# Tarte amandine | dessert | quotidien:France | vegetarien,economique | 8 | 20 | 1 | 🥧
+- 1 | rouleau | pâte sablée | pâte brisée
+- 125 | g | poudre d'amande
+- 100 | g | beurre mou
+- 100 | g | sucre
+- 2 | pièce | œufs
+- 20 | g | farine
+- 40 | g | amandes effilées
+- 1 | c. à soupe | rhum | opt
+- 2 | c. à soupe | confiture d'abricot | opt
+= four | 35 | Au four
+> Foncer le moule avec la pâte, piquer le fond. Frais 15 min. | 18 | 0 | aucun
+> Crème d'amande : beurre et sucre fouettés, œufs un à un, poudre d'amande, farine, rhum. Étaler sur la pâte, parsemer d'amandes effilées. | 10 | 1 | aucun
+> Four 180 °C 30 à 35 min, jusqu'à ce que le dessus soit bien doré. Abricotage tiède pour faire briller. | 35 | 0 | four
+= companion,four | 35 | Crème d'amande au Companion
+> Pétrin : beurre, sucre, œufs, poudre d'amande, farine, rhum vitesse 5, 1 min. Étaler sur la pâte, amandes effilées, four 180 °C 35 min. | 40 | 0 | four
+! Base de la bourdaloue : on peut y enfoncer des poires, abricots, cerises ou framboises avant cuisson.
+
 `;

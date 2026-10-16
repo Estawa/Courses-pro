@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.7.2',
+    date: '2026-10-16',
+    notes: [
+      'Ajout de la tarte amandine (crème d\'amande, version four et Companion) — 803 recettes au total',
+    ],
+  },
+  {
     version: '1.7.1',
     date: '2026-10-16',
     notes: [
