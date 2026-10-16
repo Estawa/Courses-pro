@@ -4,6 +4,7 @@ import Icon from './components/icons.jsx';
 import { cloud, messageErreur } from './lib/cloud.js';
 import { charger, cleCache, dbInitiale } from './lib/store.js';
 import { appConfig } from './appConfig.js';
+import { modeSolo } from './lib/modeSolo.js';
 
 const lireLS = k => { try { return localStorage.getItem(k); } catch { return null; } };
 const ecrireLS = (k, v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch { /* */ } };
@@ -35,7 +36,7 @@ function memoriserFoyer(user, foyerId) {
 
 export default function Racine() {
   const [code] = useState(codeDuLien);
-  const [mode, setMode] = useState(() => (cloud.actif && (code || lireLS('courses-pro-mode') === 'cloud') ? 'cloud' : 'local'));
+  const [mode, setMode] = useState(() => (cloud.actif && !modeSolo && (code || lireLS('courses-pro-mode') === 'cloud') ? 'cloud' : 'local'));
   const [connu] = useState(foyerConnu);
   const [user, setUser] = useState(() => (connu ? { ...connu, hors: true } : undefined));
   const [foyerId, setFoyerId] = useState(() => connu?.foyerId);
@@ -64,7 +65,7 @@ export default function Racine() {
   const passerLocal = () => { ecrireLS('courses-pro-mode', 'local'); setMode('local'); };
   const passerCloud = () => { ecrireLS('courses-pro-mode', 'cloud'); setMode('cloud'); };
 
-  if (mode === 'local') return <App foyerId={null} session={{ local: true, versCloud: cloud.actif ? passerCloud : null }} />;
+  if (mode === 'local') return <App foyerId={null} session={{ local: true, versCloud: cloud.actif && !modeSolo ? passerCloud : null }} />;
   if (foyerId) {
     return (
       <App

@@ -3,7 +3,7 @@
 const VERSION = '__VERSION__';
 const CACHE = 'courses-pro-' + VERSION;
 const FICHIERS = __FICHIERS__;
-const BASE = ['/', '/index.html', '/manifest.webmanifest', '/favicon.svg', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png'];
+const BASE = ['/', '/index.html', '/manifest.webmanifest', '/manifest-solo.webmanifest', '/favicon.svg', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
   // Tout est mis en cache dès l'installation : plus besoin d'avoir ouvert chaque écran en ligne

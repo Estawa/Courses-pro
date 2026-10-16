@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import Icon from './components/icons.jsx';
 import { Sheet, useToast } from './components/ui.jsx';
 import ImportListe from './components/ImportListe.jsx';
-import FoyerSheet, { partagerAppli } from './components/Foyer.jsx';
+import FoyerSheet, { partagerAppli, PartageAppliSheet } from './components/Foyer.jsx';
+import { modeSolo } from './lib/modeSolo.js';
 import ImportMagasin from './components/ImportMagasin.jsx';
 import { trouverCode } from './lib/partage.js';
 import { useDb, dbInitiale, copiesAuto } from './lib/store.js';
@@ -27,6 +28,7 @@ const ONGLETS = [
 export default function App({ foyerId = null, session = { local: true } }) {
   const [db, maj, remplacer] = useDb(foyerId, session.sortir);
   const [foyerOuvert, setFoyerOuvert] = useState(false);
+  const [choixPartage, setChoixPartage] = useState(false);
   const cloudOn = !!foyerId;
   const [onglet, setOnglet] = useState(() => { try { return localStorage.getItem('courses-pro-onglet') || 'courses'; } catch { return 'courses'; } });
   const [menu, setMenu] = useState(false);
@@ -148,7 +150,7 @@ export default function App({ foyerId = null, session = { local: true } }) {
       <Sheet open={menu} onClose={() => setMenu(false)} title="⚙️ Menu">
         <div className="stack">
           {cloudOn && <button className="menu-row menu-foyer" onClick={() => { setMenu(false); setFoyerOuvert(true); }}><span>👨‍👩‍👧</span> <span className="grow">Mon foyer : {db._foyer?.nom || '…'}<span className="muted small block">Membres, invitation, déconnexion</span></span></button>}
-          <button className="menu-row" onClick={() => partagerAppli(toast)}><Icon name="upload" /> <span className="grow">Partager l’appli</span></button>
+          <button className="menu-row" onClick={() => { if (modeSolo) { partagerAppli(toast); } else { setMenu(false); setChoixPartage(true); } }}><Icon name="upload" /> <span className="grow">Partager l’appli</span></button>
           <button className="menu-row" onClick={exporter}><Icon name="download" /> <span className="grow">Sauvegarder mes données</span></button>
           <button className="menu-row" onClick={() => fichier.current.click()}><Icon name="upload" /> <span className="grow">Restaurer une sauvegarde</span></button>
           <input ref={fichier} type="file" accept="application/json,.json" hidden onChange={importer} />
@@ -165,6 +167,8 @@ export default function App({ foyerId = null, session = { local: true } }) {
           <button className="lien small lien-discret" onClick={() => { setMenu(false); session.versCloud(); }}>Connexion au foyer familial</button>
         )}
       </Sheet>
+
+      <PartageAppliSheet open={choixPartage} onClose={() => setChoixPartage(false)} toast={toast} />
 
       {cloudOn && <FoyerSheet open={foyerOuvert} onClose={() => setFoyerOuvert(false)} db={db} session={session} toast={toast} />}
 

@@ -1,5 +1,15 @@
 export const CHANGELOG = [
   {
+    version: '1.7.1',
+    date: '2026-10-16',
+    notes: [
+      'Partager l\'appli : choix avant l\'envoi entre « Sans connexion au foyer » (conseillé) et « Avec connexion au foyer »',
+      'Lien sans connexion (?solo=1) : le bouton « Connexion au foyer familial » disparaît complètement chez la personne, l\'appli reste 100 % locale, y compris une fois installée sur l\'écran d\'accueil',
+      'Une personne en mode solo qui repartage l\'appli envoie toujours la version sans connexion ; seul un lien d\'invitation au foyer peut lever ce mode',
+      'Un téléphone déjà connecté au foyer n\'est jamais basculé en mode solo, même s\'il ouvre un lien solo',
+    ],
+  },
+  {
     version: '1.7.0',
     date: '2026-10-16',
     notes: [
