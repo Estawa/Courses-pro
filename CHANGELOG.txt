@@ -1,6 +1,9 @@
 COURSES PRO by C. Guilhem — Journal des modifications
 ======================================================
 
+v1.6.8 — 16/10/2026
+- Lot 9 de recettes : 75 nouvelles recettes (695 au total) — apéritifs maison (makis, taramasalata, mousse de foies de volaille, croquettes de chèvre, gaufres salées), plats du monde (rendang, bœuf aux brocolis, cevapcici, shogayaki, couscous de poisson, fish pie), volaille familiale (tourte poulet-champignons, gratin poulet-brocolis, poulet croustillant), végétarien (moussaka et bolognaise végétales, risotto aux asperges, pâtes primavera), desserts (forêt-noire, cupcakes, donuts au four, gâteau nantais, glace minute à la banane)
+
 v1.6.7 — 16/10/2026
 - Lot 8 de recettes : 72 nouvelles recettes (620 au total) — printemps et marché (asperges mousseline, velouté de radis et fanes, romanesco, petit épeautre), poissons du quotidien (merlan moutarde, lieu citron-câpres, poisson créole, calamars à la romaine, tacos de poisson), plats uniques et one pot (poulet-chorizo, riz crevettes-chorizo, poisson et pommes de terre en un plat), végétarien italien (alla norma, puttanesca, lasagnes courgettes-pesto), pâtisseries de fête (fraisier, tropézienne, bœuf Wellington côté plats) et douceurs maison (yaourts, granola, sablés bretons, banoffee)
 

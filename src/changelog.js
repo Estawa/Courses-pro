@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.8',
+    date: '2026-10-16',
+    notes: [
+      'Lot 9 de recettes : 75 nouvelles recettes (695 au total) — apéritifs maison (makis, taramasalata, mousse de foies de volaille, croquettes de chèvre, gaufres salées), plats du monde (rendang, bœuf aux brocolis, cevapcici, shogayaki, couscous de poisson, fish pie), volaille familiale (tourte poulet-champignons, gratin poulet-brocolis, poulet croustillant), végétarien (moussaka et bolognaise végétales, risotto aux asperges, pâtes primavera), desserts (forêt-noire, cupcakes, donuts au four, gâteau nantais, glace minute à la banane)',
+    ],
+  },
+  {
     version: '1.6.7',
     date: '2026-10-16',
     notes: [
