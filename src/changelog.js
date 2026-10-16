@@ -1,5 +1,12 @@
 export const CHANGELOG = [
   {
+    version: '1.6.3',
+    date: '2026-10-16',
+    notes: [
+      'Lot 4 de recettes : 82 nouvelles recettes (314 au total) — cuisine régionale (choucroute, coq au vin, daube, endives au jambon, joues de porc au cidre, pissaladière), cuisine d\'Asie (ramen, gyozas, bibimbap, katsu curry, yakitori, biryani), poissons de fête (lotte armoricaine, Saint-Jacques), nouveaux desserts (profiteroles, galette des rois, cannelés, pastéis de nata, sorbet minute au Companion)',
+    ],
+  },
+  {
     version: '1.6.2',
     date: '2026-10-16',
     notes: [
