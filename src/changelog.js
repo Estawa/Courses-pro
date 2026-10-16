@@ -1,5 +1,16 @@
 export const CHANGELOG = [
   {
+    version: '1.7.0',
+    date: '2026-10-16',
+    notes: [
+      'Calories, protéines et coût estimés par portion sur chaque recette (fiche, cartes, menus), calculés à partir des ingrédients (table de référence src/data/nutrition.js)',
+      'Tri des recettes par coût, protéines, calories (léger ou copieux), note, rapidité, stock ou A-Z',
+      'Onglet « Cuisiner » : un seul plat (apéritif, entrée, soupe, salade, plat principal, accompagnement, dessert, goûter) classé selon le critère choisi, ou un menu complet combinant plusieurs moments (menus tout prêts, changement d\'un seul plat, totaux par personne)',
+      'Notes sur 10 par personne : la note d\'un plat est la moyenne des notes de ceux qui l\'ont goûté ; notation de chaque plat du menu après le repas',
+      'Après « Je l\'ai cuisinée » / « On a mangé » : vérification du stock avant → après, validation, puis notation',
+    ],
+  },
+  {
     version: '1.6.9',
     date: '2026-10-16',
     notes: [

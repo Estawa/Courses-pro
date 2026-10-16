@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { catalogue } from '../../data/recettes/index.js';
 import { ETATS, afficherQte } from '../../lib/recettes.js';
 import { lirePhoto } from '../../lib/photos.js';
+import { eurosTxt } from '../../lib/nutrition.js';
 
 // Toutes les recettes : catalogue intégré + recettes perso / importées (une recette perso
 // qui porte le même identifiant qu'une recette du catalogue la remplace)
@@ -23,6 +24,46 @@ export function majAvis(d, id, fn) {
   let a = d.avis.find(x => x.id === id);
   if (!a) { a = { id, note: 0, commentaire: '', faite: 0 }; d.avis.push(a); }
   fn(a);
+}
+
+// Note d'une recette : moyenne des notes sur 10 données par chaque personne qui y a goûté.
+// (les anciennes étoiles sur 5 comptent comme une note ×2 tant que personne n'a noté sur 10)
+export function noteMoyenne(a) {
+  const vals = Object.values(a?.notes || {}).filter(n => Number.isFinite(n) && n > 0);
+  if (vals.length) return { moy: Math.round(vals.reduce((x, y) => x + y, 0) / vals.length * 10) / 10, nb: vals.length };
+  if (a?.note) return { moy: a.note * 2, nb: 0 };
+  return null;
+}
+export const noteTxt = m => (m ? String(m.moy).replace('.', ',') : '');
+
+// Choix d'une note de 1 à 10
+export function NoteSur10({ value = 0, onChange }) {
+  return (
+    <span className="note10" role="radiogroup" aria-label={`Note : ${value || 'aucune'} sur 10`}>
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+        <button key={n} type="button" className={'note10-b' + (n <= value ? ' on' : '') + (n === value ? ' sel' : '')} onClick={() => onChange(n === value ? 0 : n)} aria-label={`${n} sur 10`}>{n}</button>
+      ))}
+    </span>
+  );
+}
+
+// Pastille de note moyenne
+export function BadgeNote({ m, petit }) {
+  if (!m) return null;
+  return <span className={'badge-note' + (petit ? ' petit' : '')} title={m.nb ? `Moyenne de ${m.nb} note${m.nb > 1 ? 's' : ''}` : 'Ancienne note'}>⭐ {noteTxt(m)}<small>/10</small></span>;
+}
+
+// Calories · protéines · coût par portion
+export function BadgeNutri({ n, petit, fort }) {
+  if (!n) return null;
+  const f = k => (fort === k || (k === 'kcal' && fort === 'kcalplus') ? ' fort' : '');
+  return (
+    <span className={'nutri' + (petit ? ' petit' : '')}>
+      <span className={f('kcal')} title="Calories par portion">🔥 {n.kcal} kcal</span>
+      <span className={f('prot')} title="Protéines par portion">💪 {n.prot} g</span>
+      <span className={f('cout')} title="Coût estimé par portion">💶 {eurosTxt(n.cout)}</span>
+    </span>
+  );
 }
 
 export function Etoiles({ value = 0, onChange, size = 22 }) {

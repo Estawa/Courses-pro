@@ -2,7 +2,7 @@
 // remplacements, mise à jour du stock après cuisson, planning et consigne pour une IA.
 import {
   APPAREILS, CATS_RECETTE, STYLES, TAGS, UNITES_RECETTE, BASIQUES, EXCLUS_DEFAUT,
-  SUBSTITUTIONS, CONTENANCES, POIDS_PIECE, AUTONOMES,
+  SUBSTITUTIONS, CONTENANCES, POIDS_PIECE, AUTONOMES, moment,
 } from '../data/cuisine.js';
 import { norm } from './utils.js';
 
@@ -482,25 +482,44 @@ export function consommer(reste, lignes) {
   });
 }
 
-// Propose un repas complet faisable AVEC le stock : chaque plat retenu « consomme » le stock
+// Apéritif et goûter : repérés d'après le titre parmi les entrées / desserts
+const RE_APERO = /rillette|verrine|brochette|feuillet|caviar|tzatziki|cr[eê]pes roul|cake sal|goug[eè]re|bruschetta|samoussa|guacamole|\bnems?\b|accras|mini-|tartinade|wrap|tapenade|toast|houmous|croquet|blinis|sticks|arancini|empanada|muffins sal|cervelle|chips|nachos|beignets de courgette|pain [àa] l.ail|ap[ée]ro|plateau|crudit|gaufres sal|tarama|maki|tartine|muhammara|labneh|cracker|camembert r[oô]ti|bouch[ée]es de|baba ganoush|gambas|pimientos|focaccia|friand|pan con|halloumi|anchoïade|satay|gyoza|tempura|pissaladi[eè]re|chausson|mousse de foies|terrine|poivrons marin|feuilles de vigne|foie gras|melon au porto|gravlax|tartare|carpaccio|huîtres|moules gratin|œufs mimosa|œufs mayonnaise/i;
+const RE_GOUTER = /g[aâ]teau|cake|cookie|cr[eê]pes$|^cr[eê]pes|gaufre|madeleine|financier|brownie|brookie|banana bread|muffin|quatre-quarts|marbr|pancake|churros|sabl[ée]s|cannel[ée]s|pain d.[ée]pices|brioche|beignet|bugnes|rochers|barres|kouglof|donut|cupcake|croquants|bredele|scones|tuiles|roses des sables|brigadeiro|lamington|sbrisolona|compote|yaourt|granola|moelleux|far breton|flan p[aâ]tissier|clafoutis|crumble|riz au lait|semoule au lait|pain perdu|mug cake|truffes|mendiants|fondant|salade de fruits|brochettes de fruits|past[ée]is|tarte au sucre|flognarde|quetsches|pommes au four|banane/i;
+export function dansMoment(r, momentId) {
+  const m = moment(momentId);
+  if (!m.cats.includes(r.categorie)) return false;
+  if (m.id === 'apero') return RE_APERO.test(r.titre);
+  if (m.id === 'gouter') return RE_GOUTER.test(r.titre);
+  return true;
+}
+
+// Propose un repas faisable AVEC le stock : chaque plat retenu « consomme » le stock
 // avant de choisir le suivant (fini le paquet de pâtes compté deux fois).
-export function proposerRepas(db, recettes, { cats = ['entree', 'plat', 'dessert'], personnes = 4, exclure = [], mangeurs = [], styles = [], seed = Math.random() } = {}) {
+// moments : ['entree', 'plat', 'dessert'…] ; valeur(r) : critère à minimiser (coût, calories…) parmi les plus faisables
+export function proposerRepas(db, recettes, { moments = null, cats = ['entree', 'plat', 'dessert'], personnes = 4, exclure = [], mangeurs = [], styles = [], seed = Math.random(), valeur = null } = {}) {
   const possedes = appareilsPossedes(db);
   const reste = new Map();
   let s = seed;
   const alea = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
   const choisis = [];
-  cats.forEach(cat => {
+  const liste = moments || cats;
+  liste.forEach(mo => {
+    const pris = new Set([...exclure, ...choisis.map(c => c.recette.id)]);
     const candidats = recettes
-      .filter(r => r.categorie === cat && !exclure.includes(r.id) && recetteFaisable(r, possedes))
+      .filter(r => (moments ? dansMoment(r, mo) : r.categorie === mo) && !pris.has(r.id) && recetteFaisable(r, possedes))
       .filter(r => !styles.length || styles.includes(r.style))
       .filter(r => !r.ingredients.some(i => !i.optionnel && refusePar(i.nom, mangeurs).length && !(i.remplacements || []).length))
       .map(r => ({ r, c: couverture(db, r, personnes, reste) }))
       .sort((a, b) => b.c.score - a.c.score || a.c.manquants.length - b.c.manquants.length);
     if (!candidats.length) return;
-    const top = candidats.filter(x => x.c.score >= candidats[0].c.score - 0.05).slice(0, 12);
+    let top = candidats.filter(x => x.c.score >= candidats[0].c.score - 0.05);
+    if (valeur) {
+      // On garde un choix assez large (au moins 30 recettes) puis on prend les meilleures selon le critère
+      if (top.length < 30) top = candidats.slice(0, Math.max(30, top.length));
+      top = [...top].sort((a, b) => valeur(a.r) - valeur(b.r)).slice(0, 5);
+    } else top = top.slice(0, 12);
     const pick = top[Math.floor(alea() * top.length)];
-    choisis.push({ recette: pick.r, score: pick.c.score, manquants: pick.c.manquants });
+    choisis.push({ recette: pick.r, moment: mo, score: pick.c.score, manquants: pick.c.manquants });
     consommer(reste, pick.c.lignes);
   });
   return choisis;

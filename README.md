@@ -54,7 +54,9 @@ Onglet « Recettes » : catalogue intégré (`src/data/recettes/lot*.js`, format
 - **Ma cuisine** : appareils possédés (le Cookeo est prévu : à cocher le jour de l’achat), qui mange quoi.
 - **Stock** : chaque ingrédient est relié à un article de l’onglet Maison (automatiquement, ou à la main
   dans la fiche recette). Pour les articles comptés en paquets / pièces, renseigner la « contenance ».
-- **Mon repas** : besoins cumulés de toutes les recettes du repas, planning, mise à jour du stock après cuisson.
+- **Cuisiner** : un seul plat (apéritif → goûter) classé par coût / protéines / calories / note, ou un menu complet ; besoins cumulés de tout le repas, planning, mise à jour du stock vérifiée puis notation.
+- **Calories, protéines, coût** : estimations par portion (`src/lib/nutrition.js`, table `src/data/nutrition.js` : clés, kcal et protéines pour 100 g, €/kg, poids d’une pièce).
+- **Notes** : sur 10 par personne (`avis.notes`), la note affichée est la moyenne.
 - **Import IA** : l’appli génère une consigne à coller dans n’importe quelle IA (Claude, ChatGPT…) ; la réponse
   JSON (collée ou en fichier .json) est importée. Le format est le même que l’export d’une recette.
 - Données synchronisées dans le foyer : collections `recettes`, `avis`, `appareils`, `mangeurs`, `repas`, `liens`

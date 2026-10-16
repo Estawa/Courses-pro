@@ -1,6 +1,13 @@
 COURSES PRO by C. Guilhem — Journal des modifications
 ======================================================
 
+v1.7.0 — 16/10/2026
+- Calories, protéines et coût estimés par portion sur chaque recette (fiche, cartes, menus), calculés à partir des ingrédients (table de référence src/data/nutrition.js)
+- Tri des recettes par coût, protéines, calories (léger ou copieux), note, rapidité, stock ou A-Z
+- Onglet « Cuisiner » : un seul plat (apéritif, entrée, soupe, salade, plat principal, accompagnement, dessert, goûter) classé selon le critère choisi, ou un menu complet combinant plusieurs moments (menus tout prêts, changement d'un seul plat, totaux par personne)
+- Notes sur 10 par personne : la note d'un plat est la moyenne des notes de ceux qui l'ont goûté ; notation de chaque plat du menu après le repas
+- Après « Je l'ai cuisinée » / « On a mangé » : vérification du stock avant → après, validation, puis notation
+
 v1.6.9 — 16/10/2026
 - Lots 10 et 11 de recettes : 107 nouvelles recettes, objectif atteint avec 802 recettes au total — soupes du monde (tom kha, zuppa toscana, mulligatawny, wonton, bisque, salmorejo, ajoblanco), tapas et apéritifs (gambas al ajillo, pimientos de Padrón, pan con tomate, baba ganoush, focaccia, halloumi grillé), terroirs (fondue savoyarde, aligot, truffade, croziflette, diots, tielle sétoise, grand aïoli, bourride), plats du monde (jambalaya, poulet jerk, kleftiko, piccata, kebab maison), accompagnements (caponata, patatas bravas, pommes duchesse, pommes Anna, panisses à la polenta) et desserts (paris-brest, baklava, baba au rhum, tres leches, key lime pie, nougat glacé, lamingtons)
 

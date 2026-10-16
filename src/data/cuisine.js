@@ -27,6 +27,28 @@ export const CATS_RECETTE = [
 ];
 export const catRecette = id => CATS_RECETTE.find(c => c.id === id) || CATS_RECETTE[3];
 
+// Moments du repas : ce qu'on peut demander à l'appli (un seul plat, ou plusieurs pour un menu).
+// L'apéritif et le goûter piochent dans les entrées / desserts qui s'y prêtent.
+export const MOMENTS = [
+  { id: 'apero', nom: 'Apéritif', emoji: '🥂', cats: ['entree'] },
+  { id: 'entree', nom: 'Entrée', emoji: '🥟', cats: ['entree'] },
+  { id: 'soupe', nom: 'Soupe', emoji: '🍜', cats: ['soupe'] },
+  { id: 'salade', nom: 'Salade', emoji: '🥗', cats: ['salade'] },
+  { id: 'plat', nom: 'Plat principal', emoji: '🍽️', cats: ['plat'] },
+  { id: 'accompagnement', nom: 'Accompagnement', emoji: '🥔', cats: ['accompagnement'] },
+  { id: 'dessert', nom: 'Dessert', emoji: '🍰', cats: ['dessert'] },
+  { id: 'gouter', nom: 'Goûter', emoji: '🧁', cats: ['dessert'] },
+];
+export const moment = id => MOMENTS.find(m => m.id === id) || MOMENTS[4];
+// Menus tout prêts (raccourcis)
+export const MENUS_TYPES = [
+  { id: 'pd', nom: 'Plat + dessert', moments: ['plat', 'dessert'] },
+  { id: 'epd', nom: 'Entrée + plat + dessert', moments: ['entree', 'plat', 'dessert'] },
+  { id: 'sp', nom: 'Soupe + plat', moments: ['soupe', 'plat'] },
+  { id: 'apero', nom: 'Apéro dînatoire', moments: ['apero', 'apero', 'apero', 'dessert'] },
+  { id: 'fete', nom: 'Grand repas', moments: ['apero', 'entree', 'plat', 'accompagnement', 'dessert'] },
+];
+
 export const STYLES = [
   { id: 'quotidien', nom: 'Quotidien', emoji: '🏡' },
   { id: 'festif', nom: 'Festif', emoji: '🎉' },

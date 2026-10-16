@@ -49,8 +49,8 @@ export default function Decompte({ lignes, recettes, db, maj, toast, onClose, on
   }
 
   return (
-    <Sheet open onClose={onClose} title="👩‍🍳 Mettre à jour le stock" footer={<button className="btn btn-big btn-main" onClick={valider}>Valider le nouveau stock</button>}>
-      <p className="muted small">Voici ce que la cuisine a utilisé. Ajuste si tu as pris un peu plus ou un peu moins, décoche ce que tu n’as pas utilisé.</p>
+    <Sheet open onClose={onClose} title="👩‍🍳 Mettre à jour le stock" footer={<button className="btn btn-big btn-main" onClick={valider}>✅ Valider et mettre à jour le stock</button>}>
+      <p className="muted small">Vérifie avant d’appliquer : voici ce que la cuisine a utilisé et le stock qui restera. Ajuste avec − / + si tu as pris un peu plus ou un peu moins, décoche ce que tu n’as pas utilisé. Rien n’est modifié tant que tu n’as pas validé.</p>
       {rows.length === 0 && <p className="muted small center">Aucun ingrédient de la recette n’est suivi dans ton stock maison (onglet Maison) : rien à décompter.</p>}
       <div className="card list-card">
         {rows.map((r, i) => (
@@ -58,7 +58,8 @@ export default function Decompte({ lignes, recettes, db, maj, toast, onClose, on
             <button className={'check' + (r.garder ? ' on' : '')} onClick={() => set(i, 'garder', !r.garder)} aria-label="Décompter">{r.garder && <Icon name="check" size={16} />}</button>
             <span className="grow">
               <b>{r.nom}</b>
-              <span className="muted small block">{r.aEstimer ? `⚠️ À estimer (recette : ${r.besoinTexte})` : `Utilisé : ${r.besoinTexte}`} · avant {r.avant}{r.unite ? ' ' + r.unite : ''}</span>
+              <span className="muted small block">{r.aEstimer ? `⚠️ À estimer (recette : ${r.besoinTexte})` : `Utilisé : ${r.besoinTexte}`}</span>
+              <span className="small block">Stock : {r.avant}{r.unite ? ' ' + r.unite : ''} → <b>{r.garder ? r.apres : r.avant}{r.unite ? ' ' + r.unite : ''}</b></span>
             </span>
             <div className="stepper">
               <button onClick={() => set(i, 'apres', Math.max(0, Math.round((Number(r.apres) - pas(r)) * 100) / 100))} aria-label="Moins"><Icon name="minus" size={18} /></button>

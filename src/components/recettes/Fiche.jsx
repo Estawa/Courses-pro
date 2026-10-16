@@ -11,8 +11,10 @@ import { ajouterALaListe } from '../../lib/store.js';
 import { uid, norm } from '../../lib/utils.js';
 import { compresserPhoto, enregistrerPhoto } from '../../lib/photos.js';
 import Decompte from './Decompte.jsx';
+import Notation from './Notation.jsx';
+import { nutrition, eurosTxt } from '../../lib/nutrition.js';
 import {
-  Etoiles, BadgeEtat, majAvis, surveillanceTxt, dureeTxt, qteIng, usePhoto, foyerDe,
+  BadgeEtat, majAvis, noteMoyenne, BadgeNote, BadgeNutri, surveillanceTxt, dureeTxt, qteIng, usePhoto, foyerDe,
   partagerTexte, telechargerFichier,
 } from './commun.jsx';
 
@@ -26,6 +28,7 @@ export default function Fiche({ recette: r, db, maj, toast, onClose, onModifier,
   const [ouvert, setOuvert] = useState(null); // index de l'ingrédient dont on choisit le remplacement
   const [autre, setAutre] = useState('');
   const [cuisine, setCuisine] = useState(false);
+  const [noter, setNoter] = useState(false);
   const [photo, setPhoto] = usePhoto(db, r.id, avis?.photo);
   const [commentaire, setCommentaire] = useState(avis?.commentaire || '');
   const fichierPhoto = useRef();
@@ -41,6 +44,7 @@ export default function Fiche({ recette: r, db, maj, toast, onClose, onModifier,
     return lignes.find(l => l.cle === cle);
   };
   const manquants = lignesManquantes(lignes);
+  const nut = useMemo(() => nutrition(r, remp), [r, remp]);
   const cat = catRecette(r.categorie);
   const style = STYLES.find(s => s.id === r.style);
   const perso = r.source !== 'catalogue';
@@ -54,7 +58,6 @@ export default function Fiche({ recette: r, db, maj, toast, onClose, onModifier,
     toast(`« ${r.titre} » ajouté au repas 🍽️`);
     onClose();
   };
-  const noter = n => maj(d => majAvis(d, r.id, a => { a.note = n; }));
   const enregistrerCommentaire = () => {
     if ((avis?.commentaire || '') === commentaire) return;
     maj(d => majAvis(d, r.id, a => { a.commentaire = commentaire.trim(); }));
@@ -124,9 +127,13 @@ export default function Fiche({ recette: r, db, maj, toast, onClose, onModifier,
       </div>
 
       <div className="row-between">
-        <Etoiles value={avis?.note || 0} onChange={noter} />
-        <span className="muted small">{avis?.faite ? `Cuisinée ${avis.faite} fois` : 'Jamais cuisinée'}</span>
+        <span className="row gap">
+          {noteMoyenne(avis) ? <BadgeNote m={noteMoyenne(avis)} /> : <span className="muted small">Pas encore notée</span>}
+          {noteMoyenne(avis)?.nb > 0 && <span className="muted small">{noteMoyenne(avis).nb} note{noteMoyenne(avis).nb > 1 ? 's' : ''}</span>}
+        </span>
+        <button className="btn btn-small btn-ghost" onClick={() => setNoter(true)}>⭐ Noter</button>
       </div>
+      <div className="muted small">{avis?.faite ? `Cuisinée ${avis.faite} fois` : 'Jamais cuisinée'}</div>
 
       <div className="card fiche-reglages">
         <div className="row-between">
@@ -165,6 +172,12 @@ export default function Fiche({ recette: r, db, maj, toast, onClose, onModifier,
           </div>
         )}
         <div className="muted small">⏱️ {dureeTxt(dureeVariante(r, v)) || '—'} · {'★'.repeat(r.difficulte)}{'☆'.repeat(3 - r.difficulte)} difficulté</div>
+      </div>
+
+      <div className="card card-nutri">
+        <div className="row-between"><b>Par portion</b><span className="muted small">estimation</span></div>
+        <BadgeNutri n={nut} />
+        <span className="muted small">Pour {personnes} personne{personnes > 1 ? 's' : ''} : environ {eurosTxt(nut.cout * personnes)}{Object.keys(remp).length ? ' (avec tes remplacements)' : ''}</span>
       </div>
 
       <div className="row-between">
@@ -258,7 +271,8 @@ export default function Fiche({ recette: r, db, maj, toast, onClose, onModifier,
           : <button className="btn btn-small btn-ghost" onClick={masquer}>{avis?.cachee ? '👁️ Afficher' : '🙈 Masquer'}</button>}
       </div>
 
-      {cuisine && <Decompte lignes={lignes} recettes={[r.id]} db={db} maj={maj} toast={toast} onClose={() => setCuisine(false)} />}
+      {cuisine && <Decompte lignes={lignes} recettes={[r.id]} db={db} maj={maj} toast={toast} onClose={() => setCuisine(false)} onFini={() => setNoter(true)} />}
+      {noter && <Notation recettes={[r]} db={db} maj={maj} toast={toast} onClose={() => setNoter(false)} />}
     </Sheet>
   );
 }

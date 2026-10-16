@@ -1,19 +1,33 @@
 import { useMemo, useState } from 'react';
 import Icon from '../components/icons.jsx';
 import { Empty, Segmented, Sheet, Toggle } from '../components/ui.jsx';
-import { CATS_RECETTE, STYLES, TAGS, appareil } from '../data/cuisine.js';
+import { CATS_RECETTE, STYLES, TAGS, MOMENTS, MENUS_TYPES, appareil, moment } from '../data/cuisine.js';
 import {
   appareilsDu, appareilsPossedes, mangeursDu, recetteFaisable, couverture, besoinsRepas, lignesManquantes,
-  qteAAcheter, proposerRepas, planifier, dureeTotale, tourneSeule, varianteParDefaut, refusePar,
+  qteAAcheter, proposerRepas, planifier, dureeTotale, tourneSeule, varianteParDefaut, refusePar, dansMoment,
 } from '../lib/recettes.js';
+import { nutrition, CRITERES, valeurCritere, eurosTxt } from '../lib/nutrition.js';
 import { ajouterALaListe } from '../lib/store.js';
 import { norm, uid } from '../lib/utils.js';
-import { useRecettes, useAvis, BadgeEtat, Etoiles, dureeTxt } from '../components/recettes/commun.jsx';
+import { useRecettes, useAvis, BadgeEtat, BadgeNote, BadgeNutri, noteMoyenne, dureeTxt } from '../components/recettes/commun.jsx';
 import Fiche from '../components/recettes/Fiche.jsx';
 import Ajout from '../components/recettes/Ajout.jsx';
 import Decompte from '../components/recettes/Decompte.jsx';
+import Notation from '../components/recettes/Notation.jsx';
 
 const PAGE = 40;
+// Tris du catalogue (les tris « par portion » viennent de lib/nutrition.js)
+const TRIS = [
+  { id: 'stock', nom: 'Stock', emoji: '🏠' },
+  { id: 'cout', nom: 'Moins cher', emoji: '💶' },
+  { id: 'prot', nom: 'Protéines', emoji: '💪' },
+  { id: 'kcal', nom: 'Léger', emoji: '🪶' },
+  { id: 'kcalplus', nom: 'Copieux', emoji: '🔋' },
+  { id: 'note', nom: 'Note', emoji: '⭐' },
+  { id: 'rapide', nom: 'Rapide', emoji: '⚡' },
+  { id: 'az', nom: 'A-Z', emoji: '🔤' },
+];
+const TRIS_NUTRI = ['cout', 'prot', 'kcal', 'kcalplus', 'note'];
 
 export default function Recettes({ db, maj, toast }) {
   const [vue, setVue] = useState(() => { try { return sessionStorage.getItem('cp-recettes-vue') || 'catalogue'; } catch { return 'catalogue'; } });
@@ -29,11 +43,11 @@ export default function Recettes({ db, maj, toast }) {
     <div className="page">
       <Segmented value={vue} onChange={changerVue} options={[
         { value: 'catalogue', label: 'Recettes', emoji: '📖' },
-        { value: 'repas', label: nbRepas ? `Repas (${nbRepas})` : 'Mon repas', emoji: '🍽️' },
+        { value: 'repas', label: nbRepas ? `Cuisiner (${nbRepas})` : 'Cuisiner', emoji: '🍽️' },
         { value: 'cuisine', label: 'Ma cuisine', emoji: '🔧' },
       ]} />
       {vue === 'catalogue' && <Catalogue db={db} maj={maj} recettes={recettes} avis={avis} ouvrir={ouvrir} nouvelle={() => setAjout('new')} />}
-      {vue === 'repas' && <Repas db={db} maj={maj} toast={toast} recettes={recettes} ouvrir={ouvrir} allerCatalogue={() => changerVue('catalogue')} />}
+      {vue === 'repas' && <Repas db={db} maj={maj} toast={toast} recettes={recettes} avis={avis} ouvrir={ouvrir} allerCatalogue={() => changerVue('catalogue')} />}
       {vue === 'cuisine' && <MaCuisine db={db} maj={maj} toast={toast} nouvelle={() => setAjout('new')} recettes={recettes} />}
 
       {fiche && (
@@ -74,7 +88,7 @@ function Catalogue({ db, recettes, avis, ouvrir, nouvelle }) {
       if (voirMasquees && !a?.cachee) return false;
       if (cat && r.categorie !== cat) return false;
       if (style && r.style !== style) return false;
-      if (favoris && !((a?.note || 0) >= 4)) return false;
+      if (favoris && !((noteMoyenne(a)?.moy || 0) >= 7)) return false;
       if (tags.length && !tags.every(t => (t === 'tout-seul' ? r.tags.includes(t) || r.variantes.some(v => tourneSeule(v)) : r.tags.includes(t)))) return false;
       if (app ? !r.variantes.some(v => v.appareils.includes(app)) : !recetteFaisable(r, possedes)) return false;
       if (nq && !norm(r.titre + ' ' + r.origine + ' ' + r.ingredients.map(i => i.nom).join(' ')).includes(nq)) return false;
@@ -90,9 +104,12 @@ function Catalogue({ db, recettes, avis, ouvrir, nouvelle }) {
       return { r, c, refus };
     });
     const filtre = stock ? liste.filter(x => x.c.manquants.length === 0) : liste;
-    const note = x => avis.get(x.r.id)?.note || 0;
-    return filtre.sort((a, b) => (tri === 'stock' ? a.c.manquants.length - b.c.manquants.length || a.c.nonSuivis - b.c.nonSuivis || b.c.score - a.c.score
-      : tri === 'note' ? note(b) - note(a) : tri === 'rapide' ? (dureeTotale(a.r) || 999) - (dureeTotale(b.r) || 999) : a.r.titre.localeCompare(b.r.titre, 'fr')));
+    const noteDe = id => noteMoyenne(avis.get(id))?.moy || 0;
+    const parStock = (a, b) => a.c.manquants.length - b.c.manquants.length || a.c.nonSuivis - b.c.nonSuivis || b.c.score - a.c.score;
+    return filtre.sort((a, b) => (tri === 'stock' ? parStock(a, b)
+      : tri === 'rapide' ? (dureeTotale(a.r) || 999) - (dureeTotale(b.r) || 999)
+        : tri === 'az' ? a.r.titre.localeCompare(b.r.titre, 'fr')
+          : valeurCritere(tri, a.r, noteDe) - valeurCritere(tri, b.r, noteDe) || parStock(a, b)));
   }, [base, db.produits, db.liens, stock, tri, avis]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const faisables = avecStock.filter(x => x.c.manquants.length === 0).length;
@@ -121,6 +138,11 @@ function Catalogue({ db, recettes, avis, ouvrir, nouvelle }) {
         ))}
       </div>
 
+      <div className="tri-row">
+        <span className="small muted tri-lbl">Trier :</span>
+        {TRIS.map(t => <button key={t.id} className={'chip chip-toggle chip-petit' + (tri === t.id ? ' on' : '')} style={{ '--c': '#E6DAFF' }} onClick={() => setTri(t.id)}>{t.emoji} {t.nom}</button>)}
+      </div>
+
       <div className="row gap">
         <button className={'btn btn-small ' + (stock ? 'btn-main' : 'btn-ghost')} onClick={() => setStock(!stock)}>🏠 Avec mon stock</button>
         <button className={'btn btn-small ' + (actifs - (stock ? 1 : 0) ? 'btn-main' : 'btn-ghost')} onClick={() => setFiltres(true)}>⚙️ Filtres{actifs - (stock ? 1 : 0) ? ` (${actifs - (stock ? 1 : 0)})` : ''}</button>
@@ -132,7 +154,7 @@ function Catalogue({ db, recettes, avis, ouvrir, nouvelle }) {
         <Empty emoji="🍳" titre="Aucune recette ne correspond" texte={stock ? 'Rien n’est faisable entièrement avec le stock actuel : retire « Avec mon stock » pour voir ce qu’il manque.' : 'Essaie avec moins de filtres.'} />
       )}
       <div className="stack">
-        {avecStock.slice(0, n).map(({ r, c, refus }) => <CarteRecette key={r.id} r={r} c={c} refus={refus} a={avis.get(r.id)} possedes={possedes} onClick={() => ouvrir(r)} />)}
+        {avecStock.slice(0, n).map(({ r, c, refus }) => <CarteRecette key={r.id} r={r} c={c} refus={refus} a={avis.get(r.id)} possedes={possedes} onClick={() => ouvrir(r)} mis={TRIS_NUTRI.includes(tri) ? tri : ''} />)}
       </div>
       {avecStock.length > n && <button className="btn btn-ghost" onClick={() => setN(n + PAGE)}>Voir plus ({avecStock.length - n})</button>}
 
@@ -150,14 +172,7 @@ function Catalogue({ db, recettes, avis, ouvrir, nouvelle }) {
         <div className="chips-wrap">
           {TAGS.map(t => <button key={t.id} className={'chip chip-toggle' + (tags.includes(t.id) ? ' on' : '')} style={{ '--c': '#D4F5DD' }} onClick={() => setTags(x => (x.includes(t.id) ? x.filter(y => y !== t.id) : [...x, t.id]))}>{t.emoji} {t.nom}</button>)}
         </div>
-        <b>Trier par</b>
-        <Segmented value={tri} onChange={setTri} options={[
-          { value: 'stock', label: 'Stock', emoji: '🏠' },
-          { value: 'note', label: 'Note', emoji: '⭐' },
-          { value: 'rapide', label: 'Rapide', emoji: '⚡' },
-          { value: 'az', label: 'A-Z' },
-        ]} />
-        <div className="toggle-box"><Toggle checked={favoris} onChange={setFavoris} label="⭐ Seulement mes recettes notées 4 ou 5" /></div>
+        <div className="toggle-box"><Toggle checked={favoris} onChange={setFavoris} label="⭐ Seulement mes recettes notées 7/10 ou plus" /></div>
         <div className="toggle-box"><Toggle checked={voirMasquees} onChange={setVoirMasquees} label="🙈 Voir les recettes masquées" /></div>
         {actifs > 0 && <button className="btn btn-ghost" onClick={() => { setStyle(''); setApp(''); setTags([]); setStock(false); setFavoris(false); setVoirMasquees(false); }}>Effacer les filtres</button>}
       </Sheet>
@@ -165,7 +180,7 @@ function Catalogue({ db, recettes, avis, ouvrir, nouvelle }) {
   );
 }
 
-function CarteRecette({ r, c, refus, a, possedes, onClick, extra }) {
+function CarteRecette({ r, c, refus, a, possedes, onClick, extra, mis }) {
   const catR = CATS_RECETTE.find(x => x.id === r.categorie);
   const apps = [...new Set(r.variantes.flatMap(v => v.appareils))].filter(x => x !== 'aucun');
   const d = dureeTotale(r);
@@ -176,7 +191,10 @@ function CarteRecette({ r, c, refus, a, possedes, onClick, extra }) {
         <b className="recette-titre">{r.titre}</b>
         <span className="muted small block">
           {catR?.un}{d ? ` · ⏱️ ${dureeTxt(d)}` : ''}{r.style === 'monde' && r.origine ? ` · 🌍 ${r.origine}` : r.style === 'festif' ? ' · 🎉' : ''}
-          {a?.note ? <> · <span className="etoile on">★</span>{a.note}</> : null}
+        </span>
+        <span className="carte-nutri">
+          <BadgeNutri n={nutrition(r)} petit fort={mis} />
+          <BadgeNote m={noteMoyenne(a)} petit />
         </span>
         <span className="recette-apps">
           {apps.map(x => <span key={x} className={'app-pastille' + (possedes.has(x) ? '' : ' off')} title={appareil(x).nom}>{appareil(x).emoji}</span>)}
@@ -193,45 +211,73 @@ function CarteRecette({ r, c, refus, a, possedes, onClick, extra }) {
 }
 
 // ---------------------------------------------------------------------------
-// Mon repas : plusieurs recettes, stock vérifié pour l'ENSEMBLE du repas, planning
+// Cuisiner : un seul plat (classé par coût, protéines, calories, note…) ou un menu complet.
+// Le stock est vérifié pour l'ENSEMBLE du repas, puis planning, décompte et notes.
 // ---------------------------------------------------------------------------
-const COMPOSITIONS = [
-  { id: 'simple', nom: 'Plat seul', cats: ['plat'] },
-  { id: 'classique', nom: 'Plat + dessert', cats: ['plat', 'dessert'] },
-  { id: 'complet', nom: 'Entrée + plat + dessert', cats: ['entree', 'plat', 'dessert'] },
-  { id: 'soupe', nom: 'Soupe + plat', cats: ['soupe', 'plat'] },
-  { id: 'fete', nom: 'Grand repas', cats: ['entree', 'salade', 'plat', 'accompagnement', 'dessert'] },
-];
+const ordreMoment = id => MOMENTS.findIndex(m => m.id === id);
 
-function Repas({ db, maj, toast, recettes, ouvrir, allerCatalogue }) {
+function Repas({ db, maj, toast, recettes, avis, ouvrir, allerCatalogue }) {
   const possedes = appareilsPossedes(db);
   const mangeurs = mangeursDu(db);
   const items = (db.repas || []).map(it => ({ ...it, recette: recettes.find(r => r.id === it.recetteId) })).filter(it => it.recette);
-  const [compo, setCompo] = useState('complet');
-  const [personnes, setPersonnes] = useState(() => recettes.length ? 5 : 4);
+  const [mode, setMode] = useState('plat');
+  const [momentUn, setMomentUn] = useState('plat');
+  const [momentsMenu, setMomentsMenu] = useState(['entree', 'plat', 'dessert']);
+  const [critere, setCritere] = useState('stock');
+  const [seulStock, setSeulStock] = useState(false);
+  const [personnes, setPersonnes] = useState(5);
   const [styleIdee, setStyleIdee] = useState('');
   const [graine, setGraine] = useState(1);
   const [idee, setIdee] = useState(null);
+  const [nListe, setNListe] = useState(8);
   const [heure, setHeure] = useState('19:30');
   const [voirOk, setVoirOk] = useState(false);
   const [mange, setMange] = useState(false);
+  const [noter, setNoter] = useState(false);
+  const noteDe = id => noteMoyenne(avis.get(id))?.moy || 0;
+  const valeur = critere === 'stock' ? null : r => valeurCritere(critere, r, noteDe);
 
   const lignes = useMemo(() => besoinsRepas(db, items), [db.produits, db.liens, db.repas, recettes]); // eslint-disable-line react-hooks/exhaustive-deps
   const manquants = lignesManquantes(lignes);
   const okLignes = lignes.filter(l => !manquants.includes(l));
   const plan = useMemo(() => (items.length ? planifier(items, heure, possedes) : null), [db.repas, heure, recettes]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Un seul plat : toutes les recettes possibles pour ce moment, classées selon le critère
+  const possibles = useMemo(() => {
+    if (mode !== 'plat') return [];
+    const pris = new Set(items.map(i => i.recetteId));
+    const liste = recettes
+      .filter(r => dansMoment(r, momentUn) && recetteFaisable(r, possedes) && !avis.get(r.id)?.cachee && !pris.has(r.id))
+      .filter(r => !styleIdee || r.style === styleIdee)
+      .filter(r => !r.ingredients.some(i => !i.optionnel && refusePar(i.nom, mangeurs).length && !(i.remplacements || []).length))
+      .map(r => ({ r, c: couverture(db, r, personnes) }))
+      .filter(x => !seulStock || x.c.manquants.length === 0);
+    const parStock = (a, b) => a.c.manquants.length - b.c.manquants.length || a.c.nonSuivis - b.c.nonSuivis || b.c.score - a.c.score;
+    return liste.sort((a, b) => (valeur ? valeur(a.r) - valeur(b.r) || parStock(a, b) : parStock(a, b)));
+  }, [mode, momentUn, critere, seulStock, styleIdee, personnes, recettes, db.produits, db.liens, db.repas, avis]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const proposer = (seed = Math.random() * 1000) => {
-    const c = COMPOSITIONS.find(x => x.id === compo);
-    const res = proposerRepas(db, recettes, { cats: c.cats, personnes, mangeurs, styles: styleIdee ? [styleIdee] : [], seed, exclure: items.map(i => i.recetteId) });
+    const ms = [...momentsMenu].sort((a, b) => ordreMoment(a) - ordreMoment(b));
+    const res = proposerRepas(db, recettes, { moments: ms, personnes, mangeurs, styles: styleIdee ? [styleIdee] : [], seed, exclure: items.map(i => i.recetteId), valeur });
     setIdee(res);
     setGraine(seed);
+  };
+  const changerUn = i => {
+    const x = idee[i];
+    const autres = idee.map(y => y.recette.id);
+    const [nv] = proposerRepas(db, recettes, { moments: [x.moment], personnes, mangeurs, styles: styleIdee ? [styleIdee] : [], seed: Math.random() * 1000, exclure: [...autres, ...items.map(it => it.recetteId)], valeur });
+    if (nv) setIdee(idee.map((y, j) => (j === i ? nv : y))); else toast('Pas d’autre idée pour ce plat 😕');
+  };
+  const ajouterRecette = r => {
+    maj(d => { d.repas.push({ id: uid(), recetteId: r.id, personnes, variante: varianteParDefaut(r, possedes), remplacements: {} }); });
+    toast(`« ${r.titre} » ajouté au repas 🍽️`);
   };
   const garderIdee = () => {
     maj(d => idee.forEach(x => d.repas.push({ id: uid(), recetteId: x.recette.id, personnes, variante: varianteParDefaut(x.recette, possedes), remplacements: {} })));
     setIdee(null);
-    toast('Repas prêt 🍽️ Vérifie le stock ci-dessous');
+    toast('Menu prêt 🍽️ Vérifie le stock ci-dessous');
   };
+  const basculerMoment = id => setMomentsMenu(ms => (ms.includes(id) ? ms.filter(x => x !== id) : [...ms, id]));
   const setItem = (id, fn) => maj(d => { const it = d.repas.find(x => x.id === id); if (it) fn(it); });
   const vider = () => { if (confirm('Vider le repas ?')) maj(d => { d.repas = []; }); };
   const ajouterManquants = () => {
@@ -239,23 +285,53 @@ function Repas({ db, maj, toast, recettes, ouvrir, allerCatalogue }) {
     toast(`${manquants.length} article${manquants.length > 1 ? 's' : ''} ajouté${manquants.length > 1 ? 's' : ''} à la liste 🛒`);
   };
 
+  // Totaux par personne (calories, protéines, coût) pour l'idée et pour le repas en cours
+  const somme = liste => liste.reduce((t, n) => ({ kcal: t.kcal + n.kcal, prot: t.prot + n.prot, cout: t.cout + n.cout }), { kcal: 0, prot: 0, cout: 0 });
+  const totIdee = idee ? somme(idee.map(x => nutrition(x.recette))) : null;
+  const nutItems = items.map(it => ({ it, n: nutrition(it.recette, it.remplacements) }));
+  const totRepas = somme(nutItems.map(x => x.n));
+  const coutTotal = nutItems.reduce((t, x) => t + x.n.cout * (x.it.personnes || x.it.recette.personnes), 0);
+
   return (
     <>
       <div className="card hero hero-pink">
         <div className="hero-top">
           <div>
-            <div className="hero-kicker">Idée de repas</div>
-            <div className="hero-big">Avec ce que j’ai</div>
-            <div className="hero-sub">L’appli vérifie le stock pour tout le repas à la fois.</div>
+            <div className="hero-kicker">Que veux-tu préparer ?</div>
+            <div className="hero-big">{mode === 'plat' ? 'Un plat' : 'Un menu'}</div>
+            <div className="hero-sub">{mode === 'plat' ? 'Les recettes possibles, classées comme tu veux.' : 'L’appli compose le menu et vérifie le stock pour tout le repas.'}</div>
           </div>
-          <div className="hero-emoji">💡</div>
+          <div className="hero-emoji">{mode === 'plat' ? moment(momentUn).emoji : '💡'}</div>
         </div>
         <div className="chips-wrap">
-          {COMPOSITIONS.map(c => <button key={c.id} className={'chip chip-white' + (compo === c.id ? ' chip-sel' : '')} onClick={() => setCompo(c.id)}>{c.nom}</button>)}
+          <button className={'chip chip-white chip-petit' + (mode === 'plat' ? ' chip-sel' : '')} onClick={() => setMode('plat')}>🍽️ Un seul plat</button>
+          <button className={'chip chip-white chip-petit' + (mode === 'menu' ? ' chip-sel' : '')} onClick={() => setMode('menu')}>📋 Un menu complet</button>
+        </div>
+        {mode === 'plat' ? (
+          <div className="chips-wrap">
+            {MOMENTS.map(m => <button key={m.id} className={'chip chip-white chip-petit' + (momentUn === m.id ? ' chip-sel' : '')} onClick={() => { setMomentUn(m.id); setNListe(8); }}>{m.emoji} {m.nom}</button>)}
+          </div>
+        ) : (
+          <>
+            <div className="chips-wrap">
+              {MOMENTS.map(m => {
+                const nb = momentsMenu.filter(x => x === m.id).length;
+                return <button key={m.id} className={'chip chip-white chip-petit' + (nb ? ' chip-sel' : '')} onClick={() => basculerMoment(m.id)}>{m.emoji} {m.nom}{nb > 1 ? ` ×${nb}` : ''}</button>;
+              })}
+            </div>
+            <div className="chips-wrap">
+              <span className="small">Menus tout prêts :</span>
+              {MENUS_TYPES.map(t => <button key={t.id} className="chip chip-white chip-petit" onClick={() => setMomentsMenu(t.moments)}>{t.nom}</button>)}
+            </div>
+          </>
+        )}
+        <div className="small"><b>Classer par :</b></div>
+        <div className="chips-wrap">
+          {CRITERES.map(c => <button key={c.id} className={'chip chip-white chip-petit' + (critere === c.id ? ' chip-sel' : '')} onClick={() => setCritere(c.id)}>{c.emoji} {c.nom}</button>)}
         </div>
         <div className="chips-wrap">
-          <button className={'chip chip-white' + (!styleIdee ? ' chip-sel' : '')} onClick={() => setStyleIdee('')}>Toutes envies</button>
-          {STYLES.map(s => <button key={s.id} className={'chip chip-white' + (styleIdee === s.id ? ' chip-sel' : '')} onClick={() => setStyleIdee(styleIdee === s.id ? '' : s.id)}>{s.emoji} {s.nom}</button>)}
+          <button className={'chip chip-white chip-petit' + (!styleIdee ? ' chip-sel' : '')} onClick={() => setStyleIdee('')}>Toutes envies</button>
+          {STYLES.map(s => <button key={s.id} className={'chip chip-white chip-petit' + (styleIdee === s.id ? ' chip-sel' : '')} onClick={() => setStyleIdee(styleIdee === s.id ? '' : s.id)}>{s.emoji} {s.nom}</button>)}
         </div>
         <div className="row-between">
           <span className="row gap"><b>👥</b>
@@ -265,28 +341,54 @@ function Repas({ db, maj, toast, recettes, ouvrir, allerCatalogue }) {
               <button onClick={() => setPersonnes(p => p + 1)} aria-label="Plus"><Icon name="plus" size={18} /></button>
             </span>
           </span>
-          <button className="btn btn-main" onClick={() => proposer()}><Icon name="sparkle" size={18} /> Propose-moi</button>
+          {mode === 'menu'
+            ? <button className="btn btn-main" disabled={!momentsMenu.length} onClick={() => proposer()}><Icon name="sparkle" size={18} /> Propose-moi</button>
+            : <button className={'btn btn-small ' + (seulStock ? 'btn-main' : 'btn-ghost')} onClick={() => setSeulStock(!seulStock)}>🏠 Rien à acheter</button>}
         </div>
       </div>
 
-      {idee && (
+      {mode === 'plat' && (
+        <>
+          <div className="row-between section-title"><b>{moment(momentUn).emoji} {possibles.length} idée{possibles.length > 1 ? 's' : ''} · {moment(momentUn).nom}</b><span className="muted small">par portion</span></div>
+          {possibles.length === 0 && <Empty emoji="🍳" titre="Aucune recette" texte={seulStock ? 'Rien n’est faisable sans rien acheter : retire « Rien à acheter ».' : 'Essaie une autre envie.'} />}
+          <div className="stack">
+            {possibles.slice(0, nListe).map(({ r, c }) => (
+              <div key={r.id} className="ligne-ajout">
+                <CarteRecette r={r} c={c} a={avis.get(r.id)} possedes={possedes} onClick={() => ouvrir(r)} mis={critere} />
+                <button className="btn-plus-repas" onClick={() => ajouterRecette(r)} aria-label="Ajouter au repas"><Icon name="plus" size={20} /></button>
+              </div>
+            ))}
+          </div>
+          {possibles.length > nListe && <button className="btn btn-ghost" onClick={() => setNListe(nListe + 8)}>Voir plus ({possibles.length - nListe})</button>}
+        </>
+      )}
+
+      {mode === 'menu' && idee && (
         <div className="card stack">
-          <div className="row-between"><b>💡 Proposition</b><button className="btn btn-small btn-ghost" onClick={() => proposer(graine + 7)}>🔄 Autre idée</button></div>
-          {idee.length === 0 && <p className="muted small">Pas de recette trouvée pour cette composition.</p>}
-          {idee.map(x => (
-            <div key={x.recette.id} className="idee-row">
+          <div className="row-between"><b>💡 Proposition</b><button className="btn btn-small btn-ghost" onClick={() => proposer(graine + 7)}>🔄 Tout changer</button></div>
+          {idee.length === 0 && <p className="muted small">Pas de recette trouvée pour ce menu.</p>}
+          {idee.map((x, i) => (
+            <div key={x.recette.id + i} className="idee-row">
               <button className="grow idee-main" onClick={() => ouvrir(x.recette)}>
+                <span className="muted small block">{moment(x.moment).emoji} {moment(x.moment).nom}</span>
                 <b>{x.recette.emoji} {x.recette.titre}</b>
-                <span className="muted small block">{CATS_RECETTE.find(c => c.id === x.recette.categorie)?.un} · {x.manquants.length ? `🛒 il manque : ${x.manquants.slice(0, 3).map(m => m.nom).join(', ')}${x.manquants.length > 3 ? '…' : ''}` : '🟢 tout est en stock'}</span>
+                <span className="block"><BadgeNutri n={nutrition(x.recette)} petit />{noteMoyenne(avis.get(x.recette.id)) && <BadgeNote m={noteMoyenne(avis.get(x.recette.id))} petit />}</span>
+                <span className="muted small block">{x.manquants.length ? `🛒 il manque : ${x.manquants.slice(0, 3).map(m => m.nom).join(', ')}${x.manquants.length > 3 ? '…' : ''}` : '🟢 tout est en stock'}</span>
               </button>
+              <button className="icon-btn" onClick={() => changerUn(i)} aria-label="Changer ce plat">🔄</button>
             </div>
           ))}
-          {idee.length > 0 && <button className="btn btn-big btn-main" onClick={garderIdee}>Garder ce repas</button>}
+          {idee.length > 0 && (
+            <>
+              <div className="total-menu small">Menu complet par personne : <BadgeNutri n={{ kcal: totIdee.kcal, prot: totIdee.prot, cout: totIdee.cout }} petit /></div>
+              <button className="btn btn-big btn-main" onClick={garderIdee}>Garder ce menu</button>
+            </>
+          )}
         </div>
       )}
 
-      {items.length === 0 && !idee && (
-        <Empty emoji="🍽️" titre="Ton repas est vide" texte="Demande une idée ci-dessus, ou ajoute des recettes depuis le catalogue (bouton « Au repas » dans chaque recette).">
+      {items.length === 0 && !(mode === 'menu' && idee) && mode === 'menu' && (
+        <Empty emoji="🍽️" titre="Ton repas est vide" texte="Choisis les plats du menu ci-dessus puis « Propose-moi », ou ajoute des recettes depuis le catalogue (bouton « Au repas »).">
           <button className="btn btn-main" onClick={allerCatalogue}>Parcourir les recettes</button>
         </Empty>
       )}
@@ -295,7 +397,7 @@ function Repas({ db, maj, toast, recettes, ouvrir, allerCatalogue }) {
         <>
           <div className="row-between section-title"><b>🍽️ Au menu</b><button className="lien small" onClick={vider}>Vider</button></div>
           <div className="stack">
-            {[...items].sort((a, b) => CATS_RECETTE.findIndex(c => c.id === a.recette.categorie) - CATS_RECETTE.findIndex(c => c.id === b.recette.categorie)).map(it => {
+            {[...nutItems].sort((a, b) => CATS_RECETTE.findIndex(c => c.id === a.it.recette.categorie) - CATS_RECETTE.findIndex(c => c.id === b.it.recette.categorie)).map(({ it, n }) => {
               const r = it.recette;
               const v = r.variantes[it.variante] || r.variantes[0];
               return (
@@ -303,6 +405,7 @@ function Repas({ db, maj, toast, recettes, ouvrir, allerCatalogue }) {
                   <button className="grow idee-main" onClick={() => ouvrir(r)}>
                     <b>{r.emoji} {r.titre}</b>
                     <span className="muted small block">{CATS_RECETTE.find(c => c.id === r.categorie)?.un} · {v.appareils.map(a => appareil(a).emoji + ' ' + appareil(a).nom).join(' + ')}{Object.keys(it.remplacements || {}).length ? ' · ✏️ ingrédients remplacés' : ''}</span>
+                    <BadgeNutri n={n} petit />
                   </button>
                   <div className="repas-actions">
                     {r.variantes.length > 1 && (
@@ -320,6 +423,11 @@ function Repas({ db, maj, toast, recettes, ouvrir, allerCatalogue }) {
                 </div>
               );
             })}
+          </div>
+          <div className="card card-nutri">
+            <div className="row-between"><b>Le repas, par personne</b><span className="muted small">estimation</span></div>
+            <BadgeNutri n={totRepas} />
+            <span className="muted small">Coût total des ingrédients : environ {eurosTxt(coutTotal)}</span>
           </div>
 
           <div className={'card ' + (manquants.length ? 'card-peach' : 'hero-mint')}>
@@ -382,7 +490,13 @@ function Repas({ db, maj, toast, recettes, ouvrir, allerCatalogue }) {
         <Decompte
           lignes={lignes} recettes={items.map(i => i.recetteId)} db={db} maj={maj} toast={toast}
           onClose={() => setMange(false)}
-          onFini={() => { if (confirm('Vider le repas maintenant qu’il est cuisiné ?')) maj(d => { d.repas = []; }); }}
+          onFini={() => setNoter(true)}
+        />
+      )}
+      {noter && (
+        <Notation
+          recettes={items.map(i => i.recette)} db={db} maj={maj} toast={toast} titre="⭐ Notez chaque plat"
+          onClose={() => { setNoter(false); if (confirm('Vider le repas maintenant qu’il est cuisiné ?')) maj(d => { d.repas = []; }); }}
         />
       )}
     </>
