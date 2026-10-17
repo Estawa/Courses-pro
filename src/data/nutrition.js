@@ -297,6 +297,17 @@ cacao / cacao amer / cacao non sucre | 350 | 20 | 15
 gelatine | 340 | 85 | 60 | | feuille=2 / sachet=9
 levure chimique / bicarbonate | 100 | 0 | 15 | | sachet=11
 levure de boulanger | 300 | 40 | 30 | | sachet=5.5
+// Salades protéinées (lot 12)
+petits pois cuits / petit pois cuit | 80 | 5.5 | 5
+lentilles cuites / lentilles vertes cuites / lentilles corail cuites | 115 | 9 | 4
+epeautre cru / epeautre | 340 | 14 | 6
+canneberges sechees / cranberries sechees | 330 | 0.5 | 15
+cottage cheese | 100 | 11 | 8 | | pot=200
+gigot / filet d agneau | 200 | 20 | 22
+chair de crabe / surimi / batonnet de surimi | 90 | 8 | 12
+bresaola | 160 | 33 | 45 | | tranche=15
+tempeh | 190 | 19 | 18
+seitan | 120 | 24 | 16
 `;
 
 // Poids moyen par unité quand l'ingrédient ne précise rien (en g)

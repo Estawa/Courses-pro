@@ -237,6 +237,8 @@ export function normaliserRecette(r, source = 'import') {
     astuce: String(r.astuce || r.conseil || r.notes || '').trim(),
     source,
   };
+  const protRef = num(r.proteines_portion);
+  if (protRef) recette.proteines_portion = protRef; // valeur connue (fiche d'origine), prioritaire sur l'estimation
   if (r.auteur) recette.auteur = String(r.auteur);
   return { recette, alertes };
 }
@@ -274,6 +276,7 @@ export function exporterRecette(r) {
 // = appareil1,appareil2 | cuisson min | nom de la version
 // > étape | durée min | surveillance 0/1/2 | appareil
 // ~ autre nom; autre nom (synonymes : même recette, nom différent)
+// @ protéines g par portion (valeur connue, prioritaire sur l'estimation)
 // ! astuce
 // ---------------------------------------------------------------------------
 export function lireCatalogue(texte) {
@@ -306,6 +309,8 @@ export function lireCatalogue(texte) {
       v.etapes.push({ texte: texteEt, duree_min: duree, surveillance: Number(surv), appareil: app || v.appareils[0] });
     } else if (c === '~') {
       cur.alias = [...(cur.alias || []), ...l.slice(1).split(';').map(s => s.trim()).filter(Boolean)];
+    } else if (c === '@') {
+      cur.proteines_portion = l.slice(1).trim();
     } else if (c === '!') {
       cur.astuce = (cur.astuce ? cur.astuce + ' ' : '') + l.slice(1).trim();
     }

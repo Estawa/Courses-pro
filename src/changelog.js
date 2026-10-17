@@ -1,5 +1,15 @@
 export const CHANGELOG = [
   {
+    version: '1.7.4',
+    date: '2026-10-17',
+    notes: [
+      'Ajout des 52 salades protéinées meal-prep de l\'appli Salades Pro (catégorie Salades, 5 portions) — 855 recettes au total ; on les retrouve toutes en tapant « protéinée » dans la recherche',
+      'Pour ces salades, la quantité de protéines par portion affichée est celle de la fiche Salades Pro (et non plus une estimation)',
+      'Remplacements proposés pour les petits pois (edamame, haricots verts) et les lentilles (quinoa, haricots blancs) dans les salades qui en contiennent',
+      'Table nutritionnelle complétée : petits pois et lentilles cuits, épeautre, cottage cheese, canneberges, crabe/surimi, bresaola, tempeh, seitan, gigot',
+    ],
+  },
+  {
     version: '1.7.3',
     date: '2026-10-16',
     notes: [

@@ -81,7 +81,7 @@ export function nutrition(r, remplacements = null) {
   const p = Math.max(1, Number(r.personnes) || 4);
   const res = {
     kcal: Math.round(kcal / p / 10) * 10,
-    prot: Math.round(prot / p),
+    prot: simple && r.proteines_portion ? Math.round(r.proteines_portion) : Math.round(prot / p),
     cout: Math.round(cout / p * 100) / 100,
     fiable: total ? connus / total : 1,
     inconnus,
